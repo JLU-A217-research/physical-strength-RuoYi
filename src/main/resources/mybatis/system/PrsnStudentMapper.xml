@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.student.mapper.PrsnStudentMapper">
+    
+    <resultMap type="PrsnStudent" id="PrsnStudentResult">
+        <result property="stuId"    column="stu_id"    />
+        <result property="stuNo"    column="stu_no"    />
+        <result property="stuName"    column="stu_name"    />
+        <result property="stuSex"    column="stu_sex"    />
+        <result property="stuBirth"    column="stu_birth"    />
+        <result property="stuNationId"    column="stu_nation_id"    />
+        <result property="stuNid"    column="stu_nid"    />
+        <result property="stuEnrollYear"    column="stu_enroll_year"    />
+        <result property="gradeClassId"    column="grade_class_id"    />
+        <result property="stuPhone"    column="stu_phone"    />
+        <result property="stuWechat"    column="stu_wechat"    />
+    </resultMap>
+
+    <sql id="selectPrsnStudentVo">
+        select stu_id, stu_no, stu_name, stu_sex, stu_birth, stu_nation_id, stu_nid, stu_enroll_year, grade_class_id, stu_phone, stu_wechat from prsn_student
+    </sql>
+
+    <select id="selectPrsnStudentList" parameterType="PrsnStudent" resultMap="PrsnStudentResult">
+        <include refid="selectPrsnStudentVo"/>
+        <where>  
+            <if test="stuNo != null "> and stu_no = #{stuNo}</if>
+            <if test="stuName != null  and stuName != ''"> and stu_name like concat('%', #{stuName}, '%')</if>
+            <if test="stuSex != null "> and stu_sex = #{stuSex}</if>
+            <if test="stuBirth != null "> and stu_birth = #{stuBirth}</if>
+            <if test="stuNationId != null "> and stu_nation_id = #{stuNationId}</if>
+            <if test="stuNid != null  and stuNid != ''"> and stu_nid = #{stuNid}</if>
+            <if test="stuEnrollYear != null "> and stu_enroll_year = #{stuEnrollYear}</if>
+            <if test="gradeClassId != null "> and grade_class_id = #{gradeClassId}</if>
+            <if test="stuPhone != null  and stuPhone != ''"> and stu_phone = #{stuPhone}</if>
+            <if test="stuWechat != null  and stuWechat != ''"> and stu_wechat = #{stuWechat}</if>
+        </where>
+    </select>
+    
+    <select id="selectPrsnStudentById" parameterType="Long" resultMap="PrsnStudentResult">
+        <include refid="selectPrsnStudentVo"/>
+        where stu_id = #{stuId}
+    </select>
+        
+    <insert id="insertPrsnStudent" parameterType="PrsnStudent" useGeneratedKeys="true" keyProperty="stuId">
+        insert into prsn_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuNo != null">stu_no,</if>
+            <if test="stuName != null">stu_name,</if>
+            <if test="stuSex != null">stu_sex,</if>
+            <if test="stuBirth != null">stu_birth,</if>
+            <if test="stuNationId != null">stu_nation_id,</if>
+            <if test="stuNid != null">stu_nid,</if>
+            <if test="stuEnrollYear != null">stu_enroll_year,</if>
+            <if test="gradeClassId != null">grade_class_id,</if>
+            <if test="stuPhone != null">stu_phone,</if>
+            <if test="stuWechat != null">stu_wechat,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuNo != null">#{stuNo},</if>
+            <if test="stuName != null">#{stuName},</if>
+            <if test="stuSex != null">#{stuSex},</if>
+            <if test="stuBirth != null">#{stuBirth},</if>
+            <if test="stuNationId != null">#{stuNationId},</if>
+            <if test="stuNid != null">#{stuNid},</if>
+            <if test="stuEnrollYear != null">#{stuEnrollYear},</if>
+            <if test="gradeClassId != null">#{gradeClassId},</if>
+            <if test="stuPhone != null">#{stuPhone},</if>
+            <if test="stuWechat != null">#{stuWechat},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePrsnStudent" parameterType="PrsnStudent">
+        update prsn_student
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stuNo != null">stu_no = #{stuNo},</if>
+            <if test="stuName != null">stu_name = #{stuName},</if>
+            <if test="stuSex != null">stu_sex = #{stuSex},</if>
+            <if test="stuBirth != null">stu_birth = #{stuBirth},</if>
+            <if test="stuNationId != null">stu_nation_id = #{stuNationId},</if>
+            <if test="stuNid != null">stu_nid = #{stuNid},</if>
+            <if test="stuEnrollYear != null">stu_enroll_year = #{stuEnrollYear},</if>
+            <if test="gradeClassId != null">grade_class_id = #{gradeClassId},</if>
+            <if test="stuPhone != null">stu_phone = #{stuPhone},</if>
+            <if test="stuWechat != null">stu_wechat = #{stuWechat},</if>
+        </trim>
+        where stu_id = #{stuId}
+    </update>
+
+    <delete id="deletePrsnStudentById" parameterType="Long">
+        delete from prsn_student where stu_id = #{stuId}
+    </delete>
+
+    <delete id="deletePrsnStudentByIds" parameterType="String">
+        delete from prsn_student where stu_id in 
+        <foreach item="stuId" collection="array" open="(" separator="," close=")">
+            #{stuId}
+        </foreach>
+    </delete>
+
+</mapper>
