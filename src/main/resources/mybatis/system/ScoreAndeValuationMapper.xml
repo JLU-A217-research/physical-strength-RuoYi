@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.scoreandevaluation.mapper.ScoreAndEvaluationMapper"><!--ScoreMapper-->
+    
+    <resultMap type="Score" id="ScoreResult">
+        <result property="scoreRecordId"    column="score_record_id"    />
+        <result property="stuId"    column="stu_id"    />
+        <result property="tgsId"    column="tgs_id"    />
+        <result property="testTime"    column="test_time"    />
+        <result property="testScore"    column="test_score"    />
+    </resultMap>
+
+    <sql id="selectScoreVo">
+        select score_record_id, stu_id, tgs_id, test_time, test_score from score
+    </sql>
+
+    <select id="selectScoreList" parameterType="Score" resultMap="ScoreResult">
+        <include refid="selectScoreVo"/>
+        <where>  
+            <if test="stuId != null "> and stu_id = #{stuId}</if>
+            <if test="tgsId != null "> and tgs_id = #{tgsId}</if>
+            <if test="testTime != null "> and test_time = #{testTime}</if>
+            <if test="testScore != null "> and test_score = #{testScore}</if>
+        </where>
+    </select>
+    
+    <select id="selectScoreById" parameterType="Long" resultMap="ScoreResult">
+        <include refid="selectScoreVo"/>
+        where score_record_id = #{scoreRecordId}
+    </select>
+        
+    <insert id="insertScore" parameterType="Score" useGeneratedKeys="true" keyProperty="scoreRecordId">
+        insert into score
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">stu_id,</if>
+            <if test="tgsId != null">tgs_id,</if>
+            <if test="testTime != null">test_time,</if>
+            <if test="testScore != null">test_score,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">#{stuId},</if>
+            <if test="tgsId != null">#{tgsId},</if>
+            <if test="testTime != null">#{testTime},</if>
+            <if test="testScore != null">#{testScore},</if>
+         </trim>
+    </insert>
+
+    <update id="updateScore" parameterType="Score">
+        update score
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stuId != null">stu_id = #{stuId},</if>
+            <if test="tgsId != null">tgs_id = #{tgsId},</if>
+            <if test="testTime != null">test_time = #{testTime},</if>
+            <if test="testScore != null">test_score = #{testScore},</if>
+        </trim>
+        where score_record_id = #{scoreRecordId}
+    </update>
+
+    <delete id="deleteScoreById" parameterType="Long">
+        delete from score where score_record_id = #{scoreRecordId}
+    </delete>
+
+    <delete id="deleteScoreByIds" parameterType="String">
+        delete from score where score_record_id in 
+        <foreach item="scoreRecordId" collection="array" open="(" separator="," close=")">
+            #{scoreRecordId}
+        </foreach>
+    </delete>
+
+</mapper>

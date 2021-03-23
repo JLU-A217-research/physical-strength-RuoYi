@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改学生成绩 ')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-score-edit" th:object="${score}">
+            <input name="scoreRecordId" th:field="*{scoreRecordId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学生ID：</label>
+                <div class="col-sm-8">
+                    <input name="stuId" th:field="*{stuId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">年级-性别-项目ID：</label>
+                <div class="col-sm-8">
+                    <input name="tgsId" th:field="*{tgsId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">测试时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="testTime" th:value="${#dates.format(score.testTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">测试成绩：</label>
+                <div class="col-sm-8">
+                    <input name="testScore" th:field="*{testScore}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/score";
+        $("#form-score-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-score-edit').serialize());
+            }
+        }
+
+        $("input[name='testTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增学生成绩 ')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-score-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学号：</label>
+                <div class="col-sm-8">
+                    <label>
+                        <input name="stuId" class="form-control" type="text">
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">年级-性别-项目ID：</label>
+                <div class="col-sm-8">
+                    <label>
+                        <input name="tgsId" class="form-control" type="text">
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">测试时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <label>
+                            <input name="testTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        </label>
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">测试成绩：</label>
+                <div class="col-sm-8">
+                    <label>
+                        <input name="testScore" class="form-control" type="text">
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/score"
+        $("#form-score-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-score-add').serialize());
+            }
+        }
+
+        $("input[name='testTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>
