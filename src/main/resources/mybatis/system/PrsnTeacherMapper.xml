@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.teacher.mapper.PrsnTeacherMapper">
+    
+    <resultMap type="PrsnTeacher" id="PrsnTeacherResult">
+        <result property="teacherId"    column="teacher_id"    />
+        <result property="teacherNo"    column="teacher_no"    />
+        <result property="teacherName"    column="teacher_name"    />
+        <result property="teacherSex"    column="teacher_sex"    />
+        <result property="teacherNid"    column="teacher_nid"    />
+        <result property="teacherJobId"    column="teacher_job_id"    />
+        <result property="teacherPhone"    column="teacher_phone"    />
+        <result property="teacherEmail"    column="teacher_email"    />
+        <result property="teacherWechat"    column="teacher_wechat"    />
+    </resultMap>
+
+    <sql id="selectPrsnTeacherVo">
+        select teacher_id, teacher_no, teacher_name, teacher_sex, teacher_nid, teacher_job_id, teacher_phone, teacher_email, teacher_wechat from prsn_teacher
+    </sql>
+
+    <select id="selectPrsnTeacherList" parameterType="PrsnTeacher" resultMap="PrsnTeacherResult">
+        <include refid="selectPrsnTeacherVo"/>
+        <where>  
+            <if test="teacherNo != null "> and teacher_no = #{teacherNo}</if>
+            <if test="teacherName != null  and teacherName != ''"> and teacher_name like concat('%', #{teacherName}, '%')</if>
+            <if test="teacherSex != null "> and teacher_sex = #{teacherSex}</if>
+            <if test="teacherNid != null  and teacherNid != ''"> and teacher_nid = #{teacherNid}</if>
+            <if test="teacherJobId != null "> and teacher_job_id = #{teacherJobId}</if>
+            <if test="teacherPhone != null  and teacherPhone != ''"> and teacher_phone = #{teacherPhone}</if>
+            <if test="teacherEmail != null  and teacherEmail != ''"> and teacher_email = #{teacherEmail}</if>
+            <if test="teacherWechat != null  and teacherWechat != ''"> and teacher_wechat = #{teacherWechat}</if>
+        </where>
+    </select>
+    
+    <select id="selectPrsnTeacherById" parameterType="Long" resultMap="PrsnTeacherResult">
+        <include refid="selectPrsnTeacherVo"/>
+        where teacher_id = #{teacherId}
+    </select>
+        
+    <insert id="insertPrsnTeacher" parameterType="PrsnTeacher" useGeneratedKeys="true" keyProperty="teacherId">
+        insert into prsn_teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teacherNo != null">teacher_no,</if>
+            <if test="teacherName != null">teacher_name,</if>
+            <if test="teacherSex != null">teacher_sex,</if>
+            <if test="teacherNid != null">teacher_nid,</if>
+            <if test="teacherJobId != null">teacher_job_id,</if>
+            <if test="teacherPhone != null">teacher_phone,</if>
+            <if test="teacherEmail != null">teacher_email,</if>
+            <if test="teacherWechat != null">teacher_wechat,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teacherNo != null">#{teacherNo},</if>
+            <if test="teacherName != null">#{teacherName},</if>
+            <if test="teacherSex != null">#{teacherSex},</if>
+            <if test="teacherNid != null">#{teacherNid},</if>
+            <if test="teacherJobId != null">#{teacherJobId},</if>
+            <if test="teacherPhone != null">#{teacherPhone},</if>
+            <if test="teacherEmail != null">#{teacherEmail},</if>
+            <if test="teacherWechat != null">#{teacherWechat},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePrsnTeacher" parameterType="PrsnTeacher">
+        update prsn_teacher
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teacherNo != null">teacher_no = #{teacherNo},</if>
+            <if test="teacherName != null">teacher_name = #{teacherName},</if>
+            <if test="teacherSex != null">teacher_sex = #{teacherSex},</if>
+            <if test="teacherNid != null">teacher_nid = #{teacherNid},</if>
+            <if test="teacherJobId != null">teacher_job_id = #{teacherJobId},</if>
+            <if test="teacherPhone != null">teacher_phone = #{teacherPhone},</if>
+            <if test="teacherEmail != null">teacher_email = #{teacherEmail},</if>
+            <if test="teacherWechat != null">teacher_wechat = #{teacherWechat},</if>
+        </trim>
+        where teacher_id = #{teacherId}
+    </update>
+
+    <delete id="deletePrsnTeacherById" parameterType="Long">
+        delete from prsn_teacher where teacher_id = #{teacherId}
+    </delete>
+
+    <delete id="deletePrsnTeacherByIds" parameterType="String">
+        delete from prsn_teacher where teacher_id in 
+        <foreach item="teacherId" collection="array" open="(" separator="," close=")">
+            #{teacherId}
+        </foreach>
+    </delete>
+
+</mapper>

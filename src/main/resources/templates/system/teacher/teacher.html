@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('学生管理 列表')" />
+    <th:block th:include="include :: header('教师管理 列表')" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -11,29 +11,20 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>年级：</label>
-                                <input type="text" name="stuEnrollYear"/>
+                                <label>工号：</label>
+                                <input type="text" name="teacherNo"/>
                             </li>
                             <li>
-                                <label>班级：</label>
-                                <input type="text" name="gradeClassId"/>
+                                <label>姓名：</label>
+                                <input type="text" name="teacherName"/>
                             </li>
                             <li>
                                 <label>性别：</label>
-                                <select name="stuSex">
-                                    <option value="">所有</option>
+                                <select name="teacherSex">
+                                    <option value="">选择性别</option>
                                     <option value="0">男</option>
-                                    <option value="0">女</option>
+                                    <option value="1">女</option>
                                 </select>
-                            </li>
-
-                            <li>
-                                <label>姓名：</label>
-                                <input type="text" name="stuName"/>
-                            </li>
-                            <li>
-                                <label>学号：</label>
-                                <input type="text" name="stuNo"/>
                             </li>
 
                             <li>
@@ -46,16 +37,16 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:student:add">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:teacher:add">
                     <i class="fa fa-plus"></i> 添加
                 </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:student:remove">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:teacher:remove">
                     <i class="fa fa-remove"></i> 删除
                 </a>
-                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="system:student:import">
+                <a class="btn btn-info" onclick="$.table.importExcel()" shiro:hasPermission="system:teacher:import">
                     <i class="fa fa-upload"></i> 导入
                 </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:student:export">
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:teacher:export">
                     <i class="fa fa-download"></i> 导出
                 </a>
             </div>
@@ -66,9 +57,9 @@
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('system:student:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('system:student:remove')}]];
-        var prefix = ctx + "system/student";
+        var editFlag = [[${@permission.hasPermi('system:teacher:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:teacher:remove')}]];
+        var prefix = ctx + "system/teacher";
 
         $(function() {
             var options = {
@@ -77,46 +68,33 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
-                modalName: "学生信息 ",
+                importUrl: prefix + "/importData",
+                modalName: "教师管理 ",
                 columns: [{
                     checkbox: true
                 },
-
                 {
-                    field: 'stuNo',
-                    title: '学号'
-                },
-                {
-                    field: 'stuName',
+                    field: 'teacherName',
                     title: '姓名'
                 },
-               {
-                   field: 'account_id',
-                   title: '登录账号'
-               },
-               {
-                   field: 'psw',
-                   title: '密码'
-               },
                 {
-                    field: 'stuSex',
+                    field: 'teacherNo',
+                    title: '工号'
+                },
+                {
+                    field: 'teacherSex',
                     title: '性别'
                 },
-                {
-                    field: 'stuEnrollYear',
-                    title: '年级'
-                },
-                {
-                     field: 'gradeClassId',
-                     title: '班级'
+                {   field: 'class_grade',       //班级年级如何放一起
+                    title: '管理班级'
                 },
                 {
                     title: '操作',
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.stuId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.stuId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.teacherId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.teacherId + '\')"><i class="fa fa-remove"></i>删除</a>');
                         return actions.join('');
                     }
                 }]
