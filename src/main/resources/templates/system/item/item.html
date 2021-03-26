@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('体测项目 列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>体测项目名称：</label>
+                                <input type="text" name="testItemName"/>
+                            </li>
+                            <li>
+                                <label>体测项目单位：</label>
+                                <input type="text" name="testItemUnit"/>
+                            </li>
+                            <li>
+                                <!--<label>体测结果-成绩相关性 0-负相关，1-正相关，2-其他：</label>
+                                <input type="text" name="testScoreRelation"/> -->
+                                体测结果-成绩相关性0-负相关，1-正相关，2-其他：<select name="testScoreRelation" th:with="type=${@dict.getType('test_score_relation')}">
+                                <option value="">0</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+                            </select>
+
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:item:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:item:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:item:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:item:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:item:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:item:remove')}]];
+        var prefix = ctx + "system/item";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "体测项目 ",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'testItemId',
+                    title: '体测项目ID',
+                    visible: false
+                },
+                {
+                    field: 'testItemName',
+                    title: '体测项目名称'
+                },
+                {
+                    field: 'testItemUnit',
+                    title: '体测项目单位'
+                },
+                {
+
+                    field: 'testScoreRelation',
+                    title: '体测结果-成绩相关性'
+                    /*visible: editFlag == 'hidden' ? false : true,
+                    title: '体测结果-成绩相关性',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return statusTools(row);
+                    }*/
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.testItemId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.testItemId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+
+                   /* 体测结果-成绩相关性显示 */
+                   /* function statusTools(row) {
+                        if (row.status == 1) {
+                return '<i class=\"fa fa-toggle-off text-info fa-2x\" onclick="enable(\'' + row.testScoreRelationId + '\')"></i> ';
+            } else {
+                return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="disable(\'' + row.testScoreRelationId + '\')"></i> ';
+            }
+        }  */
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>
