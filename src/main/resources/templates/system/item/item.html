@@ -22,7 +22,7 @@
                                 <!--<label>体测结果-成绩相关性 0-负相关，1-正相关，2-其他：</label>
                                 <input type="text" name="testScoreRelation"/> -->
                                 体测结果-成绩相关性0-负相关，1-正相关，2-其他：<select name="testScoreRelation" th:with="type=${@dict.getType('test_score_relation')}">
-                                <option value="">0</option>
+                                <option value="">所有</option>
                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
                             </select>
 
