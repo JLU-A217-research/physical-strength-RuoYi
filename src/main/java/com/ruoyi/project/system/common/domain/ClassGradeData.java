@@ -13,22 +13,22 @@ public class ClassGradeData extends BaseEntity
 
     private Long classGrade;
 
-    private Long ClassId;
+    private Long ClassNo;
 
-    public Long getClassId() {
-        return ClassId;
-    }
-
-    public void setClassId(Long classId) {
-        ClassId = classId;
+    public Long getClassNo() {
+        return ClassNo;
     }
 
     @Override
     public String toString() {
         return "ClassGradeData{" +
                 "classGrade=" + classGrade +
-                ", ClassId=" + ClassId +
+                ", ClassNo=" + ClassNo +
                 '}';
+    }
+
+    public void setClassNo(Long classNo) {
+        ClassNo = classNo;
     }
 
     public Long getClassGrade() {

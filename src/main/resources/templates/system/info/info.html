@@ -24,7 +24,7 @@
                             </li>
                             <li>
                                 <label>班级：</label>
-                                <select id="classId" name="classId" >
+                                <select id="classNo" name="classNo" >
                                     <option value="">所有</option>
                                 </select>
                             </li>
@@ -91,7 +91,7 @@
                     title: '学号'
                 },
                 {
-                    field: 'classId',
+                    field: 'classNo',
                     title: '班级'
                 },
                 {
@@ -128,7 +128,7 @@
         });
         function getClass(){
             var class_grade = document.getElementById("classGrade").value;
-            var class_list=document.getElementById("classId");
+            var class_list=document.getElementById("classNo");
             class_list.options.length=0;
             class_list.options.add(new Option("所有",""));
             // $.operate.post(
@@ -142,9 +142,9 @@
                 data:{"classGrade":class_grade},
                 dataType:"json",
                 success: function(data){
-                    var class_list=document.getElementById("classId");
+                    var class_list=document.getElementById("classNo");
                     $.each(data,function (index,classGradeData){
-                        class_list.options.add(new Option(classGradeData.classId,classGradeData.classId));
+                        class_list.options.add(new Option(classGradeData.classNo,classGradeData.classNo));
                         // alert(classGradeData.classId);
                     })
                 }

@@ -25,7 +25,7 @@ public class AbsenceInfo extends BaseEntity
     @Excel(name = "学生号")
     private Long stuNo;
     private Long classGrade;
-    private Long classId;
+    private Long classNo;
 
     @Override
     public String toString() {
@@ -34,13 +34,21 @@ public class AbsenceInfo extends BaseEntity
                 ", stuId=" + stuId +
                 ", stuNo=" + stuNo +
                 ", classGrade=" + classGrade +
-                ", classId=" + classId +
+                ", classNo=" + classNo +
                 ", stuName='" + stuName + '\'' +
                 ", absenceRequestTime=" + absenceRequestTime +
                 ", absenceDate=" + absenceDate +
                 ", handleStatus='" + handleStatus + '\'' +
                 ", absenceReason='" + absenceReason + '\'' +
                 '}';
+    }
+
+    public Long getClassNo() {
+        return classNo;
+    }
+
+    public void setClassNo(Long classNo) {
+        this.classNo = classNo;
     }
 
     public Long getClassGrade() {
@@ -51,13 +59,6 @@ public class AbsenceInfo extends BaseEntity
         this.classGrade = classGrade;
     }
 
-    public Long getClassId() {
-        return classId;
-    }
-
-    public void setClassId(Long classId) {
-        this.classId = classId;
-    }
 
     /** 学生姓名 */
     @Excel(name = "学生姓名")

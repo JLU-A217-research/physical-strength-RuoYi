@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!--        <result property="stuId"    column="stu_id"    />-->
         <result property="stuNo"    column="stu_no"    />
         <result property="classGrade"    column="class_grade"    />
-        <result property="classId"    column="class_id"    />
+        <result property="classNo"    column="class_no"    />
         <result property="stuName"    column="stu_name"    />
 <!--        <result property="absenceRequestTime"    column="absence_request_time"    />-->
         <result property="absenceDate"    column="absence_date"    />
@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectAbsenceInfoVo">
-        select ai.absence_info_id, ai.absence_date, ai.handle_status, ai.absence_reason, ps.stu_no, ps.stu_name,cgi.class_grade,cgi.class_id from absence_info ai,prsn_student ps,class_grade_info cgi
+        select ai.absence_info_id, ai.absence_date, ai.handle_status, ai.absence_reason, ps.stu_no, ps.stu_name,cgi.class_grade,cgi.class_no from absence_info ai,prsn_student ps,class_grade_info cgi
     </sql>
 
     <select id="selectAbsenceInfoList" parameterType="AbsenceInfo" resultMap="AbsenceInfoResult">
@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!--            <if test="stuId != null and stuId!= ''"> and stu_id = #{stuId}</if>-->
             <if test="stuNo != null and stuNo != ''"> and ps.stu_no = #{stuNo}</if>
             <if test="classGrade != null "> and cgi.class_grade = #{classGrade}</if>
-        <if test="classId != null "> and cgi.class_id = #{classId}</if>
+        <if test="classNo != null "> and cgi.class_no = #{classNo}</if>
 <!--            <if test="stuName != null and stuName != ''"> and stu_name = #{stuName}</if>-->
 <!--            <if test="absenceRequestTime != null "> and absence_request_time = #{absenceRequestTime}</if>-->
             <if test="params.beginDate != null and params.beginDate != ''"><!-- 开始时间检索 -->

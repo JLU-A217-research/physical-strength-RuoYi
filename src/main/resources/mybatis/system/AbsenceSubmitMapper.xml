@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
     <resultMap id="ClassList" type="classGradeData">
         <result property="classGrade" column="class_grade"/>
-        <result property="classId"    column="class_id"    />
+        <result property="classNo"    column="class_no"    />
     </resultMap>
 
     <sql id="selectAbsenceInfoVo">
@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
     <sql id="selectClassVo">
-        select class_id from class_grade_info
+        select class_no from class_grade_info
     </sql>
     <select id="getClass" parameterType="ClassGradeData" resultMap="ClassList">
         <include refid="selectClassVo"/>
