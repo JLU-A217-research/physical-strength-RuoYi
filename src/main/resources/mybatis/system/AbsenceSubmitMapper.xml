@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.absence_submit.mapper.AbsenceSubmitMapper">
+    
+    <resultMap type="AbsenceSubmit" id="AbsenceSubmitResult">
+        <result property="absenceInfoId"    column="absence_info_id"    />
+        <result property="stuId"    column="stu_id"    />
+        <result property="absenceRequestTime"    column="absence_request_time"    />
+        <result property="absenceDate"    column="absence_date"    />
+        <result property="handleStatus"    column="handle_status"    />
+        <result property="absenceReason"    column="absence_reason"    />
+    </resultMap>
+    <resultMap id="ClassList" type="classGradeData">
+        <result property="classGrade" column="class_grade"/>
+        <result property="classId"    column="class_id"    />
+    </resultMap>
+
+    <sql id="selectAbsenceInfoVo">
+        select absence_info_id, stu_id, absence_request_time, absence_date, handle_status, absence_reason from absence_info
+    </sql>
+
+    <select id="selectAbsenceInfoList" parameterType="AbsenceSubmit" resultMap="AbsenceSubmitResult">
+        <include refid="selectAbsenceInfoVo"/>
+            <where>
+            <if test="stuId != null and stuId!= ''"> and stu_id = #{stuId}</if>
+            <if test="absenceRequestTime != null "> and absence_request_time = #{absenceRequestTime}</if>
+            <if test="params.beginDate != null and params.beginDate != ''"><!-- 开始时间检索 -->
+                AND date_format(absence_date,'%y%m%d') &gt;= date_format(#{params.beginDate},'%y%m%d')
+            </if>
+            <if test="params.endDate != null and params.endDate != ''"><!-- 结束时间检索 -->
+                AND date_format(absence_date,'%y%m%d') &lt;= date_format(#{params.endDate},'%y%m%d')
+            </if>
+            <if test="handleStatus != null  and handleStatus != ''"> and handle_status = #{handleStatus}</if>
+            <if test="absenceReason != null  and absenceReason != ''"> and absence_reason = #{absenceReason}</if>
+            </where>
+    </select>
+    
+    <select id="selectAbsenceInfoById" parameterType="Long" resultMap="AbsenceSubmitResult">
+        <include refid="selectAbsenceInfoVo"/>
+        where absence_info_id = #{absenceInfoId}
+    </select>
+
+
+    <sql id="selectClassVo">
+        select class_id from class_grade_info
+    </sql>
+    <select id="getClass" parameterType="ClassGradeData" resultMap="ClassList">
+        <include refid="selectClassVo"/>
+        where class_grade = #{classGrade}
+    </select>
+        
+    <insert id="insertAbsenceSubmit" parameterType="AbsenceSubmit" useGeneratedKeys="true" keyProperty="absenceInfoId">
+        insert into absence_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">stu_id,</if>
+            <if test="absenceRequestTime != null">absence_request_time,</if>
+            <if test="absenceDate != null">absence_date,</if>
+            <if test="handleStatus != null">handle_status,</if>
+            <if test="absenceReason != null">absence_reason,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">#{stuId},</if>
+            <if test="absenceRequestTime != null">#{absenceRequestTime},</if>
+            <if test="absenceDate != null">#{absenceDate},</if>
+            <if test="handleStatus != null">#{handleStatus},</if>
+            <if test="absenceReason != null">#{absenceReason},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAbsenceSubmit" parameterType="AbsenceSubmit">
+        update absence_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stuId != null">stu_id = #{stuId},</if>
+            <if test="absenceRequestTime != null">absence_request_time = #{absenceRequestTime},</if>
+            <if test="absenceDate != null">absence_date = #{absenceDate},</if>
+            <if test="handleStatus != null">handle_status = #{handleStatus},</if>
+            <if test="absenceReason != null">absence_reason = #{absenceReason},</if>
+        </trim>
+        where absence_info_id = #{absenceInfoId}
+    </update>
+
+    <delete id="deleteAbsenceInfoById" parameterType="Long">
+        delete from absence_info where absence_info_id = #{absenceInfoId}
+    </delete>
+
+    <delete id="deleteAbsenceInfoByIds" parameterType="String">
+        delete from absence_info where absence_info_id in 
+        <foreach item="absenceInfoId" collection="array" open="(" separator="," close=")">
+            #{absenceInfoId}
+        </foreach>
+    </delete>
+
+
+</mapper>

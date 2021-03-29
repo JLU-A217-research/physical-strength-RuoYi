@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.info.mapper.AbsenceInfoMapper">
+    
+    <resultMap type="AbsenceInfo" id="AbsenceInfoResult">
+        <result property="absenceInfoId"    column="absence_info_id"    />
+<!--        <result property="stuId"    column="stu_id"    />-->
+        <result property="stuNo"    column="stu_no"    />
+        <result property="classGrade"    column="class_grade"    />
+        <result property="classId"    column="class_id"    />
+        <result property="stuName"    column="stu_name"    />
+<!--        <result property="absenceRequestTime"    column="absence_request_time"    />-->
+        <result property="absenceDate"    column="absence_date"    />
+        <result property="handleStatus"    column="handle_status"    />
+        <result property="absenceReason"    column="absence_reason"    />
+    </resultMap>
+
+    <sql id="selectAbsenceInfoVo">
+        select ai.absence_info_id, ai.absence_date, ai.handle_status, ai.absence_reason, ps.stu_no, ps.stu_name,cgi.class_grade,cgi.class_id from absence_info ai,prsn_student ps,class_grade_info cgi
+    </sql>
+
+    <select id="selectAbsenceInfoList" parameterType="AbsenceInfo" resultMap="AbsenceInfoResult">
+        <include refid="selectAbsenceInfoVo"/>
+            where ai.stu_id=ps.stu_id and ps.grade_class_id=cgi.grade_class_id
+<!--            <if test="stuId != null and stuId!= ''"> and stu_id = #{stuId}</if>-->
+            <if test="stuNo != null and stuNo != ''"> and ps.stu_no = #{stuNo}</if>
+            <if test="classGrade != null "> and cgi.class_grade = #{classGrade}</if>
+        <if test="classId != null "> and cgi.class_id = #{classId}</if>
+<!--            <if test="stuName != null and stuName != ''"> and stu_name = #{stuName}</if>-->
+<!--            <if test="absenceRequestTime != null "> and absence_request_time = #{absenceRequestTime}</if>-->
+            <if test="params.beginDate != null and params.beginDate != ''"><!-- 开始时间检索 -->
+                AND date_format(ai.absence_date,'%y%m%d') &gt;= date_format(#{params.beginDate},'%y%m%d')
+            </if>
+            <if test="params.endDate != null and params.endDate != ''"><!-- 结束时间检索 -->
+                AND date_format(ai.absence_date,'%y%m%d') &lt;= date_format(#{params.endDate},'%y%m%d')
+            </if>
+            <if test="handleStatus != null  and handleStatus != ''"> and ai.handle_status = #{handleStatus}</if>
+            <if test="absenceReason != null  and absenceReason != ''"> and ai.absence_reason = #{absenceReason}</if>
+
+    </select>
+    
+    <select id="selectAbsenceInfoById" parameterType="Long" resultMap="AbsenceInfoResult">
+        <include refid="selectAbsenceInfoVo"/>
+        where ai.absence_info_id = #{absenceInfoId}
+    </select>
+        
+    <insert id="insertAbsenceInfo" parameterType="AbsenceInfo" useGeneratedKeys="true" keyProperty="absenceInfoId">
+        insert into absence_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">stu_id,</if>
+<!--            <if test="stuNo != null">stu_no</if>-->
+<!--            <if test="stuName != null">stu_name</if>-->
+            <if test="absenceRequestTime != null">absence_request_time,</if>
+            <if test="absenceDate != null">absence_date,</if>
+            <if test="handleStatus != null">handle_status,</if>
+            <if test="absenceReason != null">absence_reason,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">#{stuId},</if>
+<!--            <if test="stuNo != null">#{stu_no}</if>-->
+<!--            <if test="stuName != null">#{stu_name}</if>-->
+            <if test="absenceRequestTime != null">#{absenceRequestTime},</if>
+            <if test="absenceDate != null">#{absenceDate},</if>
+            <if test="handleStatus != null">#{handleStatus},</if>
+            <if test="absenceReason != null">#{absenceReason},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAbsenceInfo" parameterType="AbsenceInfo">
+        update absence_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stuId != null">stu_id = #{stuId},</if>
+<!--            <if test="stuNo != null">stu_no = #{stu_no}</if>-->
+<!--            <if test="stuName != null">stu_name = #{stu_name}</if>-->
+            <if test="absenceRequestTime != null">absence_request_time = #{absenceRequestTime},</if>
+            <if test="absenceDate != null">absence_date = #{absenceDate},</if>
+            <if test="handleStatus != null">handle_status = #{handleStatus},</if>
+            <if test="absenceReason != null">absence_reason = #{absenceReason},</if>
+        </trim>
+        where absence_info_id = #{absenceInfoId}
+    </update>
+
+    <delete id="deleteAbsenceInfoById" parameterType="Long">
+        delete from absence_info where absence_info_id = #{absenceInfoId}
+    </delete>
+
+    <delete id="deleteAbsenceInfoByIds" parameterType="String">
+        delete from absence_info where absence_info_id in 
+        <foreach item="absenceInfoId" collection="array" open="(" separator="," close=")">
+            #{absenceInfoId}
+        </foreach>
+    </delete>
+
+
+
+    <resultMap type="PrsnStudent" id="PrsnStudentResult">
+        <result property="stuId"    column="stu_id"    />
+        <result property="stuNo"    column="stu_no"    />
+        <result property="stuName"    column="stu_name"    />
+        <result property="stuSex"    column="stu_sex"    />
+        <result property="stuBirth"    column="stu_birth"    />
+        <result property="stuNationId"    column="stu_nation_id"    />
+        <result property="stuNid"    column="stu_nid"    />
+        <result property="stuEnrollYear"    column="stu_enroll_year"    />
+        <result property="gradeClassId"    column="grade_class_id"    />
+        <result property="stuPhone"    column="stu_phone"    />
+        <result property="stuWechat"    column="stu_wechat"    />
+    </resultMap>
+
+    <sql id="selectPrsnStudentVo">
+        select stu_id, stu_no, stu_name, stu_sex, stu_birth, stu_nation_id, stu_nid, stu_enroll_year, grade_class_id, stu_phone, stu_wechat from prsn_student
+    </sql>
+
+    <select id="selectPrsnStudentList" parameterType="PrsnStudent" resultMap="PrsnStudentResult">
+        <include refid="selectPrsnStudentVo"/>
+        <where>
+            <if test="stuNo != null "> and stu_no = #{stuNo}</if>
+            <if test="stuName != null  and stuName != ''"> and stu_name like concat('%', #{stuName}, '%')</if>
+            <if test="stuSex != null "> and stu_sex = #{stuSex}</if>
+            <if test="stuBirth != null "> and stu_birth = #{stuBirth}</if>
+            <if test="stuNationId != null "> and stu_nation_id = #{stuNationId}</if>
+            <if test="stuNid != null  and stuNid != ''"> and stu_nid = #{stuNid}</if>
+            <if test="stuEnrollYear != null "> and stu_enroll_year = #{stuEnrollYear}</if>
+            <if test="gradeClassId != null "> and grade_class_id = #{gradeClassId}</if>
+            <if test="stuPhone != null  and stuPhone != ''"> and stu_phone = #{stuPhone}</if>
+            <if test="stuWechat != null  and stuWechat != ''"> and stu_wechat = #{stuWechat}</if>
+        </where>
+    </select>
+
+    <select id="selectPrsnStudentById" parameterType="Long" resultMap="PrsnStudentResult">
+        <include refid="selectPrsnStudentVo"/>
+        where stu_id = #{stuId}
+    </select>
+
+</mapper>
