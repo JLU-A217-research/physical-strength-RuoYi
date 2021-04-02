@@ -59,6 +59,8 @@
         var editFlag = [[${@permission.hasPermi('system:relation:edit')}]];
         var removeFlag = [[${@permission.hasPermi('system:relation:remove')}]];
         var prefix = ctx + "system/relation";
+        var datas = [[${@dict.getType('sys_user_sex')}]];
+
 
         $(function() {
             var options = {
@@ -73,20 +75,23 @@
                 },
                 {
                     field: 'tgsId',
-                    title: '年级-性别-项目ID',
-                    visible: false
+                    title: '项目编号',
+                    // visible: false
                 },
                 {
-                    field: 'grade',
+                    field: 'grade'+'年级体测',
                     title: '年级'
                 },
-                {
-                    field: 'testItemId',
-                    title: '体测项目ID'
-                },
+                // {
+                //     field: 'testItemId',
+                //     title: '体测项目ID'
+                // },
                 {
                     field: 'stuSexId',
-                    title: '性别ID(字典)'
+                    title: '性别ID(字典)',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(datas, value);
+                    }
                 },
                 {
                     title: '操作',

@@ -80,6 +80,7 @@
         var editFlag = [[${@permission.hasPermi('system:standard:edit')}]];
         var removeFlag = [[${@permission.hasPermi('system:standard:remove')}]];
         var prefix = ctx + "system/standard";
+        var datas = [[${@dict.getType('sys_user_sex')}]];
 
         $(function() {
             var options = {
@@ -97,10 +98,11 @@
                     title: '测试指标项ID',
                     visible: false
                 },
-                {
-                    field: 'tgsId',
-                    title: '年级-性别-项目ID'
-                },
+                // {
+                //     field: 'tgsId',
+                //     title: '年级-性别-项目ID'
+                //
+                // },
                 {
                     field: 'testBase',
                     title: '测试基准'
@@ -123,7 +125,10 @@
                     },
                     {
                         field: 'stuSexId',
-                        title: '性别ID'
+                        title: '性别ID',
+                        formatter: function(value, row, index) {
+                            return $.table.selectDictLabel(datas, value);
+                        }
                     },
                     {
                         field: 'testItemName',

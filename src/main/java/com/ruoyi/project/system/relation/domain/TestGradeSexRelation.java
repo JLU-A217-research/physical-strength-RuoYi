@@ -30,6 +30,10 @@ public class TestGradeSexRelation extends BaseEntity
     @Excel(name = "性别ID(字典)")
     private Long stuSexId;
 
+    /** 体测项目名称 */
+    @Excel(name = "体测项目名称")
+    private String testItemName;
+
     public void setTgsId(Long tgsId)
     {
         this.tgsId = tgsId;
@@ -67,6 +71,15 @@ public class TestGradeSexRelation extends BaseEntity
         return stuSexId;
     }
 
+    public String getTestItemName()
+    {
+        return testItemName;
+    }
+    public void setTestItemName(String testItemName)
+    {
+        this.testItemName = testItemName;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -74,6 +87,7 @@ public class TestGradeSexRelation extends BaseEntity
             .append("grade", getGrade())
             .append("testItemId", getTestItemId())
             .append("stuSexId", getStuSexId())
+                .append("testItemName", getTestItemName())
             .toString();
     }
 }
