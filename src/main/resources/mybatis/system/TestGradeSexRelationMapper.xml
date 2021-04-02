@@ -18,19 +18,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where	ti.test_item_id=sr.test_item_id
     </sql>
 
+    <sql id="selectTestGradeSexRelationVoid">
+        select tgs_id, grade, stu_sex_id  from test_grade_sex_relation
+    </sql>
+
     <select id="selectTestGradeSexRelationList" parameterType="TestGradeSexRelation" resultMap="TestGradeSexRelationResult">
         <include refid="selectTestGradeSexRelationVo"/>
-        <where>  
+
             <if test="grade != null "> and grade = #{grade}</if>
             <if test="testItemId != null "> and sr.test_item_id = #{testItemId}</if>
             <if test="stuSexId != null "> and stu_sex_id = #{stuSexId}</if>
             <if test="testItemName != null "> and test_item_name = #{testItemName}</if>
 
-        </where>
+
     </select>
     
     <select id="selectTestGradeSexRelationById" parameterType="Long" resultMap="TestGradeSexRelationResult">
-        <include refid="selectTestGradeSexRelationVo"/>
+        <include refid="selectTestGradeSexRelationVoid"/>
         where tgs_id = #{tgsId}
     </select>
         

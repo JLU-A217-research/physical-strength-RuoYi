@@ -22,6 +22,8 @@ public class TestGradeSexRelation extends BaseEntity
     @Excel(name = "年级")
     private Long grade;
 
+
+
     /** 体测项目ID */
     @Excel(name = "体测项目ID")
     private Long testItemId;

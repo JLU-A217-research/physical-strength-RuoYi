@@ -21,7 +21,7 @@
                             <li>
                                 <!--<label>体测结果-成绩相关性 0-负相关，1-正相关，2-其他：</label>
                                 <input type="text" name="testScoreRelation"/> -->
-                                体测结果-成绩相关性0-负相关，1-正相关，2-其他：<select name="testScoreRelation" th:with="type=${@dict.getType('test_score_relation')}">
+                                体测结果-成绩相关性：<select name="testScoreRelation" th:with="type=${@dict.getType('test_score_relation')}">
                                 <option value="">所有</option>
                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
                             </select>
@@ -60,6 +60,7 @@
         var editFlag = [[${@permission.hasPermi('system:item:edit')}]];
         var removeFlag = [[${@permission.hasPermi('system:item:remove')}]];
         var prefix = ctx + "system/item";
+        var datas = [[${@dict.getType('test_score_relation')}]];
 
         $(function() {
             var options = {
@@ -88,13 +89,11 @@
                 {
 
                     field: 'testScoreRelation',
-                    title: '体测结果-成绩相关性'
-                    /*visible: editFlag == 'hidden' ? false : true,
                     title: '体测结果-成绩相关性',
-                    align: 'center',
-                    formatter: function (value, row, index) {
-                        return statusTools(row);
-                    }*/
+
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(datas, value);
+                    }
                 },
                 {
                     title: '操作',

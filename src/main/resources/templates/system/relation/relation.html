@@ -14,14 +14,14 @@
                                 <label>年级：</label>
                                 <input type="text" name="grade"/>
                             </li>
-                            <li>
-                                <label>体测项目ID：</label>
-                                <input type="text" name="testItemId"/>
-                            </li>
+<!--                            <li>-->
+<!--                                <label>体测项目ID：</label>-->
+<!--                                <input type="text" name="testItemId"/>-->
+<!--                            </li>-->
                             <li>
                                 <!--<label>性别ID(字典)：</label>
                                 <input type="text" name="stuSexId"/> -->
-                                性别ID(字典)：<select name="stuSexId" th:with="type=${@dict.getType('sys_user_sex')}">
+                                性别：<select name="stuSexId" th:with="type=${@dict.getType('sys_user_sex')}">
                                 <option value="">所有</option>
                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                             </select>
@@ -79,8 +79,12 @@
                     // visible: false
                 },
                 {
-                    field: 'grade'+'年级体测',
-                    title: '年级'
+                    field: 'grade',
+                    title: '年级',
+                    formatter: function(value, row, index) {
+                        return (value+'年级体测');
+                    }
+
                 },
                 // {
                 //     field: 'testItemId',
@@ -88,7 +92,7 @@
                 // },
                 {
                     field: 'stuSexId',
-                    title: '性别ID(字典)',
+                    title: '性别',
                     formatter: function(value, row, index) {
                         return $.table.selectDictLabel(datas, value);
                     }

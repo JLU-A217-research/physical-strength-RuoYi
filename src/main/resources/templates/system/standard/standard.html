@@ -42,7 +42,7 @@
                             <li>
 <!--                                <label>性别ID：</label>-->
 <!--                                <input type="text" name="stuSexId"/>-->
-                                性别ID(字典)：<select name="stuSexId" th:with="type=${@dict.getType('sys_user_sex')}">
+                                性别：<select name="stuSexId" th:with="type=${@dict.getType('sys_user_sex')}">
                                 <option value="">所有</option>
                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
                             </select>
@@ -81,6 +81,7 @@
         var removeFlag = [[${@permission.hasPermi('system:standard:remove')}]];
         var prefix = ctx + "system/standard";
         var datas = [[${@dict.getType('sys_user_sex')}]];
+        var datasg = [[${@dict.getType('test_grade')}]];
 
         $(function() {
             var options = {
@@ -113,12 +114,15 @@
                 },
                 {
                     field: 'testGradeId',
-                    title: '等级ID'
+                    title: '等级ID',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(datasg, value);
+                    }
                 },
-                    {
-                        field: 'testItemId',
-                        title: '体测项目ID'
-                    },
+                    // {
+                    //     field: 'testItemId',
+                    //     title: '体测项目ID'
+                    // },
                     {
                         field: 'grade',
                         title: '年级'

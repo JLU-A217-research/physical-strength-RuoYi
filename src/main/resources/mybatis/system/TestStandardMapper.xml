@@ -35,6 +35,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     </sql>
 
+    <sql id="selectTestStandardVoid">
+        SELECT
+            test_standard_id,
+            tgs_id,
+            test_base,
+            test_point,
+            test_grade_id
+
+
+        FROM test_standard
+
+
+    </sql>
+
     <select id="selectTestStandardList" parameterType="TestStandard" resultMap="TestStandardResult">
         <include refid="selectTestStandardVo"/>
 
@@ -51,7 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectTestStandardById" parameterType="Long" resultMap="TestStandardResult">
-        <include refid="selectTestStandardVo"/>
+        <include refid="selectTestStandardVoid"/>
         where test_standard_id = #{testStandardId}
     </select>
         
