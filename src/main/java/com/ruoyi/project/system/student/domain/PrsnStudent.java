@@ -27,9 +27,14 @@ public class PrsnStudent extends BaseEntity
     @Excel(name = "学生姓名")
     private String stuName;
 
+
+    /** 登录密码 */
+    @Excel(name = "密码")
+    private String psw;
+
     /** 学生性别ID（字典） */
     @Excel(name = "学生性别ID", readConverterExp = "字=典")
-    private Integer stuSex;
+    private String stuSex;
 
     /** 出生日期 */
     @Excel(name = "出生日期", width = 30, dateFormat = "yyyy-MM-dd")
@@ -59,6 +64,7 @@ public class PrsnStudent extends BaseEntity
     @Excel(name = "学生微信")
     private String stuWechat;
 
+
     public void setStuId(Long stuId)
     {
         this.stuId = stuId;
@@ -86,12 +92,12 @@ public class PrsnStudent extends BaseEntity
     {
         return stuName;
     }
-    public void setStuSex(Integer stuSex)
+    public void setStuSex(String stuSex)
     {
         this.stuSex = stuSex;
     }
 
-    public Integer getStuSex()
+    public String getStuSex()
     {
         return stuSex;
     }
@@ -158,13 +164,20 @@ public class PrsnStudent extends BaseEntity
     {
         return stuWechat;
     }
+    public String getPsw() {
+        return psw;
+    }
 
+    public void setPsw(String psw) {
+        this.psw = psw;
+    }
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("stuId", getStuId())
             .append("stuNo", getStuNo())
             .append("stuName", getStuName())
+             .append("psw",getPsw())
             .append("stuSex", getStuSex())
             .append("stuBirth", getStuBirth())
             .append("stuNationId", getStuNationId())

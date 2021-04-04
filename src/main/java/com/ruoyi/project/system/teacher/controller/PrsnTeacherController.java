@@ -93,7 +93,7 @@ public class PrsnTeacherController extends BaseController
      * 修改教师信息 
      */
     @GetMapping("/edit/{teacherId}")
-    public String edit(@PathVariable("teacherId") Long teacherId, ModelMap mmap)
+    public String edit(@PathVariable("teacherId") long teacherId, ModelMap mmap)
     {
         PrsnTeacher prsnTeacher = prsnTeacherService.selectPrsnTeacherById(teacherId);
         mmap.put("prsnTeacher", prsnTeacher);
