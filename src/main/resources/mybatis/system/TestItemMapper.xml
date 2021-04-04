@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.item.mapper.TestItemMapper">
+    
+    <resultMap type="TestItem" id="TestItemResult">
+        <result property="testItemId"    column="test_item_id"    />
+        <result property="testItemName"    column="test_item_name"    />
+        <result property="testItemUnit"    column="test_item_unit"    />
+        <result property="testScoreRelation"    column="test_score_relation"    />
+    </resultMap>
+
+    <sql id="selectTestItemVo">
+        select test_item_id, test_item_name, test_item_unit, test_score_relation from test_item
+    </sql>
+
+    <select id="selectTestItemList" parameterType="TestItem" resultMap="TestItemResult">
+        <include refid="selectTestItemVo"/>
+        <where>  
+            <if test="testItemName != null  and testItemName != ''"> and test_item_name like concat('%', #{testItemName}, '%')</if>
+            <if test="testItemUnit != null  and testItemUnit != ''"> and test_item_unit = #{testItemUnit}</if>
+            <if test="testScoreRelation != null "> and test_score_relation = #{testScoreRelation}</if>
+        </where>
+    </select>
+    
+    <select id="selectTestItemById" parameterType="Long" resultMap="TestItemResult">
+        <include refid="selectTestItemVo"/>
+        where test_item_id = #{testItemId}
+    </select>
+        
+    <insert id="insertTestItem" parameterType="TestItem" useGeneratedKeys="true" keyProperty="testItemId">
+        insert into test_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="testItemName != null">test_item_name,</if>
+            <if test="testItemUnit != null">test_item_unit,</if>
+            <if test="testScoreRelation != null">test_score_relation,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="testItemName != null">#{testItemName},</if>
+            <if test="testItemUnit != null">#{testItemUnit},</if>
+            <if test="testScoreRelation != null">#{testScoreRelation},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestItem" parameterType="TestItem">
+        update test_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="testItemName != null">test_item_name = #{testItemName},</if>
+            <if test="testItemUnit != null">test_item_unit = #{testItemUnit},</if>
+            <if test="testScoreRelation != null">test_score_relation = #{testScoreRelation},</if>
+        </trim>
+        where test_item_id = #{testItemId}
+    </update>
+
+    <delete id="deleteTestItemById" parameterType="Long">
+        delete from test_item where test_item_id = #{testItemId}
+    </delete>
+
+    <delete id="deleteTestItemByIds" parameterType="String">
+        delete from test_item where test_item_id in 
+        <foreach item="testItemId" collection="array" open="(" separator="," close=")">
+            #{testItemId}
+        </foreach>
+    </delete>
+
+</mapper>

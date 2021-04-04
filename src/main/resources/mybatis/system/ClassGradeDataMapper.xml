@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.common.mapper.ClassGradeDataMapper">
+	
+	<resultMap type="ClassGradeData" id="ClassGradeDataResult">
+		<result property="classGrade"   column="class_grade"   />
+
+	</resultMap>
+	
+	<sql id="selectDictDataVo">
+        select distinct class_grade
+		from class_grade_info
+    </sql>
+
+	
+	<select id="selectClassGradeDataByType"  resultMap="ClassGradeDataResult">
+		<include refid="selectDictDataVo"/>
+
+	</select>
+	
+
+	
+</mapper> 
