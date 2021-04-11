@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.standard.mapper.TestStandardMapper">
+    
+    <resultMap type="TestStandard" id="TestStandardResult">
+        <result property="testStandardId"    column="test_standard_id"    />
+        <result property="tgsId"    column="tgs_id"    />
+        <result property="testBase"    column="test_base"    />
+        <result property="testPoint"    column="test_point"    />
+        <result property="testGradeId"    column="test_grade_id"    />
+        <result property="testItemId"    column="test_item_id"    />
+        <result property="grade"    column="grade"    />
+        <result property="stuSexId"    column="stu_sex_id"    />
+        <result property="testItemName"    column="test_item_name"    />
+
+    </resultMap>
+
+    <sql id="selectTestStandardVo">
+        SELECT
+            ts.test_standard_id,
+            ts.tgs_id,
+            ts.test_base,
+            ts.test_point,
+            ts.test_grade_id,
+            sr.test_item_id,
+            sr.grade,
+            sr.stu_sex_id,
+            ti.test_item_name
+
+        FROM test_standard ts,test_grade_sex_relation sr,test_item ti
+        WHERE ti.test_item_id=sr.test_item_id
+          AND ts.tgs_id=sr.tgs_id
+
+    </sql>
+
+    <sql id="selectTestStandardVoid">
+        SELECT
+            test_standard_id,
+            tgs_id,
+            test_base,
+            test_point,
+            test_grade_id
+
+
+        FROM test_standard
+
+
+    </sql>
+
+    <select id="selectTestStandardList" parameterType="TestStandard" resultMap="TestStandardResult">
+        <include refid="selectTestStandardVo"/>
+
+            <if test="tgsId != null "> and ts.tgs_id = #{tgsId}</if>
+            <if test="testBase != null  and testBase != ''"> and ts.test_base = #{testBase}</if>
+            <if test="testPoint != null  and testPoint != ''"> and ts.test_point = #{testPoint}</if>
+            <if test="testGradeId != null "> and ts.test_grade_id = #{testGradeId}</if>
+            <if test="testItemId != null  and testItemId != ''"> and sr.test_item_id = #{testItemId}</if>
+            <if test="grade != null  and grade != ''"> and sr.grade = #{grade}</if>
+            <if test="stuSexId != null  and stuSexId != ''"> and sr.stu_sex_id = #{stuSexId}</if>
+            <if test="testItemName != null  and testItemName != ''"> and ti.test_item_name like concat('%', #{testItemName}, '%')</if>
+
+
+    </select>
+    
+    <select id="selectTestStandardById" parameterType="Long" resultMap="TestStandardResult">
+        <include refid="selectTestStandardVoid"/>
+        where test_standard_id = #{testStandardId}
+    </select>
+        
+    <insert id="insertTestStandard" parameterType="TestStandard" useGeneratedKeys="true" keyProperty="testStandardId">
+        insert into test_standard
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tgsId != null">ts.tgs_id,</if>
+            <if test="testBase != null">ts.test_base,</if>
+            <if test="testPoint != null">ts.test_point,</if>
+            <if test="testGradeId != null">ts.test_grade_id,</if>
+            <if test="testItemId != null">sr.test_item_id,</if>
+            <if test="grade != null">sr.grade,</if>
+            <if test="stuSexId != null">sr.stu_sex_id,</if>
+            <if test="testItemName != null">ti.test_item_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tgsId != null">#{tgsId},</if>
+            <if test="testBase != null">#{testBase},</if>
+            <if test="testPoint != null">#{testPoint},</if>
+            <if test="testGradeId != null">#{testGradeId},</if>
+            <if test="testItemId != null">#{test_item_id},</if>
+            <if test="grade != null">#{grade},</if>
+            <if test="stuSexId != null">#{stu_sex_id},</if>
+            <if test="testItemName != null">#{test_item_name},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestStandard" parameterType="TestStandard">
+        update test_standard
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tgsId != null">ts.tgs_id = #{tgsId},</if>
+            <if test="testBase != null">ts.test_base = #{testBase},</if>
+            <if test="testPoint != null">ts.test_point = #{testPoint},</if>
+            <if test="testGradeId != null">ts.test_grade_id = #{testGradeId},</if>
+            <if test="testItemId != null">sr.test_item_id = =#{test_item_id},</if>
+            <if test="grade != null">sr.grade =#{grade},</if>
+            <if test="stuSexId != null">sr.stu_sex_id =#{stu_sex_id},</if>
+            <if test="testItemName != null">ti.test_item_name =#{test_item_name},</if>
+        </trim>
+        where test_standard_id = #{testStandardId}
+    </update>
+
+    <delete id="deleteTestStandardById" parameterType="Long">
+        delete from test_standard where test_standard_id = #{testStandardId}
+    </delete>
+
+    <delete id="deleteTestStandardByIds" parameterType="String">
+        delete from test_standard where test_standard_id in
+        <foreach item="testStandardId" collection="array" open="(" separator="," close=")">
+            #{testStandardId}
+        </foreach>
+    </delete>
+
+</mapper>
