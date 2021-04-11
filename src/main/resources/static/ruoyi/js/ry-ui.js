@@ -832,6 +832,7 @@ var table = {
             // 弹出层全屏
             openFull: function (title, url, width, height) {
             	//如果是移动端，就使用自适应大小弹窗
+				// alert(url);
             	if ($.common.isMobile()) {
             	    width = 'auto';
             	    height = 'auto';
@@ -1013,6 +1014,11 @@ var table = {
 	            	$.operate.submit(url, "post", "json", "");
             	});
             },
+			//导入成绩页面-creat by dingch
+			// scoreimport: function(id) {
+        	// 	table.set();
+        	// 	$.modal.open("导入" + table.options.modalName,$.operate.scoreimportUrl(id));
+			// },
             // 添加信息
             add: function(id) {
             	table.set();
@@ -1029,6 +1035,11 @@ var table = {
             	var url = $.common.isEmpty(id) ? table.options.createUrl : table.options.createUrl.replace("{id}", id);
                 $.modal.openFull("添加" + table.options.modalName, url);
             },
+			//成绩导入访问地址
+			// scoreimportUrl: function(id){
+        	// 	var url = $.common.isEmpty(id) ? table.options.scoreImportUrl.replace("{id}", "") : table.options.scoreImportUrl.replace("{id}", id);
+        	// 	return url;
+			// },
             // 添加访问地址
             addUrl: function(id) {
             	var url = $.common.isEmpty(id) ? table.options.createUrl.replace("{id}", "") : table.options.createUrl.replace("{id}", id);

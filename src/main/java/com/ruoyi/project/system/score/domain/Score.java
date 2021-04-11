@@ -36,6 +36,68 @@ public class Score extends BaseEntity
     @Excel(name = "测试成绩")
     private BigDecimal testScore;
 
+    /** 年级 */
+    @Excel(name = "年级")
+    private Long classGrade;
+
+    /** 测试项目 */
+    @Excel(name = "测试项目")
+    private String testItemName;
+
+    /** 单位 */
+    @Excel(name = "单位")
+    private String testItemUnit;
+
+    /** 得分 */
+    @Excel(name = "得分")
+    private String testPoint;
+
+    /** 等级 */
+    @Excel(name = "等级")
+    private String testgrade;
+
+
+    public String getTestgrade() {
+        return testgrade;
+    }
+    public void setTestgrade(String testgrade) {
+        this.testgrade = testgrade;
+    }
+
+    public String getTestPoint() {
+        return testPoint;
+    }
+    public void setTestPoint(String testPoint) {
+        this.testPoint = testPoint;
+    }
+
+    public String getTestItemUnit() {
+        return testItemUnit;
+    }
+    public void setTestItemUnit(String testItemUnit) {
+        this.testItemUnit = testItemUnit;
+    }
+
+
+    public String getTestItemName() {
+        return testItemName;
+    }
+
+    public void setTestItemName(String testItemName) {
+        this.testItemName = testItemName;
+    }
+
+    public Long getClassGrade() {
+        return classGrade;
+    }
+
+    public void setClassGrade(Long classGrade) {
+        this.classGrade = classGrade;
+    }
+
+
+
+
     public void setScoreRecordId(Long scoreRecordId)
     {
         this.scoreRecordId = scoreRecordId;
@@ -89,6 +151,11 @@ public class Score extends BaseEntity
             .append("stuId", getStuId())
             .append("tgsId", getTgsId())
             .append("testTime", getTestTime())
+            .append("classGrade", getClassGrade())
+            .append("testItemName", getTestItemName())
+            .append("testItemUnit", getTestItemUnit())
+            .append("testPoint", getTestPoint())
+            .append("testgrade", getTestgrade())
             .append("testScore", getTestScore())
             .toString();
     }

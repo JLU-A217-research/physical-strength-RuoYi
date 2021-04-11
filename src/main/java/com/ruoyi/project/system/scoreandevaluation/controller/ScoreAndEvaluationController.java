@@ -87,6 +87,7 @@ public class ScoreAndEvaluationController extends BaseController
     public AjaxResult addSave(ScoreAndEvaluation score)
     {
         return toAjax(scoreAndEvaluationService.insertScore(score));
+
     }
 
     /**
@@ -99,6 +100,13 @@ public class ScoreAndEvaluationController extends BaseController
         mmap.put("score", score);
         return prefix + "/edit";
     }
+
+    /**
+     * 导入保存学生成绩
+     */
+    @GetMapping("/scoreimport")
+    public String scoreimport(){return prefix + "/scoreimport";}
+
 
     /**
      * 修改保存成绩与体质评价

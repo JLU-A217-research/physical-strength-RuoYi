@@ -9,11 +9,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="stuId"    column="stu_id"    />
         <result property="tgsId"    column="tgs_id"    />
         <result property="testTime"    column="test_time"    />
+        <result property="classGrade"    column="class_grade"    />
+        <result property="testItemName"    column="test_item_name"    />
+        <result property="testItemUnit"    column="test_item_unit"    />
+        <result property="testPoint"    column="test_point"    />
+        <result property="testgrade"    column="dict_label"    />
         <result property="testScore"    column="test_score"    />
     </resultMap>
 
     <sql id="selectScoreVo">
-        select score_record_id, stu_id, tgs_id, test_time, test_score from score
+#         select score_record_id, stu_id, tgs_id, test_time, test_score from score
+        SELECT s.test_time,
+               cgi.class_grade,
+               ti.test_item_name,
+               ti.test_item_unit,
+               ts.test_point,
+               sdd.dict_label,
+               s.test_score
+        FROM prsn_student ps,
+             score s,
+             class_grade_info cgi,
+             test_grade_sex_relation tgsr,
+             test_standard ts,
+             test_item ti,
+             sys_dict_data sdd
+        WHERE s.stu_id = ps.stu_id AND ps.grade_class_id = cgi.grade_class_id
+          AND s.tgs_id = tgsr.tgs_id AND tgsr.test_item_id = ti.test_item_id
+          AND s.tgs_id = ts.tgs_id AND ts.test_grade_id = sdd.dict_value AND sdd.dict_type = 'test_grade'
     </sql>
 
     <select id="selectScoreList" parameterType="Score" resultMap="ScoreResult">
@@ -22,6 +44,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="stuId != null "> and stu_id = #{stuId}</if>
             <if test="tgsId != null "> and tgs_id = #{tgsId}</if>
             <if test="testTime != null "> and test_time = #{testTime}</if>
+            <if test="classGrade != null "> and class_grade = #{classGrade}</if>
+            <if test="testItemName != null and testItemName != ‘’ "> and test_item_name = #{testItemName}</if>
+            <if test="testItemUnit != null and testItemUnit != ‘’ "> and test_item_unit = #{testItemUnit}</if>
+            <if test="testPoint != null and testPoint != ‘’ "> and test_point = #{testPoint}</if>
+            <if test="testgrade != null and testgrade != ‘’ "> and dict_value = #{testgrade}</if>
             <if test="testScore != null "> and test_score = #{testScore}</if>
         </where>
     </select>
