@@ -7,40 +7,111 @@
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-student-add">
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">学生号：</label>
-                <div class="col-sm-8">
-                    <input name="stuNo" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">学生姓名：</label>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">姓名：</label>
                 <div class="col-sm-8">
                     <input name="stuName" class="form-control" type="text">
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">学生性别ID：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">性别：</label>
                 <div class="col-sm-8">
                     <select name="stuSex" class="form-control m-b">
-                        <option value="">所有</option>
+                        <option value="0">男</option>
+                        <option value="1">女</option>
                     </select>
-                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
+<!--                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>-->
                 </div>
             </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学号：</label>
+                <div class="col-sm-8">
+                    <input name="stuNo" class="form-control" type="text">
+                </div>
+            </div>
+
+
+
             <div class="form-group">    
                 <label class="col-sm-3 control-label">出生日期：</label>
                 <div class="col-sm-8">
                     <div class="input-group date">
-                        <input name="stuBirth" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <input name="stuBirth" class="form-control" placeholder="yyyy-MM-dd" type="text" >
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">民族ID：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">年龄：</label>
                 <div class="col-sm-8">
-                    <input name="stuNationId" class="form-control" type="text">
+                    <input  name="stuEnrollYear" class="form-control" type="text" id="t2"  >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">民族：</label>
+                <div class="col-sm-8">
+                    <select name="stu_nation_id" class="form-control m-b">
+                        <option value="0">汉族</option>
+                        <option value="1">壮族</option>
+                        <option value="2">满族</option>
+                        <option value="3">回族</option>
+                        <option value="4">苗族</option>
+                        <option value="5">维吾尔族</option>
+                        <option value="6">土家族</option>
+                        <option value="7">彝族</option>
+                        <option value="8">蒙古族</option>
+                        <option value="9">藏族</option>
+                        <option value="10">布依族</option>
+                        <option value="11">侗族</option>
+                        <option value="12">瑶族</option>
+                        <option value="13">朝鲜族</option>
+                        <option value="14">白族</option>
+                        <option value="15">哈尼族</option>
+                        <option value="16">哈萨克族</option>
+                        <option value="17">黎族</option>
+                        <option value="18">傣族</option>
+                        <option value="19">畲族</option>
+                        <option value="20">傈僳族</option>
+                        <option value="21">仡佬族</option>
+                        <option value="22">东乡族</option>
+                        <option value="23">高山族</option>
+                        <option value="24">拉祜族</option>
+                        <option value="25">水族</option>
+                        <option value="26">佤族</option>
+                        <option value="27">纳西族</option>
+                        <option value="28">羌族</option>
+                        <option value="29">土族</option>
+                        <option value="30">仫佬族</option>
+                        <option value="31">锡伯族</option>
+                        <option value="32">柯尔克孜族</option>
+                        <option value="33">达斡尔族</option>
+                        <option value="34">景颇族</option>
+                        <option value="35">毛南族</option>
+                        <option value="36">撒拉族</option>
+                        <option value="37">布朗族</option>
+                        <option value="38">塔吉克族</option>
+                        <option value="39">阿昌族</option>
+                        <option value="40">普米族</option>
+                        <option value="41">鄂温克族</option>
+                        <option value="42">怒族</option>
+                        <option value="43">京族</option>
+                        <option value="44">基诺族</option>
+                        <option value="45">德昂族</option>
+                        <option value="46">保安族</option>
+                        <option value="47">俄罗斯族</option>
+                        <option value="48">裕固族</option>
+                        <option value="49">乌孜别克族</option>
+                        <option value="50">门巴族</option>
+                        <option value="51">鄂伦春族</option>
+                        <option value="52">独龙族</option>
+                        <option value="53">塔塔尔族</option>
+                        <option value="54">赫哲族</option>
+                        <option value="55">珞巴族</option>
+
+
+                    </select>
+<!--                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>-->
                 </div>
             </div>
             <div class="form-group">    
@@ -49,26 +120,55 @@
                     <input name="stuNid" class="form-control" type="text">
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">入学年份：</label>
-                <div class="col-sm-8">
-                    <input name="stuEnrollYear" class="form-control" type="text">
+<!--            <div class="form-group">    -->
+<!--                <label class="col-sm-3 control-label">年级：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="stuEnrollYear" class="form-control" type="text">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="form-group">    -->
+<!--                <label class="col-sm-3 control-label">班级：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="gradeClassId" class="form-control" type="text">-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+            <style>
+                /*body{background:#ddd;font:14px/1.7 tahoma,'\5fae\8f6f\96c5\9ed1',sans-serif;}*/
+                h1,h2{font-size:36px;line-height:1;}
+                h2{font-size:24px;}
+                /*h3{font-size:18px;}*/
+                fieldset{margin:2em 0;}
+                fieldset legend{font-weight:bold;font-size:16px;line-height:2;}
+                select,button{padding:0.5em;}
+                a{color: #0066ff;text-decoration:none;}
+                a:hover{color: #0000ff;}
+                /*.wrap{width:900px;margin:0 auto;padding:20px 50px;border-radius:8px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,0.2);}*/
+            </style>
+
+            <div id="class_garde_select" data-url="cityData.min.js" data-selects="stuEnrollYear,gradeClassId" data-required="true">
+                <div class="wrap">
+                   <fieldset id="class_garde">
+                        <p>年级：<select class="stuEnrollYear">
+                            <option value="2020" selected>2020</option>
+
+                        </select></p>
+                        <p>班级：<select class="gradeClassId">
+                            <option value="1" selected>1</option>
+                        </select></p>
+                    </fieldset>
+
                 </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">年班ID：</label>
-                <div class="col-sm-8">
-                    <input name="gradeClassId" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">学生电话：</label>
+
+                <div class="form-group">
+                <label class="col-sm-3 control-label">联系电话：</label>
                 <div class="col-sm-8">
                     <input name="stuPhone" class="form-control" type="text">
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">学生微信：</label>
+                <label class="col-sm-3 control-label">微信：</label>
                 <div class="col-sm-8">
                     <input name="stuWechat" class="form-control" type="text">
                 </div>
@@ -77,23 +177,46 @@
     </div>
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: datetimepicker-js" />
+    <th:block th:include="include :: jquery-cxselect-js" />
+    <script src="jquery.js"></script>
+    <script src="jquery.cxselect.js"></script>
     <script th:inline="javascript">
         var prefix = ctx + "system/student"
+        // var stunation = [[${@dict.getType('sys_user_nation')}]];    处理民族
         $("#form-student-add").validate({
             focusCleanup: true
         });
-
         function submitHandler() {
             if ($.validate.form()) {
                 $.operate.save(prefix + "/add", $('#form-student-add').serialize());
             }
         }
-
         $("input[name='stuBirth']").datetimepicker({
             format: "yyyy-mm-dd",
             minView: "month",
             autoclose: true
+        }).on('changeDate',function() {
+            var time = $("input[name='stuBirth']").val();
+            var times = time.split("-")
+            var date = new Date()
+            var nowyear = date.getFullYear()
+            document.getElementById("t2").value=nowyear-times[0];
+        });
+        $.cxSelect.defaults.url = 'cityData.min.js';
+        $.cxSelect.defaults.emptyStyle = 'none';
+        $('#class_garde_select').cxSelect({
+            url: 'cityData.min.js',               // 提示：如果服务器不支持 .json 类型文件，请将文件改为 .js 文件
+            selects: ['stuEnrollYear', 'gradeClassId'],  // selects 为数组形式，请注意顺序
+            emptyStyle: 'none'
+        });
+        var cxSelectApi;
+
+        // 方法一：
+        cxSelectApi = $.cxSelect($('#class_garde_select'), {
+            selects: ['stuEnrollYear', 'gradeClassId']
         });
     </script>
+
+
 </body>
 </html>
