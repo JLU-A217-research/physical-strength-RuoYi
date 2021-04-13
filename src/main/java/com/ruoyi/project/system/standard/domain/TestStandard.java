@@ -22,9 +22,17 @@ public class TestStandard extends BaseEntity
     @Excel(name = "年级-性别-项目ID")
     private Long tgsId;
 
-    /** 测试基准 */
-    @Excel(name = "测试基准")
-    private String testBase;
+    /** 七年级测试基准 */
+    @Excel(name = "七年级测试基准")
+    private double testBase7;
+
+    /** 八年级测试基准 */
+    @Excel(name = "八年级测试基准")
+    private double testBase8;
+
+    /** 九年级测试基准 */
+    @Excel(name = "九年级测试基准")
+    private double testBase9;
 
     /** 得分 */
     @Excel(name = "得分")
@@ -71,15 +79,37 @@ public class TestStandard extends BaseEntity
     {
         return tgsId;
     }
-    public void setTestBase(String testBase)
+    public void setTestBase7(double testBase7)
     {
-        this.testBase = testBase;
+        this.testBase7 = testBase7;
     }
 
-    public String getTestBase()
+    public Double getTestBase7()
     {
-        return testBase;
+        return testBase7;
     }
+
+    public void setTestBase8(double testBase8)
+    {
+        this.testBase8 = testBase8;
+    }
+
+    public Double getTestBase8()
+    {
+        return testBase8;
+    }
+
+    public void setTestBase9(double testBase9)
+    {
+        this.testBase9 = testBase9;
+    }
+
+    public Double getTestBase9()
+    {
+        return testBase9;
+    }
+
+
     public void setTestPoint(String testPoint)
     {
         this.testPoint = testPoint;
@@ -141,7 +171,9 @@ public class TestStandard extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("testStandardId", getTestStandardId())
             .append("tgsId", getTgsId())
-            .append("testBase", getTestBase())
+            .append("testBase7", getTestBase7())
+                .append("testBase8", getTestBase8())
+                .append("testBase9", getTestBase9())
             .append("testPoint", getTestPoint())
             .append("testGradeId", getTestGradeId())
                 .append("testItemId", getTestItemId())

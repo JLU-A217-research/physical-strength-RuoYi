@@ -23,13 +23,13 @@ public class TestStandardServiceImpl implements ITestStandardService
     /**
      * 查询测试指标 
      * 
-     * @param testStandardId 测试指标 ID
+     * @param testPoint 测试指标 ID
      * @return 测试指标 
      */
     @Override
-    public TestStandard selectTestStandardById(Long testStandardId)
+    public TestStandard selectTestStandardById(String testPoint)
     {
-        return testStandardMapper.selectTestStandardById(testStandardId);
+        return testStandardMapper.selectTestStandardById(testPoint);
     }
 
     /**

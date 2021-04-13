@@ -51,6 +51,7 @@ public class TestStandardController extends BaseController
     {
         startPage();
         List<TestStandard> list = testStandardService.selectTestStandardList(testStandard);
+
         return getDataTable(list);
     }
 
@@ -92,11 +93,11 @@ public class TestStandardController extends BaseController
     /**
      * 修改测试指标 
      */
-    @GetMapping("/edit/{testStandardId}")
-    public String edit(@PathVariable("testStandardId") Long testStandardId, ModelMap mmap)
+    @GetMapping("/edit/{testPoint}")
+    public String edit(@PathVariable("testPoint") String testPoint, ModelMap mmap)
     {
-        TestStandard testStandard = testStandardService.selectTestStandardById(testStandardId);
-        mmap.put("testStandard", testStandard);
+        TestStandard testStandard = testStandardService.selectTestStandardById(testPoint);
+        mmap.put("testPoint", testPoint);
         return prefix + "/edit";
     }
 
