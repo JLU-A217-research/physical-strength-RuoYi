@@ -19,13 +19,14 @@
                                 <input type="text" name="testItemId"/>
                             </li>
                             <li>
-                                <!--<label>性别ID(字典)：</label>
-                                <input type="text" name="stuSexId"/> -->
-                                性别ID(字典)：<select name="stuSexId" th:with="type=${@dict.getType('sys_user_sex')}">
+
+
+                                性别：<select name="stuSexId" th:with="type=${@dict.getType('sys_user_sex')}">
                                 <option value="">所有</option>
-                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
                             </select>
                             </li>
+
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
@@ -59,6 +60,7 @@
         var editFlag = [[${@permission.hasPermi('system:relation:edit')}]];
         var removeFlag = [[${@permission.hasPermi('system:relation:remove')}]];
         var prefix = ctx + "system/relation";
+        var datas = [[${@dict.getType('sys_user_sex')}]];
 
         $(function() {
             var options = {
@@ -81,12 +83,16 @@
                     title: '年级'
                 },
                 {
-                    field: 'testItemId',
-                    title: '体测项目ID'
+                    field: 'testItemName',
+                    title: '体测项目名称'
+
                 },
                 {
                     field: 'stuSexId',
-                    title: '性别ID(字典)'
+                    title: '性别',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(datas, value);
+                    }
                 },
                 {
                     title: '操作',

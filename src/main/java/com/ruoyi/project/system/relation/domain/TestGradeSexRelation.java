@@ -9,7 +9,7 @@ import com.ruoyi.framework.web.domain.BaseEntity;
  * 年级-性别-测试项目关系 对象 test_grade_sex_relation
  * 
  * @author ruoyi
- * @date 2021-03-24
+ * @date 2021-04-12
  */
 public class TestGradeSexRelation extends BaseEntity
 {
@@ -25,6 +25,10 @@ public class TestGradeSexRelation extends BaseEntity
     /** 体测项目ID */
     @Excel(name = "体测项目ID")
     private Long testItemId;
+
+    /** 体测项目名称 */
+    @Excel(name = "体测项目名称")
+    private String testItemName;
 
     /** 性别ID(字典) */
     @Excel(name = "性别ID(字典)")
@@ -57,6 +61,16 @@ public class TestGradeSexRelation extends BaseEntity
     {
         return testItemId;
     }
+
+    public void setTestItemName(String testItemName)
+    {
+        this.testItemName = testItemName;
+    }
+    public String getTestItemName()
+    {
+        return testItemName;
+    }
+
     public void setStuSexId(Long stuSexId)
     {
         this.stuSexId = stuSexId;
@@ -73,7 +87,8 @@ public class TestGradeSexRelation extends BaseEntity
             .append("tgsId", getTgsId())
             .append("grade", getGrade())
             .append("testItemId", getTestItemId())
-            .append("stuSexId", getStuSexId())
+                .append("testItemName", getTestItemName())
+                .append("stuSexId", getStuSexId())
             .toString();
     }
 }

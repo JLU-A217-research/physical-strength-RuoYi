@@ -8,7 +8,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="stuId"    column="stu_id"    />
         <result property="stuNo"    column="stu_no"    />
         <result property="stuName"    column="stu_name"    />
-        <result property="stuSex"    column="stu_sex"    />
+        <result property="psw" column="psw"/>
+        <result property="stuSex"    column="dict_label"    />
         <result property="stuBirth"    column="stu_birth"    />
         <result property="stuNationId"    column="stu_nation_id"    />
         <result property="stuNid"    column="stu_nid"    />
@@ -19,15 +20,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPrsnStudentVo">
-        select stu_id, stu_no, stu_name, stu_sex, stu_birth, stu_nation_id, stu_nid, stu_enroll_year, grade_class_id, stu_phone, stu_wechat from prsn_student
+--     select ps.stu_id, ps.stu_no, ps.stu_name, sdd.dict_label,ps.stu_birth, stu_nation_id,
+--     ps.stu_nid, ps.stu_enroll_year, ps.grade_class_id, ps.stu_phone, ps.stu_wechat
+--     from prsn_student ps, sys_dict_data sdd
+--     WHERE dict_type='sys_user_sex' and sdd.dict_value=ps.stu_sex
+
+            select ps.stu_id, ps.stu_no, ps.stu_name, pa.psw,sdd.dict_label,ps.stu_birth, stu_nation_id,
+             ps.stu_nid, ps.stu_enroll_year, ps.grade_class_id, ps.stu_phone, ps.stu_wechat
+            from prsn_student ps, sys_dict_data sdd ,prsn_account pa
+             WHERE dict_type='sys_user_sex' and sdd.dict_value=ps.stu_sex and pa.stu_id=ps.stu_id
     </sql>
+
 
     <select id="selectPrsnStudentList" parameterType="PrsnStudent" resultMap="PrsnStudentResult">
         <include refid="selectPrsnStudentVo"/>
-        <where>  
+<!--        <where>-->
             <if test="stuNo != null "> and stu_no = #{stuNo}</if>
-            <if test="stuName != null  and stuName != ''"> and stu_name like concat('%', #{stuName}, '%')</if>
-            <if test="stuSex != null "> and stu_sex = #{stuSex}</if>
+            <if test="stuName != null  and stuName != '' "> and stu_name like concat('%', #{stuName}, '%')</if>
+            <if test="psw !=null and psw!= ''">and pa.psw = #{psw}</if>
+            <if test="stuSex != null and stuSex != '' "> and dict_value = #{stuSex}</if>
             <if test="stuBirth != null "> and stu_birth = #{stuBirth}</if>
             <if test="stuNationId != null "> and stu_nation_id = #{stuNationId}</if>
             <if test="stuNid != null  and stuNid != ''"> and stu_nid = #{stuNid}</if>
@@ -35,11 +46,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="gradeClassId != null "> and grade_class_id = #{gradeClassId}</if>
             <if test="stuPhone != null  and stuPhone != ''"> and stu_phone = #{stuPhone}</if>
             <if test="stuWechat != null  and stuWechat != ''"> and stu_wechat = #{stuWechat}</if>
-        </where>
+<!--        </where>-->
     </select>
-    
+
+ <sql id="selectPrsnStudentCopy">
+     select  stu_id, stu_no, stu_name, stu_sex ,stu_birth, stu_nation_id,
+             stu_nid, stu_enroll_year, grade_class_id, stu_phone, stu_wechat
+    from prsn_student
+
+ </sql>
+
+
+
     <select id="selectPrsnStudentById" parameterType="Long" resultMap="PrsnStudentResult">
-        <include refid="selectPrsnStudentVo"/>
+        <include refid="selectPrsnStudentCopy"/>
         where stu_id = #{stuId}
     </select>
         
@@ -48,6 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="stuNo != null">stu_no,</if>
             <if test="stuName != null">stu_name,</if>
+
             <if test="stuSex != null">stu_sex,</if>
             <if test="stuBirth != null">stu_birth,</if>
             <if test="stuNationId != null">stu_nation_id,</if>
@@ -60,6 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="stuNo != null">#{stuNo},</if>
             <if test="stuName != null">#{stuName},</if>
+
             <if test="stuSex != null">#{stuSex},</if>
             <if test="stuBirth != null">#{stuBirth},</if>
             <if test="stuNationId != null">#{stuNationId},</if>
@@ -76,6 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="stuNo != null">stu_no = #{stuNo},</if>
             <if test="stuName != null">stu_name = #{stuName},</if>
+
             <if test="stuSex != null">stu_sex = #{stuSex},</if>
             <if test="stuBirth != null">stu_birth = #{stuBirth},</if>
             <if test="stuNationId != null">stu_nation_id = #{stuNationId},</if>

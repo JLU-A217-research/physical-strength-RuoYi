@@ -23,7 +23,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
  * 年级-性别-测试项目关系 Controller
  * 
  * @author ruoyi
- * @date 2021-03-24
+ * @date 2021-04-12
  */
 @Controller
 @RequestMapping("/system/relation")
