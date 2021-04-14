@@ -89,6 +89,8 @@ public class IndexController extends BaseController
     public String main(ModelMap mmap)
     {
         mmap.put("version", ruoYiConfig.getVersion());
+        User user = getSysUser();
+        mmap.put("user", user);
         return "main";
     }
 }
