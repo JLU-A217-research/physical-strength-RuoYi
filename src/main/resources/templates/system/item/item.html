@@ -11,16 +11,19 @@
                     <div class="select-list">
                         <ul>
                             <li>
+
                                 <label>体测项目名称：</label>
-                                <input type="text" name="testItemName"/>
+                                <select id="testItemId" onchange="getClass()" name="testItemId" th:with="type=${@testItemId.selectTestItemDataList()}">
+                                    <option value="">所有</option>
+                                    <option  th:each="testItemId1 : ${type}" th:text="${testItemId1.testItemName}" th:value="${testItemId1.testItemId}"></option>
+                                </select>
                             </li>
+<!--                            <li>-->
+<!--                                <label>体测项目单位：</label>-->
+<!--                                <input type="text" name="testItemUnit"/>-->
+<!--                            </li>-->
                             <li>
-                                <label>体测项目单位：</label>
-                                <input type="text" name="testItemUnit"/>
-                            </li>
-                            <li>
-                                <!--<label>体测结果-成绩相关性 0-负相关，1-正相关，2-其他：</label>
-                                <input type="text" name="testScoreRelation"/> -->
+
                                 体测结果-成绩相关性：<select name="testScoreRelation" th:with="type=${@dict.getType('test_score_relation')}">
                                 <option value="">所有</option>
                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->

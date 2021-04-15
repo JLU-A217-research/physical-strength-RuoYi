@@ -15,11 +15,14 @@
                                 <input type="text" name="grade"/>
                             </li>
                             <li>
-                                <label>体测项目ID：</label>
-                                <input type="text" name="testItemId"/>
+
+                                <label>体测项目名称：</label>
+                                <select id="testItemId" onchange="getClass()" name="testItemId" th:with="type=${@testItemId.selectTestItemDataList()}">
+                                    <option value="">所有</option>
+                                    <option  th:each="testItemId1 : ${type}" th:text="${testItemId1.testItemName}" th:value="${testItemId1.testItemId}"></option>
+                                </select>
                             </li>
                             <li>
-
 
                                 性别：<select name="stuSexId" th:with="type=${@dict.getType('sys_user_sex')}">
                                 <option value="">所有</option>
