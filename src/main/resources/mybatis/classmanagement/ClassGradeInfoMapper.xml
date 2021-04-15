@@ -9,34 +9,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="enrollYear"    column="enroll_year"    />
         <result property="classGrade"    column="class_grade"    />
         <result property="classNo"    column="class_no"    />
-        <!-- result property="mainTeacherId"    column="main_teacher_id"    / -->
-        <result property="teacherName"    column="teacher_name"    />
+        <result property="mainTeacherName"    column="main_teacher_name"    />
         <result property="phyTeacherName"    column="phy_teacher_Name"    />
-        <result property="stuCount"    column="stu_count"    />
+        <result property="classStuCnt"    column="class_stu_cnt"    />
     </resultMap>
 
     <sql id="selectClassGradeInfoVo">
         select cgi.grade_class_id, cgi.enroll_year, cgi.class_grade, cgi.class_no,
-               pt.teacher_name, pt.teacher_job_id, cgi.stu_count from class_grade_info cgi, prsn_teacher pt
-        where ( cgi.main_teacher_id = pt.teacher_id or cgi.phy_teacher_id = pt.teacher_id )
+               pt1.teacher_name as main_teacher_name, pt2.teacher_name as phy_teacher_name,
+               count(ps.stu_id) as class_stu_cnt
+        from class_grade_info cgi
+        left join prsn_teacher pt1 on cgi.main_teacher_id = pt1.teacher_id
+        left join prsn_teacher pt2 on cgi.phy_teacher_id = pt2.teacher_id
+        left join prsn_student ps ON ps.grade_class_id = cgi.grade_class_id
+       <!-- GROUP BY grade_class_id-->
     </sql>
 
     <select id="selectClassGradeInfoList" parameterType="ClassGradeInfo" resultMap="ClassGradeInfoResult">
         <include refid="selectClassGradeInfoVo"/>
-        <!--where-->
+        <where>
             <if test="enrollYear != null "> and cgi.enroll_year = #{enrollYear}</if>
             <if test="classGrade != null "> and cgi.class_grade = #{classGrade}</if>
             <if test="classNo != null "> and cgi.class_no = #{classNo}</if>
             <!-- if test="mainTeacherId != null "> and cgi.main_teacher_id = #{mainTeacherId}</if -->
-            <if test="teacherName != null and teacherName != ''"> and pt.teacher_name = #{teacherName}</if>
-            <if test="phyTeacherName != null and phyTeacherName != ''"> and pt.teacher_name = #{phyTeacherName}</if>
-            <if test="stuCount != null "> and cgi.stu_count = #{stuCount}</if>
-        <!--/where-->
+            <if test="mainTeacherName != null and mainTeacherName != ''"> and pt1.teacher_name = #{mainTeacherName}</if>
+            <if test="phyTeacherName != null and phyTeacherName != ''"> and pt2.teacher_name = #{phyTeacherName}</if>
+        </where>
+        GROUP BY cgi.grade_class_id
     </select>
     
     <select id="selectClassGradeInfoById" parameterType="Long" resultMap="ClassGradeInfoResult">
         <include refid="selectClassGradeInfoVo"/>
-        where grade_class_id = #{gradeClassId}
+        where cgi.grade_class_id = #{gradeClassId}
     </select>
         
     <insert id="insertClassGradeInfo" parameterType="ClassGradeInfo" useGeneratedKeys="true" keyProperty="gradeClassId">
@@ -44,18 +48,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="enrollYear != null">enroll_year,</if>
             <if test="classGrade != null">class_grade,</if>
-            <if test="classId != null">class_id,</if>
+            <if test="classNo != null">class_no,</if>
             <if test="mainTeacherId != null">main_teacher_id,</if>
             <if test="phyTeacherId != null">phy_teacher_id,</if>
-            <if test="stuCount != null">stu_count,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="enrollYear != null">#{enrollYear},</if>
             <if test="classGrade != null">#{classGrade},</if>
-            <if test="classId != null">#{classId},</if>
+            <if test="classNo != null">class_no,</if>
             <if test="mainTeacherId != null">#{mainTeacherId},</if>
             <if test="phyTeacherId != null">#{phyTeacherId},</if>
-            <if test="stuCount != null">#{stuCount},</if>
          </trim>
     </insert>
 
@@ -64,10 +66,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="enrollYear != null">enroll_year = #{enrollYear},</if>
             <if test="classGrade != null">class_grade = #{classGrade},</if>
-            <if test="classId != null">class_id = #{classId},</if>
+            <if test="classNo != null">class_no = #{classNo},</if>
             <if test="mainTeacherId != null">main_teacher_id = #{mainTeacherId},</if>
             <if test="phyTeacherId != null">phy_teacher_id = #{phyTeacherId},</if>
-            <if test="stuCount != null">stu_count = #{stuCount},</if>
         </trim>
         where grade_class_id = #{gradeClassId}
     </update>

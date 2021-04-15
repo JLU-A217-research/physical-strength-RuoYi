@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.common.mapper.TeacherDataMapper">
+	
+	<resultMap type="TeacherData" id="TeacherDataResult">
+		<result property="teacherId"   column="teacher_id"   />
+		<result property="teacherName"   column="teacher_name"   />
+	</resultMap>
+	
+	<sql id="selectDictDataVo">
+        select distinct teacher_id, teacher_name
+		from prsn_teacher
+    </sql>
+
+	
+	<select id="selectTeacherDataById"  resultMap="TeacherDataResult">
+		<include refid="selectDictDataVo"/>
+
+	</select>
+	
+
+	
+</mapper> 

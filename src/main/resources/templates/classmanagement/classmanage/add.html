@@ -19,29 +19,41 @@
                 </div>
             </div>
             <div class="form-group">    
-                <label class="col-sm-3 control-label">班级名ID：</label>
+                <label class="col-sm-3 control-label">班级：</label>
                 <div class="col-sm-8">
-                    <input name="classId" class="form-control" type="text">
+                    <input name="classNo" class="form-control" type="text">
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">班主任ID：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">班主任：</label>
                 <div class="col-sm-8">
-                    <input name="mainTeacherId" class="form-control" type="text">
+                    <select class="form-control" id="teacherId" name="mainTeacherId" th:with="type=${@teacherId.selectTeacherDataList()}">
+                        <option value="">--请选择--</option>
+                        <option th:each="teacherid : ${type}" th:text="${teacherid.teacherName}" th:value="${teacherid.teacherId}"></option>
+                    </select>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">体育老师ID：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">体育老师：</label>
                 <div class="col-sm-8">
-                    <input name="phyTeacherId" class="form-control" type="text">
+                    <select class="form-control" id="teacherId" name="phyTeacherId" th:with="type=${@teacherId.selectTeacherDataList()}">
+                        <option value="">--请选择--</option>
+                        <option th:each="teacherid : ${type}" th:text="${teacherid.teacherName}" th:value="${teacherid.teacherId}"></option>
+                    </select>
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">学生人数：</label>
-                <div class="col-sm-8">
-                    <input name="stuCount" class="form-control" type="text">
-                </div>
-            </div>
+<!--            <div class="form-group">    -->
+<!--                <label class="col-sm-3 control-label">班主任：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="mainTeacherName" class="form-control" type="text">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="form-group">    -->
+<!--                <label class="col-sm-3 control-label">体育老师：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="phyTeacherName" class="form-control" type="text">-->
+<!--                </div>-->
+<!--            </div>-->
         </form>
     </div>
     <th:block th:include="include :: footer" />

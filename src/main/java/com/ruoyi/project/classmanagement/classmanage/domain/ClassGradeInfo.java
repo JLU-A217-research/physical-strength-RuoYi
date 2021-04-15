@@ -34,37 +34,21 @@ public class ClassGradeInfo extends BaseEntity
     @Excel(name = "班主任ID")
     private Long mainTeacherId;
 
-    public String getTeacherName() {
-        return teacherName;
-    }
-
-    public void setTeacherName(String teacherName) {
-        this.teacherName = teacherName;
-    }
-
     /** 班主任 */
     @Excel(name = "班主任")
-    private String teacherName;
+    private String mainTeacherName;
 
     /** 体育老师ID */
     @Excel(name = "体育老师ID")
     private Long phyTeacherId;
 
-    public String getPhyTeacherName() {
-        return phyTeacherName;
-    }
-
-    public void setPhyTeacherName(String phyTeacherName) {
-        this.phyTeacherName = phyTeacherName;
-    }
-
     /** 体育老师 */
     @Excel(name = "体育老师")
     private String phyTeacherName;
 
-    /** 学生人数 */
-    @Excel(name = "学生人数")
-    private Long stuCount;
+    /** 班级学生人数 */
+    @Excel(name = "班级学生人数")
+    private Long classStuCnt;
 
     public void setGradeClassId(Long gradeClassId)
     {
@@ -111,6 +95,21 @@ public class ClassGradeInfo extends BaseEntity
     {
         return mainTeacherId;
     }
+    public String getMainTeacherName() {
+        return mainTeacherName;
+    }
+
+    public void setMainTeacherName(String mainTeacherName) {
+        this.mainTeacherName = mainTeacherName;
+    }
+
+    public String getPhyTeacherName() {
+        return phyTeacherName;
+    }
+
+    public void setPhyTeacherName(String phyTeacherName) {
+        this.phyTeacherName = phyTeacherName;
+    }
     public void setPhyTeacherId(Long phyTeacherId)
     {
         this.phyTeacherId = phyTeacherId;
@@ -121,14 +120,14 @@ public class ClassGradeInfo extends BaseEntity
     {
         return phyTeacherId;
     }
-    public void setStuCount(Long stuCount)
+    public void setClassStuCnt(Long classStuCnt)
     {
-        this.stuCount = stuCount;
+        this.classStuCnt = classStuCnt;
     }
 
-    public Long getStuCount()
+    public Long getClassStuCnt()
     {
-        return stuCount;
+        return classStuCnt;
     }
 
     @Override
@@ -138,11 +137,11 @@ public class ClassGradeInfo extends BaseEntity
             .append("enrollYear", getEnrollYear())
             .append("classGrade", getClassGrade())
             .append("classNo",getClassNo())
-//            .append("mainTeacherId", getMainTeacherId())
-            .append("teacherName", getTeacherName())
-//            .append("phyTeacherId", getPhyTeacherId())
+            .append("mainTeacherId", getMainTeacherId())
+            .append("mainTeacherName", getMainTeacherName())
+            .append("phyTeacherId", getPhyTeacherId())
             .append("phyTeacherName", getPhyTeacherName())
-            .append("stuCount", getStuCount())
+            .append("classStuCnt", getClassStuCnt())
             .toString();
     }
 }
