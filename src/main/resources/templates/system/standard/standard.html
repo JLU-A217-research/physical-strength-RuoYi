@@ -37,11 +37,14 @@
 <!--                            -->
                             <li>
                                 <label>体测项目名称：</label>
-                                <input type="text" name="testItemName"/>
+                                <select id="testItemId" onchange="getClass()" name="testItemId" th:with="type=${@testItemId.selectTestItemDataList()}">
+                                    <option value="">所有</option>
+                                    <option  th:each="testItemId1 : ${type}" th:text="${testItemId1.testItemName}" th:value="${testItemId1.testItemId}"></option>
+                                </select>
+<!--                                <input type="text" name="testItemName"/>-->
                             </li>
                             <li>
-<!--                                <label>性别ID：</label>-->
-<!--                                <input type="text" name="stuSexId"/>-->
+
                                 性别：<select name="stuSexId" th:with="type=${@dict.getType('sys_user_sex')}">
                                 <option value="">所有</option>
                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>

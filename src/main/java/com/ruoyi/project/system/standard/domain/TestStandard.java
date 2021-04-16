@@ -183,4 +183,7 @@ public class TestStandard extends BaseEntity
 
                 .toString();
     }
+    public class TestStandardALL{
+
+    }
 }
