@@ -1,6 +1,8 @@
 package com.ruoyi.project.system.scoreandevaluation.controller;
 
 import java.util.List;
+
+import com.ruoyi.project.system.user.domain.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.web.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 成绩与体质评价Controller
@@ -54,6 +57,18 @@ public class ScoreAndEvaluationController extends BaseController
         return getDataTable(list);
     }
 
+    @RequiresPermissions("system:user:import")
+    @PostMapping("/importData")
+    @ResponseBody
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<ScoreAndEvaluation> util = new ExcelUtil<ScoreAndEvaluation>(ScoreAndEvaluation.class);
+        List<ScoreAndEvaluation> userList = util.importExcel(file.getInputStream());
+        String message = scoreAndEvaluationService.importScore(userList, updateSupport);
+        return AjaxResult.success(message);
+    }
+
+
     /**
      * 导出成绩与体质评价列表
      */
@@ -86,6 +101,7 @@ public class ScoreAndEvaluationController extends BaseController
     @ResponseBody
     public AjaxResult addSave(ScoreAndEvaluation score)
     {
+        score.setTgsId(scoreAndEvaluationService.selectTgsId(score));
         return toAjax(scoreAndEvaluationService.insertScore(score));
 
     }
@@ -106,6 +122,23 @@ public class ScoreAndEvaluationController extends BaseController
      */
     @GetMapping("/scoreimport")
     public String scoreimport(){return prefix + "/scoreimport";}
+
+    /**
+     * 个人成绩管理
+     */
+//    @GetMapping("/personalscoremanage/{scoreRecordId}")
+//    public String personalscoremanage(@PathVariable("scoreRecordId") Long scoreRecordId, ModelMap mmap){
+//        ScoreAndEvaluation score = scoreAndEvaluationService.selectScoreById(scoreRecordId);//功能错误
+//        mmap.put("score", score);
+//        return prefix + "/personalscoremanage";
+////        return "system/score/score";
+//    }
+     @GetMapping("/personscore/studentscoremanage/{scoreRecordId}")
+     public String personalscoremanage(@PathVariable("scoreRecordId") Long scoreRecordId, ModelMap mmap){
+          ScoreAndEvaluation score = scoreAndEvaluationService.selectScoreById(scoreRecordId);//功能错误
+          mmap.put("score", score);
+          return prefix + "/personscore/studentscoremanage";
+     }
 
 
     /**

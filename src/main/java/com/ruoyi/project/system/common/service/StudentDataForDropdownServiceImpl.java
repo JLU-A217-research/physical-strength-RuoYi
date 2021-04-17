@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("stuInfo")
+@Service("stuId")
 public class StudentDataForDropdownServiceImpl implements StudentDataForDropdownService{
 
     @Autowired

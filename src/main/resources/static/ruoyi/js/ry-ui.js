@@ -1014,11 +1014,6 @@ var table = {
 	            	$.operate.submit(url, "post", "json", "");
             	});
             },
-			//导入成绩页面-creat by dingch
-			// scoreimport: function(id) {
-        	// 	table.set();
-        	// 	$.modal.open("导入" + table.options.modalName,$.operate.scoreimportUrl(id));
-			// },
             // 添加信息
             add: function(id) {
             	table.set();
@@ -1035,16 +1030,30 @@ var table = {
             	var url = $.common.isEmpty(id) ? table.options.createUrl : table.options.createUrl.replace("{id}", id);
                 $.modal.openFull("添加" + table.options.modalName, url);
             },
-			//成绩导入访问地址
-			// scoreimportUrl: function(id){
-        	// 	var url = $.common.isEmpty(id) ? table.options.scoreImportUrl.replace("{id}", "") : table.options.scoreImportUrl.replace("{id}", id);
-        	// 	return url;
-			// },
             // 添加访问地址
             addUrl: function(id) {
             	var url = $.common.isEmpty(id) ? table.options.createUrl.replace("{id}", "") : table.options.createUrl.replace("{id}", id);
                 return url;
             },
+			//个人成绩管理-dingch
+			personalscoremanageTab: function(id){
+        		table.set();
+				$.modal.openTab("个人" + table.options.modalName, $.operate.psscoremanageUrl(id));
+			},
+			psscoremanageUrl: function(id){
+				var url = "/404.html";
+				if($.common.isNotEmpty(id)){
+					url = table.options.studentscoremanageUrl.replace("{id}", id);
+				} else{
+					var id = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+					if (id.length == 0) {
+						$.modal.alertWarning("请至少选择一条记录");
+						return;
+					}
+					url = table.options.studentscoremanageUrl.replace("{id}",id);
+				}
+				return url;
+			},
             // 修改信息
             edit: function(id) {
             	table.set();

@@ -28,6 +28,22 @@ public class ScoreAndEvaluation extends BaseEntity
     @Excel(name = "年级-性别-项目ID")
     private Long tgsId;
 
+    /**测试项目ID*/
+    @Excel(name = "测试项目Id")
+    private Long itemId;
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    /** 测试项目名称 */
+    @Excel(name = "测试项目")
+    private String itemName;
+
     /** 测试时间 */
     @Excel(name = "测试时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date testTime;
@@ -62,7 +78,10 @@ public class ScoreAndEvaluation extends BaseEntity
     public void setStuId(Long stuId) { this.stuId = stuId; }
     public Long getStuId() { return stuId; }
 
-    void setTgsId(Long tgsId) { this.tgsId = tgsId; }
+    public Long getItemId() { return itemId; }
+    public void setItemId(Long itemId) { this.itemId = itemId; }
+
+    public void setTgsId(Long tgsId) { this.tgsId = tgsId; }
     public Long getTgsId() { return tgsId; }
 
     public void setTestTime(Date testTime) { this.testTime = testTime; }
@@ -93,6 +112,8 @@ public class ScoreAndEvaluation extends BaseEntity
             .append("scoreRecordId", getScoreRecordId())
             .append("stuId", getStuId())
             .append("tgsId", getTgsId())
+            .append("itemId", getItemId())
+            .append("itemName", getItemName())
             .append("testTime", getTestTime())
             .append("testScore", getTestScore())
             .append("stuNo", getStuNo())

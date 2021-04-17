@@ -2,6 +2,7 @@ package com.ruoyi.project.system.scoreandevaluation.service;
 
 import java.util.List;
 import com.ruoyi.project.system.scoreandevaluation.domain.ScoreAndEvaluation;
+import com.ruoyi.project.system.user.domain.User;
 
 /**
  * 成绩与体质评价Service接口
@@ -36,6 +37,15 @@ public interface IScoreAndEvaluationService
     public int insertScore(ScoreAndEvaluation score);
 
     /**
+     * 查询测试-年级-性别Id
+     *
+     * @param score 成绩与体质评价
+     * @return 结果
+     */
+    public Long selectTgsId(ScoreAndEvaluation score);
+
+
+    /**
      * 修改成绩与体质评价
      * 
      * @param score 成绩与体质评价
@@ -58,4 +68,6 @@ public interface IScoreAndEvaluationService
      * @return 结果
      */
     public int deleteScoreById(Long scoreRecordId);
+
+    public String importScore(List<ScoreAndEvaluation> scoreList, Boolean isUpdateSupport);
 }

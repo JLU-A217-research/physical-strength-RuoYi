@@ -35,6 +35,8 @@ public interface ScoreAndEvaluationMapper
      */
     public int insertScore(ScoreAndEvaluation score);
 
+    public Long selectTgsId(ScoreAndEvaluation score);
+
     /**
      * 修改成绩与体质评价
      * 
@@ -58,4 +60,6 @@ public interface ScoreAndEvaluationMapper
      * @return 结果
      */
     public int deleteScoreByIds(String[] scoreRecordIds);
+
+//    public ScoreAndEvaluation selectScoreByStuId(Long stuId);
 }

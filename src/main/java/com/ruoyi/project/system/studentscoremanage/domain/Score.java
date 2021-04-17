@@ -1,4 +1,4 @@
-package com.ruoyi.project.system.score.domain;
+package com.ruoyi.project.system.studentscoremanage.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -8,10 +8,10 @@ import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 
 /**
- * 学生成绩 对象 score
+ * 学生成绩管理对象 score
  * 
  * @author ruoyi
- * @date 2021-03-21
+ * @date 2021-04-02
  */
 public class Score extends BaseEntity
 {
@@ -36,55 +36,79 @@ public class Score extends BaseEntity
     @Excel(name = "测试成绩")
     private BigDecimal testScore;
 
+    /** 学号 */
+    @Excel(name = "学号")
+    private Long stuNo;
+
     /** 年级 */
     @Excel(name = "年级")
     private Long classGrade;
 
-    /** 测试项目 */
+    /**测试项目ID*/
+    @Excel(name = "测试项目Id")
+    private Long itemId;
+
+    /** 测试项目名称 */
     @Excel(name = "测试项目")
-    private String testItemName;
+    private String itemName;
 
-    /** 单位 */
-    @Excel(name = "单位")
-    private String testItemUnit;
+    /** 测试项目单位 */
+    @Excel(name = "项目单位")
+    private String itemUnit;
 
-    /** 得分 */
-    @Excel(name = "得分")
-    private String testPoint;
+    /** 测试得分 */
+    @Excel(name = "测试得分")
+    private Long testPoint;
 
-    /** 等级 */
-    @Excel(name = "等级")
-    private String testgrade;
+    /** 测试等级 */
+    @Excel(name = "测试等级")
+    private Long testGradeId;
 
+    /** 性别Id */
+    @Excel(name = "性别ID")
+    private Long sexId;
 
-    public String getTestgrade() {
-        return testgrade;
+    /** 成绩相关性 */
+    @Excel(name = "成绩相关性")
+    private Long scoreRelation;
+
+    public Long getScoreRelation() {
+        return scoreRelation;
     }
-    public void setTestgrade(String testgrade) {
-        this.testgrade = testgrade;
+
+    public void setScoreRelation(Long scoreRelation) {
+        this.scoreRelation = scoreRelation;
+    }
+    public Long getSexId() {
+        return sexId;
     }
 
-    public String getTestPoint() {
+    public void setSexId(Long sexId) {
+        this.sexId = sexId;
+    }
+
+    public Long getTestPoint() {
         return testPoint;
     }
-    public void setTestPoint(String testPoint) {
+
+    public void setTestPoint(Long testPoint) {
         this.testPoint = testPoint;
     }
 
-    public String getTestItemUnit() {
-        return testItemUnit;
-    }
-    public void setTestItemUnit(String testItemUnit) {
-        this.testItemUnit = testItemUnit;
+    public Long getTestGradeId() {
+        return testGradeId;
     }
 
-
-    public String getTestItemName() {
-        return testItemName;
+    public void setTestGradeId(Long testGradeId) {
+        this.testGradeId = testGradeId;
     }
 
-    public void setTestItemName(String testItemName) {
-        this.testItemName = testItemName;
+    public Long getStuNo() {
+        return stuNo;
+    }
+
+    public void setStuNo(Long stuNo) {
+        this.stuNo = stuNo;
     }
 
     public Long getClassGrade() {
@@ -95,8 +119,29 @@ public class Score extends BaseEntity
         this.classGrade = classGrade;
     }
 
+    public Long getItemId() {
+        return itemId;
+    }
 
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
+    }
 
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public String getItemUnit() {
+        return itemUnit;
+    }
+
+    public void setItemUnit(String itemUnit) {
+        this.itemUnit = itemUnit;
+    }
 
     public void setScoreRecordId(Long scoreRecordId)
     {
@@ -151,12 +196,16 @@ public class Score extends BaseEntity
             .append("stuId", getStuId())
             .append("tgsId", getTgsId())
             .append("testTime", getTestTime())
-            .append("classGrade", getClassGrade())
-            .append("testItemName", getTestItemName())
-            .append("testItemUnit", getTestItemUnit())
-            .append("testPoint", getTestPoint())
-            .append("testgrade", getTestgrade())
             .append("testScore", getTestScore())
+            .append("stuNo", getStuNo())
+            .append("classGrade", getClassGrade())
+            .append("itemId", getItemId())
+            .append("itemName", getItemName())
+            .append("itemUnit", getItemUnit())
+            .append("testPoint", getTestPoint())
+            .append("testGradeId", getTestGradeId())
+            .append("sexId", getSexId())
+            .append("scoreRelation", getScoreRelation())
             .toString();
     }
 }

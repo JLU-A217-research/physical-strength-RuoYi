@@ -8,6 +8,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="scoreRecordId"    column="score_record_id"    />
         <result property="stuId"    column="stu_id"    />
         <result property="tgsId"    column="tgs_id"    />
+        <result property="itemId"    column="test_item_id"    />
+        <result property="itemName"    column="test_item_name"    />
         <result property="testTime"    column="test_time"    />
         <result property="testScore"    column="test_score"    />
         <result property="stuNo"    column="stu_no"    />
@@ -20,9 +22,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <sql id="selectScoreVo">
 # 这里的score的所有查询和score的表都可以优化去掉
-        SELECT s.score_record_id, s.stu_id, s.tgs_id, s.test_time, s.test_score,ps.stu_no, ps.stu_name, sdd.dict_label, cgi.class_no, ps.stu_enroll_year
-        FROM score s,prsn_student ps, class_grade_info cgi, sys_dict_data sdd
+        SELECT s.score_record_id, s.stu_id, s.tgs_id, ti.test_item_id, ti.test_item_name, s.test_time, s.test_score,ps.stu_no, ps.stu_name, sdd.dict_label, cgi.class_no, ps.stu_enroll_year
+        FROM score s,prsn_student ps, class_grade_info cgi, sys_dict_data sdd, test_item ti, test_grade_sex_relation tgsr
         WHERE  s.stu_id = ps.stu_id AND ps.grade_class_id = cgi.grade_class_id AND sdd.dict_type = 'sys_user_sex' AND ps.stu_sex = sdd.dict_value
+                AND s.tgs_id= tgsr.tgs_id AND tgsr.test_item_id = ti.test_item_id
     </sql>
 
     <select id="selectScoreList" parameterType="ScoreAndEvaluation" resultMap="ScoreResult">
@@ -30,6 +33,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!--         <where>  -->
             <if test="stuId != null "> and stu_id = #{stuId}</if>
             <if test="tgsId != null "> and tgs_id = #{tgsId}</if>
+            <if test="itemId != null "> and test_item_id = #{itemId}</if>
+            <if test="itemName != null and itemName != '' "> and test_item_name = #{itemName}</if>
             <if test="testTime != null "> and test_time = #{testTime}</if>
             <if test="testScore != null "> and test_score = #{testScore}</if>
             <if test="stuNo != null "> and stu_no = #{stuNo}</if>
@@ -39,12 +44,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="stuEnrollYear != null "> and stu_enroll_year = #{stuEnrollYear}</if>
 <!--        </where>-->
     </select>
-    
+
     <select id="selectScoreById" parameterType="Long" resultMap="ScoreResult">
         <include refid="selectScoreVo"/>
         AND s.score_record_id = #{scoreRecordId}
     </select>
-        
+
+<!--    <select id="selectScoreByStuId" parameterType="Long" resultMap="ScoreResult">-->
+<!--        <include refid="selectScoreVo"/>-->
+<!--        AND s.score_record_id = #{scoreRecordId}-->
+<!--    </select>-->
+
+    <select id="selectTgsId" parameterType="ScoreAndEvaluation" resultType="Long">
+        SELECT
+            tgs_id
+        FROM
+            test_grade_sex_relation
+        WHERE
+            test_item_id = #{itemId}
+          AND
+                grade = (SELECT cgi.class_grade FROM prsn_student ps, class_grade_info cgi WHERE ps.stu_id = #{stuId} AND ps.grade_class_id = cgi.grade_class_id)
+          AND
+                stu_sex_id = (SELECT ps.stu_sex FROM prsn_student ps WHERE ps.stu_id = #{stuId})
+    </select>
+
     <insert id="insertScore" parameterType="Score" useGeneratedKeys="true" keyProperty="scoreRecordId"><!--后面这两个参数是自动获取主键的意思-->
         insert into score
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -68,13 +91,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="tgsId != null">tgs_id = #{tgsId},</if>
             <if test="testTime != null">test_time = #{testTime},</if>
             <if test="testScore != null">test_score = #{testScore},</if>
-            <if test="stuNo != null ">stu_no = #{stuNo},</if>
-            <if test="stuName != null and stuName != '' ">stu_name = #{stuName},</if>
-            <if test="stuSex != null and stuSex != '' " > dict_label = #{stuSex},</if>
-            <if test="classNo != null ">class_no = #{classNo},</if>
-            <if test="stuEnrollYear != null ">stu_enroll_year = #{stuEnrollYear},</if>
         </trim>
-#         where score_record_id = #{scoreRecordId}
+        where score_record_id = #{scoreRecordId}
     </update>
 
     <delete id="deleteScoreById" parameterType="Long">
