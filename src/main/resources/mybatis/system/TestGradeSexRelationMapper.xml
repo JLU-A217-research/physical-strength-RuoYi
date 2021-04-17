@@ -8,18 +8,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="tgsId"    column="tgs_id"    />
         <result property="grade"    column="grade"    />
         <result property="testItemId"    column="test_item_id"    />
-        <result property="stuSexId"    column="stu_sex_id"    />
         <result property="testItemName"    column="test_item_name"    />
-
+        <result property="stuSexId"    column="stu_sex_id"    />
     </resultMap>
 
     <sql id="selectTestGradeSexRelationVo">
         select tgs_id, grade, sr.test_item_id, stu_sex_id ,test_item_name from test_grade_sex_relation sr,test_item ti
-        where	ti.test_item_id=sr.test_item_id
-    </sql>
-
-    <sql id="selectTestGradeSexRelationVoid">
-        select tgs_id, grade, stu_sex_id  from test_grade_sex_relation
+        where sr.test_item_id=ti.test_item_id
     </sql>
 
     <select id="selectTestGradeSexRelationList" parameterType="TestGradeSexRelation" resultMap="TestGradeSexRelationResult">
@@ -27,15 +22,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
             <if test="grade != null "> and grade = #{grade}</if>
             <if test="testItemId != null "> and sr.test_item_id = #{testItemId}</if>
-            <if test="stuSexId != null "> and stu_sex_id = #{stuSexId}</if>
             <if test="testItemName != null "> and test_item_name = #{testItemName}</if>
-
+            <if test="stuSexId != null "> and stu_sex_id = #{stuSexId}</if>
 
     </select>
     
     <select id="selectTestGradeSexRelationById" parameterType="Long" resultMap="TestGradeSexRelationResult">
-        <include refid="selectTestGradeSexRelationVoid"/>
-        where tgs_id = #{tgsId}
+        <include refid="selectTestGradeSexRelationVo"/>
+       and tgs_id = #{tgsId}
     </select>
         
     <insert id="insertTestGradeSexRelation" parameterType="TestGradeSexRelation" useGeneratedKeys="true" keyProperty="tgsId">
@@ -43,15 +37,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="grade != null">grade,</if>
             <if test="testItemId != null">test_item_id,</if>
-            <if test="stuSexId != null">stu_sex_id,</if>
             <if test="testItemName != null">test_item_name,</if>
-
-        </trim>
+            <if test="stuSexId != null">stu_sex_id,</if>
+         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="grade != null">#{grade},</if>
             <if test="testItemId != null">#{testItemId},</if>
-            <if test="stuSexId != null">#{stuSexId},</if>
             <if test="testItemName != null">#{testItemName},</if>
+            <if test="stuSexId != null">#{stuSexId},</if>
          </trim>
     </insert>
 
@@ -59,10 +52,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update test_grade_sex_relation
         <trim prefix="SET" suffixOverrides=",">
             <if test="grade != null">grade = #{grade},</if>
-            <if test="testItemId != null">test_item_id = #{testItemId},</if>
+            <if test="testItemId != null">sr.test_item_id = #{testItemId},</if>
             <if test="stuSexId != null">stu_sex_id = #{stuSexId},</if>
-            <if test="testItemName != null">test_item_name = #{testItemName},</if>
-
         </trim>
         where tgs_id = #{tgsId}
     </update>

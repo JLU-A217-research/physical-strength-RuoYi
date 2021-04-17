@@ -37,11 +37,14 @@
 <!--                            -->
                             <li>
                                 <label>体测项目名称：</label>
-                                <input type="text" name="testItemName"/>
+                                <select id="testItemId" onchange="getClass()" name="testItemId" th:with="type=${@testItemId.selectTestItemDataList()}">
+                                    <option value="">所有</option>
+                                    <option  th:each="testItemId1 : ${type}" th:text="${testItemId1.testItemName}" th:value="${testItemId1.testItemId}"></option>
+                                </select>
+<!--                                <input type="text" name="testItemName"/>-->
                             </li>
                             <li>
-<!--                                <label>性别ID：</label>-->
-<!--                                <input type="text" name="stuSexId"/>-->
+
                                 性别：<select name="stuSexId" th:with="type=${@dict.getType('sys_user_sex')}">
                                 <option value="">所有</option>
                                 <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
@@ -94,6 +97,17 @@
                 columns: [{
                     checkbox: true
                 },
+                    {
+                        field: 'testItemName',
+                        title: '体测项目名称'
+                    },
+                    {
+                        field: 'stuSexId',
+                        title: '性别ID',
+                        formatter: function(value, row, index) {
+                            return $.table.selectDictLabel(datas, value);
+                        }
+                    },
                 {
                     field: 'testStandardId',
                     title: '测试指标项ID',
@@ -104,40 +118,41 @@
                 //     title: '年级-性别-项目ID'
                 //
                 // },
+                    {
+                        field: 'testGradeId',
+                        title: '等级ID',
+                        formatter: function(value, row, index) {
+                            return $.table.selectDictLabel(datasg, value);
+                        }
+                    },
+                    {
+                        field: 'testPoint',
+                        title: '得分'
+                    },
                 {
-                    field: 'testBase',
-                    title: '测试基准'
+                    field: 'testBase7',
+                    title: '七年级测试基准'
                 },
-                {
-                    field: 'testPoint',
-                    title: '得分'
-                },
-                {
-                    field: 'testGradeId',
-                    title: '等级ID',
-                    formatter: function(value, row, index) {
-                        return $.table.selectDictLabel(datasg, value);
-                    }
-                },
+                    {
+                        field: 'testBase8',
+                        title: '八年级测试基准'
+                    },
+                    {
+                        field: 'testBase9',
+                        title: '九年级测试基准'
+                    },
+
+
                     // {
                     //     field: 'testItemId',
                     //     title: '体测项目ID'
                     // },
-                    {
-                        field: 'grade',
-                        title: '年级'
-                    },
-                    {
-                        field: 'stuSexId',
-                        title: '性别ID',
-                        formatter: function(value, row, index) {
-                            return $.table.selectDictLabel(datas, value);
-                        }
-                    },
-                    {
-                        field: 'testItemName',
-                        title: '体测项目名称'
-                    },
+                    // {
+                    //     field: 'grade',
+                    //     title: '年级'
+                    // },
+
+
                 {
                     title: '操作',
                     align: 'center',
