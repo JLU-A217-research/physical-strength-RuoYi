@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.stuscore.mapper.StuScoreMapper">
+    
+    <resultMap type="StuScore" id="StuScoreResult">
+        <result property="scoreRecordId"    column="score_record_id"    />
+        <result property="stuName"    column="stu_name"    />
+        <result property="stuId"    column="stu_id"    />
+        <result property="testGrade"    column="testGrade"    />
+        <result property="testItemId"    column="test_item_id"    />
+        <result property="testTime"    column="test_time"    />
+        <result property="testScore"    column="test_score"    />
+        <result property="testItemName"    column="test_item_name"    />
+        <result property="testItemUnit"    column="test_item_unit"    />
+    </resultMap>
+
+    <sql id="selectStuScoreVo">
+        select sc.score_record_id, sc.stu_id, sc.tgs_id, sc.test_time, sc.test_score,
+               ps.stu_name,
+               tgs.test_item_id, tgs.grade testGrade,
+               ti.test_item_name,ti.test_item_unit
+        from score sc
+        inner join prsn_student ps on sc.stu_id = ps.stu_id
+        inner join test_grade_sex_relation tgs on sc.tgs_id = tgs.tgs_id
+        inner join test_item ti on tgs.test_item_id = ti.test_item_id
+    </sql>
+
+    <select id="selectStuScoreList" parameterType="StuScore" resultMap="StuScoreResult">
+        <include refid="selectStuScoreVo"/>
+        <where>
+            <!--sc.stu_id = #{stuId}-->
+            <!-- 記得改成UserID，stu/teacher/user問題-->
+            sc.stu_id = 468
+            <if test="testItemId != null "> and tgs.test_item_id = #{testItemId}</if>
+        </where>
+    </select>
+    
+    <select id="selectStuScoreById" parameterType="Long" resultMap="StuScoreResult">
+        <include refid="selectStuScoreVo"/>
+        where score_record_id = #{scoreRecordId}
+    </select>
+        
+    <insert id="insertStuScore" parameterType="StuScore" useGeneratedKeys="true" keyProperty="scoreRecordId">
+        insert into score
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">stu_id,</if>
+            <if test="tgsId != null">tgs_id,</if>
+            <if test="testTime != null">test_time,</if>
+            <if test="testScore != null">test_score,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">#{stuId},</if>
+            <if test="tgsId != null">#{tgsId},</if>
+            <if test="testTime != null">#{testTime},</if>
+            <if test="testScore != null">#{testScore},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStuScore" parameterType="StuScore">
+        update score
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stuId != null">stu_id = #{stuId},</if>
+            <if test="tgsId != null">tgs_id = #{tgsId},</if>
+            <if test="testTime != null">test_time = #{testTime},</if>
+            <if test="testScore != null">test_score = #{testScore},</if>
+        </trim>
+        where score_record_id = #{scoreRecordId}
+    </update>
+
+    <delete id="deleteStuScoreById" parameterType="Long">
+        delete from score where score_record_id = #{scoreRecordId}
+    </delete>
+
+    <delete id="deleteStuScoreByIds" parameterType="String">
+        delete from score where score_record_id in 
+        <foreach item="scoreRecordId" collection="array" open="(" separator="," close=")">
+            #{scoreRecordId}
+        </foreach>
+    </delete>
+
+</mapper>
