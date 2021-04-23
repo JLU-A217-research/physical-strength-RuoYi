@@ -16,8 +16,12 @@ public class PrsnStudent extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
+    /** account_ID */
+    private Long accountId;
+
     /** 学生ID */
     private Long stuId;
+
 
     /** 学生号 */
     @Excel(name = "学生号")
@@ -64,6 +68,15 @@ public class PrsnStudent extends BaseEntity
     @Excel(name = "学生微信")
     private String stuWechat;
 
+    public void setAccountId(Long accountId)
+    {
+        this.accountId = accountId;
+    }
+
+    public Long getAccountId()
+    {
+        return accountId;
+    }
 
     public void setStuId(Long stuId)
     {
@@ -175,6 +188,7 @@ public class PrsnStudent extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("stuId", getStuId())
+                .append("accountId", getAccountId())
             .append("stuNo", getStuNo())
             .append("stuName", getStuName())
              .append("psw",getPsw())

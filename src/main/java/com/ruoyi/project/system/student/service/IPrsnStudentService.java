@@ -3,6 +3,7 @@ package com.ruoyi.project.system.student.service;
 import java.util.List;
 import com.ruoyi.project.system.student.domain.PrsnStudent;
 
+
 /**
  * 学生信息 Service接口
  * 
@@ -18,6 +19,14 @@ public interface IPrsnStudentService
      * @return 学生信息 
      */
     public PrsnStudent selectPrsnStudentById(Long stuId);
+
+    /**
+     * 根据accountId找到stuId
+     *
+     * @param accountId 学生信息 ID
+     * @return 学生信息
+     */
+    public Long selectstuIdByAccountId(Long accountId);
 
     /**
      * 查询学生信息 列表
@@ -58,4 +67,8 @@ public interface IPrsnStudentService
      * @return 结果
      */
     public int deletePrsnStudentById(Long stuId);
+
+//    public String checkPhoneUnique(PrsnStudent prsnStudent);
+
+
 }

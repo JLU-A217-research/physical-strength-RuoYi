@@ -84,7 +84,7 @@ public class PrsnStudentController extends BaseController
     @Log(title = "学生信息 ", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(PrsnStudent prsnStudent)
+    public AjaxResult addSave(PrsnStudent prsnStudent)//回显
     {
         return toAjax(prsnStudentService.insertPrsnStudent(prsnStudent));
     }

@@ -3,6 +3,7 @@ package com.ruoyi.project.system.student.mapper;
 import java.util.List;
 import com.ruoyi.project.system.student.domain.PrsnStudent;
 
+
 /**
  * 学生信息 Mapper接口
  * 
@@ -58,4 +59,20 @@ public interface PrsnStudentMapper
      * @return 结果
      */
     public int deletePrsnStudentByIds(String[] stuIds);
+
+    /**
+     * 校验手机号码是否唯一
+     *
+     * @param phonenumber 手机号码
+     * @return 结果
+     */
+   // public PrsnStudent checkPhoneUnique(String phonenumber);
+    /**
+     * 校验手机号码是否唯一
+     *
+     * @param accountId 手机号码
+     * @return 结果
+     */
+    public Long selectstuIdByAccountId(Long accountId);
+
 }
