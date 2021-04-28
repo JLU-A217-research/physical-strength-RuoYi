@@ -1,73 +1,73 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">-->
-<!--<head>-->
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
 
-<!--</head>-->
-<!--<div class="white-bg">-->
+</head>
+<div class="white-bg">
 
-<!--<div class="center">-->
-<!--<p class="user-info-center" onclick="avatar()"><img class="img-circle img-lg" src="/profile/avatar/2021/04/14/deefc580-c011-4b3d-bb1b-4604df9647b3.png"></p>-->
+<div class="center">
+<p class="user-info-center" onclick="avatar()"><img class="img-circle img-lg" src="/profile/avatar/2021/04/14/deefc580-c011-4b3d-bb1b-4604df9647b3.png"></p>
 
-<!--</div>-->
+</div>
 
-<!--<div class="bootstrap-table bootstrap3">-->
-
-
-<!--    <div class="fixed-table-container" style="padding-bottom: 0px;">-->
-<!--        <div class="fixed-table-header" style="display: none;"><table></table></div>-->
-<!--        <div class="fixed-table-body">-->
-<!--            <div class="fixed-table-loading table table-bordered table-hover" style="top: 34px; display: none;"id="stu_info" th:object="${prsnStudent}">-->
-
-<!--                <td style>-->
-<!--                    <a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click" data-original-title="" title="">1000001</a>-->
-<!--                </td>-->
-
-<!--            </div>-->
-<!--            <table id="bootstrap-table" class="table table-bordered table-hover"><thead class=""></thead><tbody>-->
-<!--            <tr data-index="0">-->
-<!--                <td style="">姓名：</td><td style=""> <input type="text" maxlength="50" class="form-control" name="email" th:field="*{stuName}"></td>-->
-<!--                <td style="">性别：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td></tr>-->
-<!--            <tr data-index="1">-->
-<!--                <td style="">学号：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td>-->
-<!--                <td style="">出生日期：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td></tr>-->
+<div class="bootstrap-table bootstrap3">
 
 
-<!--            <tr data-index="2">-->
-<!--                <td style="">年龄：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td>-->
-<!--                <td style="">民族：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td></tr>-->
+    <div class="fixed-table-container" style="padding-bottom: 0px;">
+        <div class="fixed-table-header" style="display: none;"><table></table></div>
+        <div class="fixed-table-body">
+            <div class="fixed-table-loading table table-bordered table-hover" style="top: 34px; display: none;"id="stu_info" th:object="${prsnStudent}">
+
+                <td style>
+                    <a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click" data-original-title="" title="">1000001</a>
+                </td>
+
+            </div>
+            <table id="bootstrap-table" class="table table-bordered table-hover"><thead class=""></thead><tbody>
+            <tr data-index="0">
+                <td style="">姓名：</td><td style=""> <input type="text" maxlength="50" class="form-control" name="email" th:field="*{stuName}"></td>
+                <td style="">性别：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td></tr>
+            <tr data-index="1">
+                <td style="">学号：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td>
+                <td style="">出生日期：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td></tr>
 
 
-<!--            <tr data-index="3">-->
-<!--                <td style="">身份证号：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td>-->
-<!--                <td style="">年级：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td></tr>-->
+            <tr data-index="2">
+                <td style="">年龄：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td>
+                <td style="">民族：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td></tr>
 
 
-<!--            <tr data-index="4">-->
-<!--                <td style="">班级：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">1000001</a></td>-->
-<!--                <td style="">联系电话</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">1000001</a></td></tr>-->
-
-<!--            <tr data-index="5">-->
-<!--                <td style="">微信：</td>><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">1000001</a></td>-->
-<!--                <td style="">联系电话</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">1000001</a></td></tr>-->
-
-<!--        <div class="fixed-table-footer"><table><thead><tr></tr></thead></table></div></table>-->
-<!--    </div></table>-->
+            <tr data-index="3">
+                <td style="">身份证号：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td>
+                <td style="">年级：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">100000</a></td></tr>
 
 
-<!--    <div class="btn-group-sm" id="toolbar1" role="group">-->
-<!--        <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:item:add">-->
-<!--            <i class="fa fa-plus"></i></a>-->
-<!--     <button type="button" class="btn btn-sm btn-primary" onclick="submitStuInfo()"><i class="fa fa-plus"></i>保 存</button>-->
+            <tr data-index="4">
+                <td style="">班级：</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">1000001</a></td>
+                <td style="">联系电话</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">1000001</a></td></tr>
 
-<!--        <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:item:edit">-->
-<!--            <i class="fa fa-edit"></i> </a>-->
-<!--     <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>-->
+            <tr data-index="5">
+                <td style="">微信：</td>><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">1000001</a></td>
+                <td style="">联系电话</td><td style=""><a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click">1000001</a></td></tr>
 
-
-<!--    </div>-->
-
-<!--</div>-->
+        <div class="fixed-table-footer"><table><thead><tr></tr></thead></table></div></table>
+    </div></table>
 
 
-<!--&lt;!&ndash;</body>&ndash;&gt;</div></div></body>-->
-<!--</html>-->
+    <div class="btn-group-sm" id="toolbar1" role="group">
+        <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:item:add">
+            <i class="fa fa-plus"></i></a>
+     <button type="button" class="btn btn-sm btn-primary" onclick="submitStuInfo()"><i class="fa fa-plus"></i>保 存</button>
+
+        <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:item:edit">
+            <i class="fa fa-edit"></i> </a>
+     <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+
+
+    </div>
+
+</div>
+
+
+<!--</body>--></div></div></body>
+</html>

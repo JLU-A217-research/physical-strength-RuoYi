@@ -37,14 +37,16 @@ public class StuInfoControllerr extends BaseController
     @GetMapping()
     public String stu_info(ModelMap mmap)
     {
-//        startPage();
-//        User user = ShiroUtils.getSysUser();
-//        Long accountId= user.getUserId();
-//        //通过userId找到stuid，通过stuId找学生信息
-//        //通过userId找到stuid，改controller，domain，service，serviceImp，Mapper，PrsnStudentMapper.xml
-//        Long stuId=prsnsStudentService.selectstuIdByAccountId(accountId);
+        startPage();
+        User user = ShiroUtils.getSysUser();
+        Long accountId= user.getUserId();
+
+        //通过userId找到stuid，通过stuId找学生信息
+        //通过userId找到stuid，改controller，domain，service，serviceImp，Mapper，PrsnStudentMapper.xml
+        PrsnStudent prsnStudent=prsnsStudentService.selectstuIdByAccountId(accountId);
 //        PrsnStudent prsnStudent= prsnsStudentService.selectPrsnStudentById(stuId);
-//        mmap.put("prsnStudent", prsnStudent);
+
+        mmap.put("prsnStudent", prsnStudent);
         return prefix + "/stu_info";
         }
 

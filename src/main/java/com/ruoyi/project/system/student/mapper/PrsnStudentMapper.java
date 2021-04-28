@@ -73,6 +73,6 @@ public interface PrsnStudentMapper
      * @param accountId 手机号码
      * @return 结果
      */
-    public Long selectstuIdByAccountId(Long accountId);
+    public PrsnStudent selectstuIdByAccountId(Long accountId);
 
 }

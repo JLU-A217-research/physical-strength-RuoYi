@@ -26,7 +26,7 @@ public interface IPrsnStudentService
      * @param accountId 学生信息 ID
      * @return 学生信息
      */
-    public Long selectstuIdByAccountId(Long accountId);
+    public PrsnStudent selectstuIdByAccountId(Long accountId);
 
     /**
      * 查询学生信息 列表

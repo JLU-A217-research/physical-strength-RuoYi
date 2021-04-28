@@ -92,7 +92,7 @@ public class PrsnStudentServiceImpl implements IPrsnStudentService
      * @return 结果
      */
     @Override
-    public Long selectstuIdByAccountId(Long accountId) {
+    public PrsnStudent selectstuIdByAccountId(Long accountId) {
         return prsnStudentMapper.selectstuIdByAccountId(accountId);
     }
 
