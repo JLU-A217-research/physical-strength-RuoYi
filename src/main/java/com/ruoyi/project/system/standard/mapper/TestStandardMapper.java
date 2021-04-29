@@ -58,4 +58,6 @@ public interface TestStandardMapper
      * @return 结果
      */
     public int deleteTestStandardByIds(String[] testStandardIds);
+
+    public List<TestStandard> selectAllTestStandard();
 }

@@ -58,4 +58,7 @@ public interface ITestStandardService
      * @return 结果
      */
     public int deleteTestStandardById(Long testStandardId);
+
+//    public List<TestStandard> sellctAllStandar();
+
 }

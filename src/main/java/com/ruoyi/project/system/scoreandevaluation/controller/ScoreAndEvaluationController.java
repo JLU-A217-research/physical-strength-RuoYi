@@ -2,6 +2,8 @@ package com.ruoyi.project.system.scoreandevaluation.controller;
 
 import java.util.List;
 
+import com.ruoyi.common.constant.Constants;
+import com.ruoyi.common.utils.CacheUtils;
 import com.ruoyi.project.system.user.domain.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,8 @@ public class ScoreAndEvaluationController extends BaseController
     public TableDataInfo list(ScoreAndEvaluation score)
     {
         startPage();
+        long[][][][] std = (long[][][][])CacheUtils.get(Constants.Test_Standar, Constants.Test_Standar_Key);
+        System.out.println(std[7][1][0][1]+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         List<ScoreAndEvaluation> list = scoreAndEvaluationService.selectScoreList(score);
         return getDataTable(list);
     }

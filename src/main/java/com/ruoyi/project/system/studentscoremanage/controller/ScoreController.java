@@ -1,6 +1,9 @@
 package com.ruoyi.project.system.studentscoremanage.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.constant.Constants;
+import com.ruoyi.common.utils.CacheUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,8 +52,18 @@ public class ScoreController extends BaseController
     @ResponseBody
     public TableDataInfo list(Score score)
     {
+        long[][][][] testStand = (long[][][][]) CacheUtils.get(Constants.Test_Standar, Constants.Test_Standar_Key);
         startPage();
         List<Score> list = scoreService.selectScoreListByStu(score);
+        for(int i=0;i<list.size();i++){
+            Score s = list.get(i);
+            if(s.getScoreRelation()==0){
+//                for(int j=0;j<)
+            }
+            else{
+
+            }
+        }
         return getDataTable(list);
     }
 
