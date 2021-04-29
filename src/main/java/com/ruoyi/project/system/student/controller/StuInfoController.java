@@ -1,5 +1,6 @@
 package com.ruoyi.project.system.student.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ruoyi.common.utils.security.ShiroUtils;
@@ -24,31 +25,51 @@ import com.ruoyi.framework.web.page.TableDataInfo;
 
 @Controller
 @RequestMapping("/system/student/stu_info")
-public class StuInfoControllerr extends BaseController
+public class StuInfoController extends BaseController
 {
-    private String prefix = "system/student";
+    private String prefix = "system/student/stu_info";
 
     @Autowired
 
     private IPrsnStudentService prsnsStudentService;
 
     @RequiresPermissions("system:student:stu_info:view")
-
     @GetMapping()
-    public String stu_info(ModelMap mmap)
-    {
+//    public String stu_info(){
+//        return prefix + "/stu_info";
+//    }
+//
+//    @RequiresPermissions("system:student:list")
+//    @PostMapping("/list")
+//    @ResponseBody
+//    public TableDataInfo list()
+//    {
+//        startPage();
+//        User user = ShiroUtils.getSysUser();
+//        Long accountId= user.getUserId();
+//
+//        //通过userId找到stuid，通过stuId找学生信息
+//        //通过userId找到stuid，改controller，domain，service，serviceImp，Mapper，PrsnStudentMapper.xml
+//        PrsnStudent prsnStudent=prsnsStudentService.selectstuIdByAccountId(accountId);
+////        PrsnStudent prsnStudent= prsnsStudentService.selectPrsnStudentById(stuId);
+//
+//        List<PrsnStudent> list = new ArrayList<PrsnStudent>();
+//        list.add(prsnStudent);
+//        return getDataTable(list);
+//
+////        mmap.put("prsnStudent", prsnStudent);
+//        }
+    public String stu_info(ModelMap mmap){
         startPage();
         User user = ShiroUtils.getSysUser();
         Long accountId= user.getUserId();
 
-        //通过userId找到stuid，通过stuId找学生信息
-        //通过userId找到stuid，改controller，domain，service，serviceImp，Mapper，PrsnStudentMapper.xml
         PrsnStudent prsnStudent=prsnsStudentService.selectstuIdByAccountId(accountId);
-//        PrsnStudent prsnStudent= prsnsStudentService.selectPrsnStudentById(stuId);
 
         mmap.put("prsnStudent", prsnStudent);
         return prefix + "/stu_info";
-        }
+    }
+
 
 //    /**
 //     * 导出体测项目 列表
