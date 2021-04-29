@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT
             ts.test_point,
             ts.test_grade_id,
-
+            ts.test_standard_id,
             sr.stu_sex_id,
             ti.test_item_name,
             MAX(CASE WHEN grade=7 THEN test_base END ) AS test_base7,

@@ -52,6 +52,7 @@ public class OnlineSessionFilter extends AccessControlFilter
             boolean isGuest = onlineSession.getUserId() == null || onlineSession.getUserId() == 0L;
             if (isGuest == true)
             {
+                //获取用户，从用户可以获取session
                 User user = ShiroUtils.getSysUser();
                 if (user != null)
                 {

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增成绩与体质评价')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-scoreandevaluation-add">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">学号：</label>
+                <div class="col-sm-8">
+                    <select id="stuId" class="form-control" name="stuId" th:with="type=${@stuId.selectStudentDataForDropdownList()}">
+                        <option value="">所有</option>
+                        <option  th:each="stuinfo : ${type}" th:text="${stuinfo.stuNo}" th:value="${stuinfo.stuId}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">体测项目：</label>
+                <div class="col-sm-8">
+                    <select id="itemId" class="form-control" name="itemId" th:with="type=${@itemId.selectTestDataList()}">
+                        <option value="">所有</option>
+                        <option  th:each="itemid : ${type}" th:text="${itemid.testItem}" th:value="${itemid.itemId}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">测试时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="testTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">测试成绩：</label>
+                <div class="col-sm-8">
+                    <input name="testScore" class="form-control" type="text">
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/scoreandevaluation"
+
+        $("#form-scoreandevaluation-add").validate({
+            focusCleanup: true
+        });
+
+        function getStuInfo(){
+
+        }
+
+        function submitHandler() {
+            // alert(options());
+            // var adddata = document.getElementById("stuInfo").value;
+            // alert($('#form-scoreandevaluation-add').serialize());
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-scoreandevaluation-add').serialize());
+                // $.operate.save(prefix + "/add", adddata);
+            }
+        }
+
+        $("input[name='testTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>
