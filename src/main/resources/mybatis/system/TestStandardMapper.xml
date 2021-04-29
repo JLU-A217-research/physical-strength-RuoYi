@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT
             ts.test_point,
             ts.test_grade_id,
-
+            ts.test_standard_id,
             sr.stu_sex_id,
             ti.test_item_name,
             MAX(CASE WHEN grade=7 THEN test_base END ) AS test_base7,
@@ -63,6 +63,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
     </sql>
+
+    <sql id="selectAllTestStandardVo">
+        SELECT
+            sr.grade,
+            sr.test_item_id,
+            sr.stu_sex_id,
+            ts.test_point,
+            ts.test_grade_id,
+            ts.test_base,
+            ts.test_standard_id
+        FROM test_standard ts,test_grade_sex_relation sr
+        where ts.tgs_id=sr.tgs_id
+    </sql>
+
+    <select id="selectAllTestStandard" resultMap="TestStandardResult">
+        <include refid="selectAllTestStandardVo"/>
+    </select>
 
     <select id="selectTestStandardList" parameterType="TestStandard" resultMap="TestStandardResult">
 

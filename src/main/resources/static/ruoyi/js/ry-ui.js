@@ -832,6 +832,7 @@ var table = {
             // 弹出层全屏
             openFull: function (title, url, width, height) {
             	//如果是移动端，就使用自适应大小弹窗
+				// alert(url);
             	if ($.common.isMobile()) {
             	    width = 'auto';
             	    height = 'auto';
@@ -1034,6 +1035,25 @@ var table = {
             	var url = $.common.isEmpty(id) ? table.options.createUrl.replace("{id}", "") : table.options.createUrl.replace("{id}", id);
                 return url;
             },
+			//个人成绩管理-dingch
+			personalscoremanageTab: function(id){
+        		table.set();
+				$.modal.openTab("个人" + table.options.modalName, $.operate.psscoremanageUrl(id));
+			},
+			psscoremanageUrl: function(id){
+				var url = "/404.html";
+				if($.common.isNotEmpty(id)){
+					url = table.options.studentscoremanageUrl.replace("{id}", id);
+				} else{
+					var id = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+					if (id.length == 0) {
+						$.modal.alertWarning("请至少选择一条记录");
+						return;
+					}
+					url = table.options.studentscoremanageUrl.replace("{id}",id);
+				}
+				return url;
+			},
             // 修改信息
             edit: function(id) {
             	table.set();
