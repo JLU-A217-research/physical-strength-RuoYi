@@ -36,7 +36,7 @@ public class TestStandard extends BaseEntity
 
     /** 得分 */
     @Excel(name = "得分")
-    private String testPoint;
+    private long testPoint;
 
     /** 等级ID（字典） */
     @Excel(name = "等级ID", readConverterExp = "字=典")
@@ -110,12 +110,12 @@ public class TestStandard extends BaseEntity
     }
 
 
-    public void setTestPoint(String testPoint)
+    public void setTestPoint(long testPoint)
     {
         this.testPoint = testPoint;
     }
 
-    public String getTestPoint()
+    public long getTestPoint()
     {
         return testPoint;
     }
