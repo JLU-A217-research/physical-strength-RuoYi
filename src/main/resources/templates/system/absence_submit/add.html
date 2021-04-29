@@ -6,6 +6,7 @@
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <input id="userId" name="userId" type="hidden" th:value="${user.userId}" />
         <form class="form-horizontal m" id="form-absence_submit-add">
             <div class="form-group">    
                 <label class="col-sm-3 control-label">请假日期：</label>
@@ -19,9 +20,9 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">该天体测项目：</label>
                 <div class="col-sm-8">
-                    <select name="studentSex" class="form-control m-b" th:with="type=${@dict.getType('sys_user_sex')}">
-                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-                    </select>
+<!--                    <select name="studentSex" class="form-control m-b" th:with="type=${@dict.getType('sys_user_sex')}">-->
+<!--                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+<!--                    </select>-->
                 </div>
             </div>
             <div class="form-group">
@@ -62,7 +63,7 @@
         function submitHandler() {
             if ($.validate.form()) {
                 var data =  $('#form-absence_submit-add').serializeArray();
-                var stuId = 123; //后续获取当前学生id
+                var stuId = $("#userId").val();; //后续获取当前学生id
                 var handleStatus = 2; //新增默认为未处理状态
                 var absence_request_time = new Date().format("yyyy-MM-dd hh:mm:ss"); //获取当前时间
                 data.push({"name":"handleStatus", "value":handleStatus});
