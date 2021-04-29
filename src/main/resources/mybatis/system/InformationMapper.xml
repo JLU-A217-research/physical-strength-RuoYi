@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.information.mapper.InformationMapper">
+    
+    <resultMap type="Information" id="InformationResult">
+        <result property="infoId"    column="info_id"    />
+        <result property="sendId"    column="send_id"    />
+        <result property="receiveId"    column="receive_id"    />
+        <result property="sendTime"    column="send_time"    />
+        <result property="readStatus"    column="read_status"    />
+        <result property="infoType"    column="info_type"    />
+        <result property="infoTheme"    column="info_theme"    />
+        <result property="infoContent"    column="info_content"    />
+        <result property="sendName"    column="teacher_name"    />
+    </resultMap>
+
+    <sql id="selectInformationVo">
+        select info.info_id, info.send_id, info.receive_id, info.send_time, info.read_status, info.info_type, info.info_theme, info.info_content, pt.teacher_name from information info,prsn_teacher pt
+    </sql>
+
+    <select id="selectInformationList" parameterType="Information" resultMap="InformationResult">
+        <include refid="selectInformationVo"/>
+        where info.send_id = pt.teacher_id
+            <if test="params.beginSendTime != null and params.beginSendTime != ''"><!-- 开始时间检索 -->
+                AND date_format(info.send_time,'%y%m%d') &gt;= date_format(#{params.beginSendTime},'%y%m%d')
+            </if>
+            <if test="params.endSendTime != null and params.endSendTime != ''"><!-- 结束时间检索 -->
+                AND date_format(info.send_time,'%y%m%d') &lt;= date_format(#{params.endSendTime},'%y%m%d')
+            </if>
+            <if test="readStatus != null  and readStatus != ''"> and info.read_status = #{readStatus}</if>
+            <if test="infoType != null  and infoType != ''"> and info.info_type = #{infoType}</if>
+            <if test="infoTheme != null  and infoTheme != ''"> and info.info_theme = #{infoTheme}</if>
+    </select>
+    
+    <select id="selectInformationById" parameterType="Long" resultMap="InformationResult">
+        <include refid="selectInformationVo"/>
+        where info_id = #{infoId}
+    </select>
+        
+    <insert id="insertInformation" parameterType="Information" useGeneratedKeys="true" keyProperty="infoId">
+        insert into information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sendId != null">send_id,</if>
+            <if test="receiveId != null">receive_id,</if>
+            <if test="sendTime != null">send_time,</if>
+            <if test="readStatus != null">read_status,</if>
+            <if test="infoType != null">info_type,</if>
+            <if test="infoTheme != null">info_theme,</if>
+            <if test="infoContent != null">info_content,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sendId != null">#{sendId},</if>
+            <if test="receiveId != null">#{receiveId},</if>
+            <if test="sendTime != null">#{sendTime},</if>
+            <if test="readStatus != null">#{readStatus},</if>
+            <if test="infoType != null">#{infoType},</if>
+            <if test="infoTheme != null">#{infoTheme},</if>
+            <if test="infoContent != null">#{infoContent},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInformation" parameterType="Information">
+        update information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sendId != null">send_id = #{sendId},</if>
+            <if test="receiveId != null">receive_id = #{receiveId},</if>
+            <if test="sendTime != null">send_time = #{sendTime},</if>
+            <if test="readStatus != null">read_status = #{readStatus},</if>
+            <if test="infoType != null">info_type = #{infoType},</if>
+            <if test="infoTheme != null">info_theme = #{infoTheme},</if>
+            <if test="infoContent != null">info_content = #{infoContent},</if>
+        </trim>
+        where info_id = #{infoId}
+    </update>
+
+    <delete id="deleteInformationById" parameterType="Long">
+        delete from information where info_id = #{infoId}
+    </delete>
+
+    <delete id="deleteInformationByIds" parameterType="String">
+        delete from information where info_id in 
+        <foreach item="infoId" collection="array" open="(" separator="," close=")">
+            #{infoId}
+        </foreach>
+    </delete>
+
+</mapper>
