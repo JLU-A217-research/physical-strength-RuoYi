@@ -8,6 +8,7 @@ import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.information.domain.Information;
 import com.ruoyi.project.system.information.service.IInformationService;
+import com.ruoyi.project.system.user.domain.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,8 +34,10 @@ public class InformationController extends BaseController
 
     @RequiresPermissions("system:information:view")
     @GetMapping()
-    public String information()
+    public String information(ModelMap mmap)
     {
+        User user = getSysUser();
+        mmap.put("user", user);
         return prefix + "/information";
     }
 
@@ -119,5 +122,23 @@ public class InformationController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(informationService.deleteInformationByIds(ids));
+    }
+
+
+
+    @RequiresPermissions("system:information:detail")
+    @GetMapping("/detail/{infoId}")
+    public String detail(@PathVariable("infoId") Long infoId, ModelMap mmap)
+    {
+        Information information = informationService.selectInformationById(infoId);
+        information.setReadStatus("1");
+        informationService.updateInformation(information);
+        if(information.getInfoType().equals("0")){
+            information.setInfoType("体测通知");
+        }else if(information.getInfoType().equals("1")){
+            information.setInfoType("申请结果");
+        }
+        mmap.put("info",information);
+        return prefix + "/detail";
     }
 }

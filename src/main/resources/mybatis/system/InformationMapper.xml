@@ -23,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectInformationList" parameterType="Information" resultMap="InformationResult">
         <include refid="selectInformationVo"/>
         where info.send_id = pt.teacher_id
+            <if test="receiveId != null  and receiveId != ''"> and info.receive_id = #{receiveId}</if>
             <if test="params.beginSendTime != null and params.beginSendTime != ''"><!-- 开始时间检索 -->
                 AND date_format(info.send_time,'%y%m%d') &gt;= date_format(#{params.beginSendTime},'%y%m%d')
             </if>
@@ -31,12 +32,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
             <if test="readStatus != null  and readStatus != ''"> and info.read_status = #{readStatus}</if>
             <if test="infoType != null  and infoType != ''"> and info.info_type = #{infoType}</if>
-            <if test="infoTheme != null  and infoTheme != ''"> and info.info_theme = #{infoTheme}</if>
+<!--            <if test="infoTheme != null  and infoTheme != ''"> and info.info_theme = #{infoTheme}</if>-->
+            <if test="infoTheme != null and infoTheme != ''">
+                AND info.info_theme like concat('%', #{infoTheme}, '%')
+            </if>
     </select>
     
     <select id="selectInformationById" parameterType="Long" resultMap="InformationResult">
         <include refid="selectInformationVo"/>
-        where info_id = #{infoId}
+        where info.info_id = #{infoId} and  info.send_id = pt.teacher_id
     </select>
         
     <insert id="insertInformation" parameterType="Information" useGeneratedKeys="true" keyProperty="infoId">
