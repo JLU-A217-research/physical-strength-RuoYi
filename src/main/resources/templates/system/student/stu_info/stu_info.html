@@ -67,10 +67,11 @@
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="button" class="btn btn-sm btn-primary" onclick="submitChangPassword()"><i class="fa fa-check"></i>保 存</button>&nbsp;
+                <button type="button" class="btn btn-sm btn-primary" onclick="submitStudentInfo()"><i class="fa fa-check"></i>保 存</button>&nbsp;
                 <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
             </div>
         </div>
+
 
 
     </div>
@@ -80,5 +81,69 @@
 
 <!--</body>--></div></div>
 
+<script>
+
+    /*用户信息-修改*/
+    $("#form-student_info-edit").validate({
+        onkeyup: false,
+        rules:{
+
+
+            stuPhone:{
+                required:true,
+                isPhone:true,
+                remote: {
+                    url: ctx + "system/user/checkPhoneUnique",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "userId": function() {
+                            return $("#userId").val();
+                        },
+                        "phonenumber": function() {
+                            return $.common.trim($("#phonenumber").val());
+                        }
+                    },
+                    dataFilter: function (data, type) {
+                        return $.validate.unique(data);
+                    }
+                }
+            },
+        },
+        messages: {
+
+            "phonenumber":{
+                required: "请输入手机号码",
+                remote: "手机号码已经存在"
+            }
+        },
+        focusCleanup: true
+    });
+
+
+
+    function submitStudentInfo() {
+        if ($.validate.form()) {
+            $.operate.saveModal(ctx + "system/student/stu_info/stu_info/update", $('#form-stu_info-edit').serialize());
+        }
+    }
+
+</script>
+
+
+
+<!--<th:block th:include="include :: footer" />-->
+<!--<script th:inline="javascript">-->
+<!--    var prefix = ctx + "system/standard";-->
+<!--    $("#form-standard-edit").validate({-->
+<!--        focusCleanup: true-->
+<!--    });-->
+
+<!--    function submitHandler() {-->
+<!--        if ($.validate.form()) {-->
+<!--            $.operate.save(prefix + "/edit", $('#form-standard-edit').serialize());-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
 </body>
 </html>

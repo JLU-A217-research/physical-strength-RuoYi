@@ -10,38 +10,14 @@
                 <form id="formId">
                     <div class="select-list">
                         <ul>
-<!--                            <li>-->
-<!--                                <label>年级-性别-项目ID：</label>-->
-<!--                                <input type="text" name="tgsId"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>测试基准：</label>-->
-<!--                                <input type="text" name="testBase"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>得分：</label>-->
-<!--                                <input type="text" name="testPoint"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>等级ID：</label>-->
-<!--                                <input type="text" name="testGradeId"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>体测项目ID：</label>-->
-<!--                                <input type="text" name="testItemId"/>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <label>年级：</label>-->
-<!--                                <input type="text" name="grade"/>-->
-<!--                            </li>-->
-<!--                            -->
+
                             <li>
                                 <label>体测项目名称：</label>
                                 <select id="testItemId" onchange="getClass()" name="testItemId" th:with="type=${@testItemId.selectTestItemDataList()}">
                                     <option value="">所有</option>
                                     <option  th:each="testItemId1 : ${type}" th:text="${testItemId1.testItemName}" th:value="${testItemId1.testItemId}"></option>
                                 </select>
-<!--                                <input type="text" name="testItemName"/>-->
+
                             </li>
                             <li>
 
@@ -103,24 +79,24 @@
                     },
                     {
                         field: 'stuSexId',
-                        title: '性别ID',
+                        title: '性别',
                         formatter: function(value, row, index) {
                             return $.table.selectDictLabel(datas, value);
                         }
+                    },
+                    {
+                        field: 'grade',
+                        title: '年级'
                     },
                 {
                     field: 'testStandardId',
                     title: '测试指标项ID',
                     visible: false
                 },
-                // {
-                //     field: 'tgsId',
-                //     title: '年级-性别-项目ID'
-                //
-                // },
+
                     {
                         field: 'testGradeId',
-                        title: '等级ID',
+                        title: '等级',
                         formatter: function(value, row, index) {
                             return $.table.selectDictLabel(datasg, value);
                         }
@@ -130,27 +106,13 @@
                         title: '得分'
                     },
                 {
-                    field: 'testBase7',
-                    title: '七年级测试基准'
+                    field: 'testBase',
+                    title: '测试基准'
                 },
-                    {
-                        field: 'testBase8',
-                        title: '八年级测试基准'
-                    },
-                    {
-                        field: 'testBase9',
-                        title: '九年级测试基准'
-                    },
 
 
-                    // {
-                    //     field: 'testItemId',
-                    //     title: '体测项目ID'
-                    // },
-                    // {
-                    //     field: 'grade',
-                    //     title: '年级'
-                    // },
+
+
 
 
                 {

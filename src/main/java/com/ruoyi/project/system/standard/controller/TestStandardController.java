@@ -6,6 +6,7 @@ import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.CacheUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.project.system.dict.domain.DictData;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -98,13 +99,14 @@ public class TestStandardController extends BaseController
     /**
      * 修改测试指标 
      */
-    @GetMapping("/edit/{testPoint}")
-    public String edit(@PathVariable("testPoint") String testPoint, ModelMap mmap)
+    @GetMapping("/edit/{testStandardId}")
+    public String edit(@PathVariable("testStandardId") Long testStandardId, ModelMap mmap)
     {
-        TestStandard testStandard = testStandardService.selectTestStandardById(testPoint);
-        mmap.put("testPoint", testPoint);
+        TestStandard testStandard = testStandardService.selectTestStandardById(testStandardId);
+        mmap.put("testStandard", testStandard);
         return prefix + "/edit";
     }
+
 
     /**
      * 修改保存测试指标 
