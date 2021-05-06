@@ -52,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update test_grade_sex_relation
         <trim prefix="SET" suffixOverrides=",">
             <if test="grade != null">grade = #{grade},</if>
-            <if test="testItemId != null">test_item_id = #{testItemId},</if>
+            <if test="testItemId != null">sr.test_item_id = #{testItemId},</if>
             <if test="stuSexId != null">stu_sex_id = #{stuSexId},</if>
         </trim>
         where tgs_id = #{tgsId}
