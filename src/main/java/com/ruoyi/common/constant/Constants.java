@@ -93,7 +93,18 @@ public class Constants
     public static final String RESOURCE_PREFIX = "/profile";
 
 
-    public static final String Test_Standar = "Standar";
+    public static final String Test_Standar_Base = "StandarBase";
 
-    public static final String Test_Standar_Key = "Standar_Key";
+    public static final String Test_Standar_Base_Key = "StandarBaseKey";
+    public static final String Test_Standar_Base_Length = "StandarBaseLength";
+
+    public static final String Test_Standar_Base_Length_Key = "StandarBaseLengthKey";
+
+    public static final String Test_Standar_Point = "StandarPoint";
+
+    public static final String Test_Standar_Point_Key = "StandarPointKey";
+
+    public static final String Test_Standar_Grade = "StandarGrade";
+
+    public static final String Test_Standar_Grade_Key = "StandarGradeKey";
 }

@@ -58,6 +58,12 @@ public class ScoreAndEvaluationServiceImpl implements IScoreAndEvaluationService
         return scoreAndEvaluationMapper.selectScoreList(score);
     }
 
+    @Override
+    public List<ScoreAndEvaluation> selectStuList(ScoreAndEvaluation score)
+    {
+        return scoreAndEvaluationMapper.selectStuList(score);
+    }
+
     /**
      * 新增成绩与体质评价
      * 
@@ -109,6 +115,11 @@ public class ScoreAndEvaluationServiceImpl implements IScoreAndEvaluationService
     public int deleteScoreById(Long scoreRecordId)
     {
         return scoreAndEvaluationMapper.deleteScoreById(scoreRecordId);
+    }
+
+    @Override
+    public ScoreAndEvaluation selectStuById(Long stuId){
+        return scoreAndEvaluationMapper.selectStuById(stuId);
     }
 
     @Override

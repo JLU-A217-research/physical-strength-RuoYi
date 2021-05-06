@@ -59,6 +59,5 @@ public interface ITestStandardService
      */
     public int deleteTestStandardById(Long testStandardId);
 
-//    public List<TestStandard> sellctAllStandar();
 
 }

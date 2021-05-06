@@ -66,4 +66,8 @@ public interface IScoreService
      * @return 结果
      */
     public int deleteScoreById(Long scoreRecordId);
+
+    public long creatPoint(Score s);
+
+    public long creatTestGrade(Score s);
 }
