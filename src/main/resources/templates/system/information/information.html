@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('消息列表')" />
+    <th:block th:include="include :: bootstrap-select-css" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <input id="receiveId" name="receiveId" type="hidden" th:value="${user.userId}" />
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>消息主题：</label>
+                                <input type="text" name="infoTheme"/>
+                            </li>
+                            <li>
+                                <label>消息类型：</label>
+                                <select name="infoType" th:with="type=${@dict.getType('info_type')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>阅读状态：</label>
+                                <select name="readStatus" th:with="type=${@dict.getType('read_status')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li class="select-time">
+                                <label>发送日期：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginSendTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endSendTime]"/>
+                            </li>
+
+
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:information:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:information:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+     <th:block th:include="include :: bootstrap-select-js" />
+    <script th:inline="javascript">
+        var removeFlag = [[${@permission.hasPermi('system:information:remove')}]];
+        var detailFlag = [[${@permission.hasPermi('system:information:detail')}]];
+        var prefix = ctx + "system/information";
+        var datas1 = [[${@dict.getType('read_status')}]];
+        var datas2 = [[${@dict.getType('info_type')}]];
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                detailUrl: prefix + "/detail/{id}",
+                modalName: "消息",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'infoId',
+                    title: '消息ID',
+                    visible: false
+                },
+                {
+                    field: 'sendName',
+                    title: '发送方'
+                },
+                {
+                    field: 'sendTime',
+                    title: '发送时间'
+                },
+                {
+                    field: 'readStatus',
+                    title: '阅读状态',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(datas1, value);
+                    }
+                },
+                {
+                    field: 'infoType',
+                    title: '消息类型',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(datas2, value);
+                    }
+                },
+                {
+                    field: 'infoTheme',
+                    title: '消息主题'
+                },
+                {
+                    field: 'infoContent',
+                    title: '消息内容'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-warning btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.infoId + '\')"><i class="fa fa-search"></i>详细</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.infoId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>
