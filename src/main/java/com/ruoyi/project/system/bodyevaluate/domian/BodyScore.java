@@ -1,20 +1,14 @@
-package com.ruoyi.project.system.studentscoremanage.domain;
+package com.ruoyi.project.system.bodyevaluate.domian;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
-/**
- * 学生成绩管理对象 score
- * 
- * @author ruoyi
- * @date 2021-04-02
- */
-public class Score extends BaseEntity
-{
+import java.util.Date;
+
+public class BodyScore extends BaseEntity {
+
     private static final long serialVersionUID = 1L;
 
     /** 成绩记录ID */
@@ -68,7 +62,7 @@ public class Score extends BaseEntity
 
     public void setTestGrade(String testGrade) { this.testGrade = testGrade; }
 
-    /** 测试等级Id */
+    /** 测试等级 */
     @Excel(name = "测试等级")
     private String testGrade;
 
@@ -199,22 +193,23 @@ public class Score extends BaseEntity
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("scoreRecordId", getScoreRecordId())
-            .append("stuId", getStuId())
-            .append("tgsId", getTgsId())
-            .append("testTime", getTestTime())
-            .append("testScore", getTestScore())
-            .append("stuNo", getStuNo())
-            .append("classGrade", getClassGrade())
-            .append("itemId", getItemId())
-            .append("itemName", getItemName())
-            .append("itemUnit", getItemUnit())
-            .append("testPoint", getTestPoint())
-            .append("testGradeId", getTestGradeId())
-            .append("testGrade",getTestGrade())
-            .append("sexId", getSexId())
-            .append("scoreRelation", getScoreRelation())
-            .toString();
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("scoreRecordId", getScoreRecordId())
+                .append("stuId", getStuId())
+                .append("tgsId", getTgsId())
+                .append("testTime", getTestTime())
+                .append("testScore", getTestScore())
+                .append("stuNo", getStuNo())
+                .append("classGrade", getClassGrade())
+                .append("itemId", getItemId())
+                .append("itemName", getItemName())
+                .append("itemUnit", getItemUnit())
+                .append("testPoint", getTestPoint())
+                .append("testGradeId", getTestGradeId())
+                .append("testGrade",getTestGrade())
+                .append("sexId", getSexId())
+                .append("scoreRelation", getScoreRelation())
+                .toString();
     }
+
 }

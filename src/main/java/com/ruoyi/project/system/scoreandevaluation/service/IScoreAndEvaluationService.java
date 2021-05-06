@@ -28,6 +28,8 @@ public interface IScoreAndEvaluationService
      */
     public List<ScoreAndEvaluation> selectScoreList(ScoreAndEvaluation score);
 
+    public List<ScoreAndEvaluation> selectStuList(ScoreAndEvaluation score);
+
     /**
      * 新增成绩与体质评价
      * 
@@ -70,4 +72,6 @@ public interface IScoreAndEvaluationService
     public int deleteScoreById(Long scoreRecordId);
 
     public String importScore(List<ScoreAndEvaluation> scoreList, Boolean isUpdateSupport);
+
+    public ScoreAndEvaluation selectStuById(Long stuId);
 }

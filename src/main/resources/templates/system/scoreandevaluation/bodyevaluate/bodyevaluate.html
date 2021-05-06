@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('成绩与体质评价列表')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            年级：<input type="text" name="stuEnrollYear"/>
+                        </li>
+                        <li>
+                            班级：<input type="text" name="classNo"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>重置</a>
+                           </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+    var prefix = ctx + "system/scoreandevaluation/bodyevaluate";
+
+    $(function() {
+        var options = {
+            url: prefix + "/list",
+            modalName: "成绩与体质评价",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'scoreRecordId',
+                    title: '成绩记录ID',
+                    visible: false
+                },
+                {
+                    field: 'stuId',
+                    title: '学生ID',
+                    visible: false
+                },
+                {
+                    field: 'tgsId',
+                    title: '年级-性别-项目ID',
+                    visible: false
+                },
+                {
+                    field: 'testTime',
+                    title: '测试时间',
+                    visible: false
+                },
+                {
+                    field: 'testScore',
+                    title: '测试成绩',
+                    visible: false
+                },
+                {
+                    field: 'stuNo',
+                    title: '学号',
+                    // visible: false
+                },
+                {
+                    field: 'stuName',
+                    title: '姓名'
+                },
+                {
+                    field: 'stuSex',
+                    title: '性别'
+                },
+                {
+                    field: 'classNo',
+                    title: '班级'
+                }]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

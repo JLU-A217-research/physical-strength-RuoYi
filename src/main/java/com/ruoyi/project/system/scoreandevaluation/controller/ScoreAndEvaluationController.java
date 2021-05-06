@@ -55,8 +55,16 @@ public class ScoreAndEvaluationController extends BaseController
     public TableDataInfo list(ScoreAndEvaluation score)
     {
         startPage();
-        long[][][][] std = (long[][][][])CacheUtils.get(Constants.Test_Standar, Constants.Test_Standar_Key);
-        System.out.println(std[7][1][0][1]+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        List<ScoreAndEvaluation> list = scoreAndEvaluationService.selectStuList(score);
+        return getDataTable(list);
+    }
+
+    @RequiresPermissions("system:scoreandevaluation:importList")
+    @PostMapping("/importList")
+    @ResponseBody
+    public TableDataInfo importList(ScoreAndEvaluation score)
+    {
+        startPage();
         List<ScoreAndEvaluation> list = scoreAndEvaluationService.selectScoreList(score);
         return getDataTable(list);
     }
@@ -127,19 +135,16 @@ public class ScoreAndEvaluationController extends BaseController
     @GetMapping("/scoreimport")
     public String scoreimport(){return prefix + "/scoreimport";}
 
+    @GetMapping("/bodyEvaluate/bodyEvaluate")
+    public String bodyEvaluate(){return prefix + "/bodyEvaluate/bodyEvaluate";}
+
     /**
      * 个人成绩管理
      */
-//    @GetMapping("/personalscoremanage/{scoreRecordId}")
-//    public String personalscoremanage(@PathVariable("scoreRecordId") Long scoreRecordId, ModelMap mmap){
-//        ScoreAndEvaluation score = scoreAndEvaluationService.selectScoreById(scoreRecordId);//功能错误
-//        mmap.put("score", score);
-//        return prefix + "/personalscoremanage";
-////        return "system/score/score";
-//    }
-     @GetMapping("/personscore/studentscoremanage/{scoreRecordId}")
-     public String personalscoremanage(@PathVariable("scoreRecordId") Long scoreRecordId, ModelMap mmap){
-          ScoreAndEvaluation score = scoreAndEvaluationService.selectScoreById(scoreRecordId);//功能错误
+
+     @GetMapping("/personscore/studentscoremanage/{stuId}")
+     public String personalscoremanage(@PathVariable("stuId") Long stuId, ModelMap mmap){
+          ScoreAndEvaluation score = scoreAndEvaluationService.selectStuById(stuId);//功能错误
           mmap.put("score", score);
           return prefix + "/personscore/studentscoremanage";
      }

@@ -11,21 +11,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="classGrade"    column="class_grade"    />
         <result property="classNo"    column="class_no"    />
         <result property="stuName"    column="stu_name"    />
-<!--        <result property="absenceRequestTime"    column="absence_request_time"    />-->
+        <result property="absenceRequestTime"    column="absence_request_time"    />
         <result property="absenceDate"    column="absence_date"    />
         <result property="handleStatus"    column="handle_status"    />
         <result property="absenceReason"    column="absence_reason"    />
     </resultMap>
 
     <sql id="selectAbsenceInfoVo">
-        select ai.absence_info_id, ai.absence_date, ai.handle_status, ai.absence_reason, ps.stu_no, ps.stu_name,cgi.class_grade,cgi.class_no from absence_info ai,prsn_student ps,class_grade_info cgi
+        select ai.absence_info_id, ai.absence_date, ai.handle_status, ai.absence_reason, ai.absence_request_time, ps.stu_no, ps.stu_name,cgi.class_grade,cgi.class_no from absence_info ai,prsn_student ps,class_grade_info cgi
     </sql>
 
     <select id="selectAbsenceInfoList" parameterType="AbsenceInfo" resultMap="AbsenceInfoResult">
         <include refid="selectAbsenceInfoVo"/>
-            where ai.stu_id=ps.stu_id and ps.grade_class_id=cgi.grade_class_id
+            where ai.stu_id=ps.stu_no and ps.grade_class_id=cgi.grade_class_id
 <!--            <if test="stuId != null and stuId!= ''"> and stu_id = #{stuId}</if>-->
-            <if test="stuNo != null and stuNo != ''"> and ps.stu_no = #{stuNo}</if>
+            <if test="stuNo != null and stuNo != ''">
+                AND ps.stu_no like concat('%', #{stuNo}, '%')
+            </if>
             <if test="classGrade != null "> and cgi.class_grade = #{classGrade}</if>
         <if test="classNo != null "> and cgi.class_no = #{classNo}</if>
 <!--            <if test="stuName != null and stuName != ''"> and stu_name = #{stuName}</if>-->

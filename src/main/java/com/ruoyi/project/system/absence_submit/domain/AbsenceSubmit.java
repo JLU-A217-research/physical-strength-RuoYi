@@ -19,7 +19,7 @@ public class AbsenceSubmit extends BaseEntity
     private Long absenceInfoId;
 
     /** 学生ID */
-    @Excel(name = "学生ID")
+//    @Excel(name = "学生ID")
     private Long stuId;
 
     /** 申请请假时间 */
@@ -31,7 +31,7 @@ public class AbsenceSubmit extends BaseEntity
     private Date absenceDate;
 
     /** 处理状态 */
-    @Excel(name = "处理状态")
+    @Excel(name = "处理状态",readConverterExp = "0=同意,1=不同意,2=待处理")
     private String handleStatus;
 
     @Override
