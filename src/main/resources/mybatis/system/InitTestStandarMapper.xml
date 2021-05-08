@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.standard.mapper.InitTestStandardMapper">
+
+    <resultMap type="InitTestStandard" id="InitTestStandardResult">
+        <result property="testStandardId"    column="test_standard_id"    />
+        <result property="testBase"    column="test_base"    />
+        <result property="testPoint"    column="test_point"    />
+        <result property="testGradeId"    column="test_grade_id"    />
+        <result property="testItemId"    column="test_item_id"    />
+        <result property="grade"    column="grade"    />
+        <result property="stuSexId"    column="stu_sex_id"    />
+
+    </resultMap>
+
+    <sql id="selectAllTestStandardVo">
+        SELECT
+            ts.test_standard_id,
+            sr.grade,
+            sr.test_item_id,
+            sr.stu_sex_id,
+            ts.test_point,
+            ts.test_grade_id,
+            ts.test_base
+        FROM test_standard ts,test_grade_sex_relation sr
+        where ts.tgs_id=sr.tgs_id
+    </sql>
+
+    <select id="selectAllTestStandard" resultMap="InitTestStandardResult">
+        <include refid="selectAllTestStandardVo"/>
+    </select>
+
+
+</mapper>

@@ -21,16 +21,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectScoreVo">
-# 这里的score的所有查询和score的表都可以优化去掉
         SELECT s.score_record_id, s.stu_id, s.tgs_id, ti.test_item_id, ti.test_item_name, s.test_time, s.test_score,ps.stu_no, ps.stu_name, sdd.dict_label, cgi.class_no, ps.stu_enroll_year
         FROM score s,prsn_student ps, class_grade_info cgi, sys_dict_data sdd, test_item ti, test_grade_sex_relation tgsr
         WHERE  s.stu_id = ps.stu_id AND ps.grade_class_id = cgi.grade_class_id AND sdd.dict_type = 'sys_user_sex' AND ps.stu_sex = sdd.dict_value
                 AND s.tgs_id= tgsr.tgs_id AND tgsr.test_item_id = ti.test_item_id
     </sql>
 
+    <sql id="selectStuVo">
+        SELECT ps.stu_id, ps.stu_no, ps.stu_name, sdd.dict_label, cgi.class_no, ps.stu_enroll_year
+        FROM prsn_student ps, class_grade_info cgi, sys_dict_data sdd
+        WHERE  ps.grade_class_id = cgi.grade_class_id AND sdd.dict_type = 'sys_user_sex' AND ps.stu_sex = sdd.dict_value
+    </sql>
+
+    <select id="selectStuList" parameterType="ScoreAndEvaluation" resultMap="ScoreResult">
+        <include refid="selectStuVo"/>
+        <if test="stuId != null "> and stu_id = #{stuId}</if>
+        <if test="tgsId != null "> and tgs_id = #{tgsId}</if>
+        <if test="itemId != null "> and test_item_id = #{itemId}</if>
+        <if test="itemName != null and itemName != '' "> and test_item_name = #{itemName}</if>
+        <if test="testTime != null "> and test_time = #{testTime}</if>
+        <if test="testScore != null "> and test_score = #{testScore}</if>
+        <if test="stuNo != null "> and stu_no = #{stuNo}</if>
+        <if test="stuName != null and stuName != '' "> and stu_name = #{stuName}</if>
+        <if test="stuSex != null and stuSex != '' " > and dict_label = #{stuSex}</if>
+        <if test="classNo != null "> and class_no = #{classNo}</if>
+        <if test="stuEnrollYear != null "> and stu_enroll_year = #{stuEnrollYear}</if>
+    </select>
+
     <select id="selectScoreList" parameterType="ScoreAndEvaluation" resultMap="ScoreResult">
         <include refid="selectScoreVo"/>
-<!--         <where>  -->
             <if test="stuId != null "> and stu_id = #{stuId}</if>
             <if test="tgsId != null "> and tgs_id = #{tgsId}</if>
             <if test="itemId != null "> and test_item_id = #{itemId}</if>
@@ -42,7 +61,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="stuSex != null and stuSex != '' " > and dict_label = #{stuSex}</if>
             <if test="classNo != null "> and class_no = #{classNo}</if>
             <if test="stuEnrollYear != null "> and stu_enroll_year = #{stuEnrollYear}</if>
-<!--        </where>-->
     </select>
 
     <select id="selectScoreById" parameterType="Long" resultMap="ScoreResult">
@@ -50,10 +68,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         AND s.score_record_id = #{scoreRecordId}
     </select>
 
-<!--    <select id="selectScoreByStuId" parameterType="Long" resultMap="ScoreResult">-->
-<!--        <include refid="selectScoreVo"/>-->
-<!--        AND s.score_record_id = #{scoreRecordId}-->
-<!--    </select>-->
+    <select id="selectStuById" parameterType="Long" resultMap="ScoreResult">
+        <include refid="selectStuVo"/>
+        AND ps.stu_id = #{stuId}
+    </select>
 
     <select id="selectTgsId" parameterType="ScoreAndEvaluation" resultType="Long">
         SELECT

@@ -19,6 +19,8 @@ public interface ScoreAndEvaluationMapper
      */
     public ScoreAndEvaluation selectScoreById(Long scoreRecordId);
 
+    public ScoreAndEvaluation selectStuById(long stuId);
+
     /**
      * 查询成绩与体质评价列表
      * 
@@ -26,6 +28,9 @@ public interface ScoreAndEvaluationMapper
      * @return 成绩与体质评价集合
      */
     public List<ScoreAndEvaluation> selectScoreList(ScoreAndEvaluation score);
+
+    public List<ScoreAndEvaluation> selectStuList(ScoreAndEvaluation score);
+
 
     /**
      * 新增成绩与体质评价

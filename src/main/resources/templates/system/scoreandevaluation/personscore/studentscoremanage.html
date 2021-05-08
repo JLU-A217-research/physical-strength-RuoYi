@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-12 search-collapse">
                 <form id="formId" name="headform" th:object="${score}">
-                    <input id="scoreRecordId" name="scoreRecordId" th:field="*{scoreRecordId}" type="hidden">
+                    <input id="stuId" name="stuId" th:field="*{stuId}" type="hidden">
                     <div class="select-list">
                         <ul>
                             <li>
@@ -21,11 +21,11 @@
                             </li>
                             <li class="select-time">
                                 <label>性别：</label>
-                                <input name="testTime" th:value="${#dates.format(score.testTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text" readonly="true">
+                                <input name="stuSex" th:value="*{stuSex}" class="form-control" type="text" readonly="true">
                             </li>
                             <li>
                                 <label>班级：</label>
-                                <input name="testScore" th:field="*{testScore}" class="form-control" type="text" readonly="true">
+                                <input name="classNo" th:field="*{classNo}" class="form-control" type="text" readonly="true">
                             </li>
                         </ul>
                     </div>
@@ -94,7 +94,7 @@
                         title: '得分',
                     },
                     {
-                        field: 'testGradeId',
+                        field: 'testGrade',
                         title: '等级',
                     },
                     {

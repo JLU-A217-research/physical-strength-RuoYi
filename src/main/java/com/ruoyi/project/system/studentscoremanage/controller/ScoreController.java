@@ -1,9 +1,11 @@
 package com.ruoyi.project.system.studentscoremanage.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.CacheUtils;
+import com.ruoyi.project.system.standard.domain.InitTestStandard;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,20 +54,30 @@ public class ScoreController extends BaseController
     @ResponseBody
     public TableDataInfo list(Score score)
     {
-        long[][][][] testStand = (long[][][][]) CacheUtils.get(Constants.Test_Standar, Constants.Test_Standar_Key);
         startPage();
         List<Score> list = scoreService.selectScoreListByStu(score);
-        for(int i=0;i<list.size();i++){
-            Score s = list.get(i);
-            if(s.getScoreRelation()==0){
-//                for(int j=0;j<)
-            }
-            else{
-
-            }
+        int i;
+        Score s;
+        for(i=0;i<list.size();i++){
+            s = list.get(i);
+            list.get(i).setTestPoint(creatPoint(s));
+            long gradeId = creatTestGrade(s);
+            list.get(i).setTestGradeId(gradeId);
+            if(gradeId == 0)    list.get(i).setTestGrade("优");
+            else if(gradeId == 1)    list.get(i).setTestGrade("良");
+            else if(gradeId == 2)    list.get(i).setTestGrade("中");
+            else    list.get(i).setTestGrade("差");
         }
         return getDataTable(list);
     }
+
+    long creatPoint(Score s){
+        return scoreService.creatPoint(s);
+    }
+    long creatTestGrade(Score s){
+        return scoreService.creatTestGrade(s);
+    }
+
 
     /**
      * 导出学生成绩管理列表
