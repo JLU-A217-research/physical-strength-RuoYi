@@ -4,81 +4,186 @@
     <th:block th:include="include :: header('学生信息 ')" />
     <th:block th:include="include :: datetimepicker-css" />
 </head>
-<div class="white-bg">
+
 
 <div class="center">
 <p class="user-info-center" onclick="avatar()"><img class="img-circle img-lg" src="/profile/avatar/2021/04/14/deefc580-c011-4b3d-bb1b-4604df9647b3.png"></p>
 
 </div>
 
-<div class="bootstrap-table bootstrap3">
 
 
-    <div class="fixed-table-container" style="padding-bottom: 0px;">
-        <div class="fixed-table-header" style="display: none;"><table></table></div>
-        <div class="fixed-table-body">
-            <div class="fixed-table-loading table table-bordered table-hover" style="top: 34px; display: none;"id="stu_info">
+    <form class="form-horizontal m" id="form-student-editsave" th:object="${prsnStudent}">
 
-                <td style>
-                    <a href="javascript:void(0)" data-name="userCode" data-pk="undefined" data-value="1000001" class="editable editable-click" data-original-title="" title="">1000001</a>
-                </td>
+        <input name="stuId" id="stuId" type="hidden" th:field="*{stuId}" >
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label is-required">姓名：</label>
+                            <div class="col-sm-8">
+                                <input name="stuName" placeholder="请输入学生姓名" class="form-control" type="text" maxlength="30" th:field="*{stuName}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label is-required">性别：</label>
+                            <div class="col-sm-8">
+                                <input name="userName" placeholder="请输入学生性别" class="form-control" type="text" maxlength="30" th:field="*{stuSex}" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label is-required">学号：</label>
+                    <div class="col-sm-8">
+                        <input name="stuNo" placeholder="请输入学生学号" class="form-control" type="text" maxlength="30" th:field="*{stuNo}" required>
+                    </div>
+                </div>
             </div>
-            <table id="bootstrap-table" class="table table-bordered table-hover"><thead class=""></thead><tbody>
-            <tr data-index="0">
-                <td style="">姓名：</td><td style=""> <input type="text" maxlength="50" class="form-control" name="email" th:value="${prsnStudent.stuName}"></td>
-                <td style="">性别：</td><td style=""><input type="text" maxlength="50" class="form-control" name="email" th:value="${prsnStudent.stuSex}"></td></tr>
-            <tr data-index="1">
-                <td style="">学号：</td><td style=""><input type="text" maxlength="50" class="form-control" name="email" th:value="${prsnStudent.stuNo}"></td>
-                <td style="">出生日期：</td><td style=""><input type="text" maxlength="50" class="form-control" name="email" th:value="${prsnStudent.stuBirth}"></td></tr>
-
-
-            <tr data-index="2">
-                <td style="">年龄：</td><td style=""><input type="text" maxlength="50" class="form-control" name="email" th:value="${prsnStudent.stuName}"></td>
-                <td style="">民族：</td><td style=""><input type="text" maxlength="50" class="form-control" name="email" th:value="${prsnStudent.stuNationId}"></td></tr>
-
-
-            <tr data-index="3">
-                <td style="">身份证号：</td><td style=""><input type="text" maxlength="50" class="form-control" name="email" th:value="${prsnStudent.stuNid}"></td>
-                <td style="">年级：</td><td style=""><input type="text" maxlength="50" class="form-control" name="email" th:value="${prsnStudent.gradeClassId}"></td></tr>
-
-
-            <tr data-index="4">
-                <td style="">班级：</td><td style=""><input type="text" maxlength="50" class="form-control" name="email" th:value="${prsnStudent.stuName}"></td>
-                <td style="">联系电话</td><td style=""><input type="text" maxlength="50" class="form-control" name="email" th:value="${prsnStudent.stuName}"></td></tr>
-
-            <tr data-index="5">
-                <td style="">微信：</td>><td style=""><input type="text" maxlength="50" class="form-control" name="email" th:value="${prsnStudent.stuWechat}"></td>
-                <td style="">联系电话</td><td style=""><input type="text" maxlength="50" class="form-control" name="email" th:value="${prsnStudent.stuPhone}"></td></tr>
-
-        <div class="fixed-table-footer"><table><thead><tr></tr></thead></table></div></table>
-    </div></table>
-
-
-<!--    <div class="btn-group-sm" id="toolbar1" role="group">-->
-<!--        <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:item:add">-->
-<!--            <i class="fa fa-plus"></i></a>-->
-<!--     <button type="button" class="btn btn-sm btn-primary" onclick="submitStuInfo()"><i class="fa fa-plus"></i>保 存</button>-->
-
-<!--        <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:item:edit">-->
-<!--            <i class="fa fa-edit"></i> </a>-->
-<!--     <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>-->
-
-
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="button" class="btn btn-sm btn-primary" onclick="submitChangPassword()"><i class="fa fa-check"></i>保 存</button>&nbsp;
-                <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label is-required">出生日期：</label>
+                    <div class="col-sm-8">
+                        <input name="stuBirth" placeholder="请输入出生日期" class="form-control" type="text" maxlength="30" th:field="*{stuBirth}" required>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label is-required">年龄：</label>
+                    <div class="col-sm-8">
+                        <input name="stuName" placeholder="请输入学生学号" class="form-control" type="text" maxlength="30" th:field="*{stuName}" required>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label is-required">民族：</label>
+                    <div class="col-sm-8">
+                        <input name="stuNationId" placeholder="请输入出生日期" class="form-control" type="text" maxlength="30" th:field="*{stuNationId}" required>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label is-required">身份证号：</label>
+                    <div class="col-sm-8">
+                        <input name="stuNid" placeholder="请输入学生学号" class="form-control" type="text" maxlength="30" th:field="*{stuNid}" required>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label is-required">年级：</label>
+                    <div class="col-sm-8">
+                        <input name="gradeClassId" placeholder="请输入出生日期" class="form-control" type="text" maxlength="30" th:field="*{gradeClassId}" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label is-required">班级：</label>
+                    <div class="col-sm-8">
+                        <input name="stuName" placeholder="请输入学生学号" class="form-control" type="text" maxlength="30" th:field="*{stuName}" required>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label is-required">联系电话：</label>
+                    <div class="col-sm-8">
+                        <input name="stuName" placeholder="请输入出生日期" class="form-control" type="text" maxlength="30" th:field="*{stuName}" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label is-required">微信：</label>
+                    <div class="col-sm-8">
+                        <input name="stuWechat" placeholder="请输入学生学号" class="form-control" type="text" maxlength="30" th:field="*{stuWechat}" required>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label is-required">联系电话：</label>
+                    <div class="col-sm-8">
+                        <input name="stuPhone" placeholder="请输入出生日期" class="form-control" type="text" maxlength="30" th:field="*{stuPhone}" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+
+
+    <div class="row">
+        <div class="col-sm-offset-5 col-sm-10">
+            <button type="button" class="btn btn-sm btn-primary" onclick="submitUserInfo()"><i class="fa fa-check"></i>保 存</button>&nbsp;
+            <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+        </div>
     </div>
 
-</div>
 
 
-<!--</body>--></div></div>
 
+
+
+
+
+
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<script th:inline="javascript">
+    var prefix = ctx + "system/student/stu_info";
+    $("#form-student-edit").validate({//验证表单
+        focusCleanup: true
+    });
+
+    // function submitHandler() {
+    //     if ($.validate.form()) {
+    //         $.operate.save(prefix + "/edit", $('#form-student-edit').serialize());//.serialize() 方法创建以标准 URL 编码表示的文本字符串。
+    //     }
+    // }
+
+    function submitUserInfo() {
+        alert("sancjaslas");
+        if ($.validate.form()) {
+            $.operate.saveModal(prefix + "/update", $('#form-student-editsave').serialize());
+        }
+    }
+
+    $("input[name='stuBirth']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    }).on('changeDate',function() {
+        var time = $("input[name='stuBirth']").val();
+        var times = time.split("-")
+        var date = new Date()
+        var nowyear = date.getFullYear()
+        //document.getElementById("t2").value=nowyear-times[0];
+    });
+</script>
 </body>
 </html>

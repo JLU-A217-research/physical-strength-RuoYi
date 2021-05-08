@@ -1,6 +1,8 @@
 package com.ruoyi.project.system.teacher.service;
 
 import java.util.List;
+
+
 import com.ruoyi.project.system.teacher.domain.PrsnTeacher;
 
 /**
@@ -19,6 +21,13 @@ public interface IPrsnTeacherService
      */
     public PrsnTeacher selectPrsnTeacherById(Long teacherId);
 
+    /**
+     * 根据accountId找到stuId
+     *
+     * @param accountId 教师信息 ID
+     * @return 教师信息
+     */
+    public PrsnTeacher selectteaIdByAccountId(Long accountId);
     /**
      * 查询教师信息 列表
      * 

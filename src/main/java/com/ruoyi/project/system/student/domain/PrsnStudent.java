@@ -31,6 +31,9 @@ public class PrsnStudent extends BaseEntity
     @Excel(name = "学生姓名")
     private String stuName;
 
+    /** 学生性别ID */
+    @Excel(name = "学生性别ID")
+    private Long stuSexId;
 
     /** 登录密码 */
     @Excel(name = "密码")
@@ -76,6 +79,16 @@ public class PrsnStudent extends BaseEntity
     public Long getAccountId()
     {
         return accountId;
+    }
+
+    public void setStuSexId(Long stuSexId)
+    {
+        this.stuSexId = stuSexId;
+    }
+
+    public Long getStuSexId()
+    {
+        return stuSexId;
     }
 
     public void setStuId(Long stuId)
@@ -200,6 +213,7 @@ public class PrsnStudent extends BaseEntity
             .append("gradeClassId", getGradeClassId())
             .append("stuPhone", getStuPhone())
             .append("stuWechat", getStuWechat())
+                .append("stuSexId", getStuSexId())
             .toString();
     }
 }

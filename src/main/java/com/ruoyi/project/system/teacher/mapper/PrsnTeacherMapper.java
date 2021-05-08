@@ -27,6 +27,15 @@ public interface PrsnTeacherMapper
      */
     public List<PrsnTeacher> selectPrsnTeacherList(PrsnTeacher prsnTeacher);
 
+
+    /**
+     * 根据accountId找到stuId
+     *
+     * @param accountId 教师信息 ID
+     * @return 教师信息
+     */
+
+    public PrsnTeacher selectteaIdByAccountId(Long accountId);
     /**
      * 新增教师信息 
      * 
