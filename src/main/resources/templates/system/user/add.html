@@ -12,23 +12,33 @@
             <div class="row">
             	<div class="col-sm-6">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">用户名称：</label>
+                        <label class="col-sm-4 control-label is-required">姓名：</label>
                         <div class="col-sm-8">
-                            <input name="userName" placeholder="请输入用户名称" class="form-control" type="text" maxlength="30" required>
+                            <input name="userName" placeholder="请输入用户姓名" class="form-control" type="text" maxlength="30" required>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">归属部门：</label>
+                        <label class="col-sm-4 control-label is-required">用户类型：</label>
                         <div class="col-sm-8">
-                            <div class="input-group">
-                            	<input name="deptName" onclick="selectDeptTree()" id="treeName" type="text" placeholder="请选择归属部门" class="form-control" required>
-                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                            </div>
+                            <select name="userType" class="form-control" th:with="type=${@dict.getType('account_type')}"  maxlength="30" required>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                            </select>
                         </div>
                     </div>
                 </div>
+<!--                <div class="col-sm-6">-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-4 control-label is-required">归属部门：</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            <div class="input-group">-->
+<!--                            	<input name="deptName" onclick="selectDeptTree()" id="treeName" type="text" placeholder="请选择归属部门" class="form-control" required>-->
+<!--                                <span class="input-group-addon"><i class="fa fa-search"></i></span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
             <div class="row">
                 <div class="col-sm-6">
@@ -55,11 +65,19 @@
                 </div>
             </div>
             <div class="row">
+<!--                <div class="col-sm-6">-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-sm-4 control-label is-required">登录账号：</label>-->
+<!--                        <div class="col-sm-8">-->
+<!--                            <input id="loginName" name="loginName" placeholder="请输入登录账号" class="form-control" type="text" maxlength="30" required>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label is-required">登录账号：</label>
+                        <label class="col-sm-4 control-label is-required">账号：</label>
                         <div class="col-sm-8">
-                            <input id="loginName" name="loginName" placeholder="请输入登录账号" class="form-control" type="text" maxlength="30" required>
+                            <input id="loginName" name="loginName" placeholder="教师填工号，学生填学号" class="form-control" type="text" maxlength="30" required>
                         </div>
                     </div>
                 </div>
@@ -100,18 +118,18 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-            	<div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-xs-2 control-label">岗位：</label>
-                        <div class="col-xs-4">
-                            <select id="post" class="form-control select2-multiple" multiple>
-								<option th:each="post:${posts}" th:value="${post.postId}" th:text="${post.postName}" th:disabled="${post.status == '1'}"></option>
-							</select>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="row">-->
+<!--            	<div class="col-sm-12">-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="col-xs-2 control-label">岗位：</label>-->
+<!--                        <div class="col-xs-4">-->
+<!--                            <select id="post" class="form-control select2-multiple" multiple>-->
+<!--								<option th:each="post:${posts}" th:value="${post.postId}" th:text="${post.postName}" th:disabled="${post.status == '1'}"></option>-->
+<!--							</select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="row">
             	<div class="col-sm-12">
                     <div class="form-group">
@@ -227,42 +245,42 @@
 	        	var data = $("#form-user-add").serializeArray();
 	        	var status = $("input[id='status']").is(':checked') == true ? 0 : 1;
 	        	var roleIds = $.form.selectCheckeds("role");
-	        	var postIds = $.form.selectSelects("post");
+	        	// var postIds = $.form.selectSelects("post");
 	        	data.push({"name": "status", "value": status});
 	        	data.push({"name": "roleIds", "value": roleIds});
-	        	data.push({"name": "postIds", "value": postIds});
+	        	// data.push({"name": "postIds", "value": postIds});
 	        	$.operate.saveTab(prefix + "/add", data);
 	        }
 	    }
-         
-        /* 用户管理-新增-选择部门树 */
-        function selectDeptTree() {
-        	var treeId = $("#treeId").val();
-        	var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        	var url = ctx + "system/dept/selectDeptTree/" + deptId;
-			var options = {
-				title: '选择部门',
-				width: "380",
-				url: url,
-				callBack: doSubmit
-			};
-			$.modal.openOptions(options);
-		}
-		
-		function doSubmit(index, layero){
-			var tree = layero.find("iframe")[0].contentWindow.$._tree;
-			var body = layer.getChildFrame('body', index);
-   			$("#treeId").val(body.find('#treeId').val());
-   			$("#treeName").val(body.find('#treeName').val());
-   			layer.close(index);
-		}
-
-		$(function() {
-            $('#post').select2({
-                placeholder: "请选择岗位",
-                allowClear: true
-            });
-        })
+        //
+        // /* 用户管理-新增-选择部门树 */
+        // function selectDeptTree() {
+        // 	var treeId = $("#treeId").val();
+        // 	var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        // 	var url = ctx + "system/dept/selectDeptTree/" + deptId;
+		// 	var options = {
+		// 		title: '选择部门',
+		// 		width: "380",
+		// 		url: url,
+		// 		callBack: doSubmit
+		// 	};
+		// 	$.modal.openOptions(options);
+		// }
+		//
+		// function doSubmit(index, layero){
+		// 	var tree = layero.find("iframe")[0].contentWindow.$._tree;
+		// 	var body = layer.getChildFrame('body', index);
+   		// 	$("#treeId").val(body.find('#treeId').val());
+   		// 	$("#treeName").val(body.find('#treeName').val());
+   		// 	layer.close(index);
+		// }
+        //
+		// $(function() {
+        //     $('#post').select2({
+        //         placeholder: "请选择岗位",
+        //         allowClear: true
+        //     });
+        // })
     </script>
 </body>
 </html>

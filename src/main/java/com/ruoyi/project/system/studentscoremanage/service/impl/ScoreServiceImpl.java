@@ -1,6 +1,9 @@
 package com.ruoyi.project.system.studentscoremanage.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.constant.Constants;
+import com.ruoyi.common.utils.CacheUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.system.studentscoremanage.mapper.ScoreMapper;
@@ -119,4 +122,61 @@ public class ScoreServiceImpl implements IScoreService
     {
         return scoreMapper.deleteScoreById(scoreRecordId);
     }
+
+    @Override
+    public long creatPoint(Score s){
+        double[][][][] testStand = (double[][][][]) CacheUtils.get(Constants.Test_Standar_Base, Constants.Test_Standar_Base_Key);
+        int[][][] lengthBase = (int[][][]) CacheUtils.get(Constants.Test_Standar_Base_Length, Constants.Test_Standar_Base_Length_Key);
+        long[][][][] testPoint = (long[][][][]) CacheUtils.get(Constants.Test_Standar_Point, Constants.Test_Standar_Point_Key);
+        int j;
+        int grade = Integer.parseInt(s.getClassGrade()+"");
+        int item = Integer.parseInt(s.getItemId()+"");
+        int sex = Integer.parseInt(s.getSexId()+"");
+        int length = lengthBase[grade][item][sex];
+        double testScore = s.getTestScore();
+        if(s.getScoreRelation()==0){
+            for(j=0;j<length;j++){
+                if(testScore>=testStand[grade][item][sex][j]){
+                    return testPoint[grade][item][sex][j];
+                }
+            }
+        }
+        else{
+            for(j=1;j<=testStand[grade][item][sex][0];j++){
+                if(testStand[grade][item][sex][j]>=testScore){
+                    return testPoint[grade][item][sex][j];
+                }
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public long creatTestGrade(Score s){
+        double[][][][] testStand = (double[][][][]) CacheUtils.get(Constants.Test_Standar_Base, Constants.Test_Standar_Base_Key);
+        int[][][] lengthBase = (int[][][]) CacheUtils.get(Constants.Test_Standar_Base_Length, Constants.Test_Standar_Base_Length_Key);
+        long[][][][] testGrade = (long[][][][]) CacheUtils.get(Constants.Test_Standar_Grade, Constants.Test_Standar_Grade_Key);
+        int j;
+        int grade = Integer.parseInt(s.getClassGrade()+"");
+        int item = Integer.parseInt(s.getItemId()+"");
+        int sex = Integer.parseInt(s.getSexId()+"");
+        int length = lengthBase[grade][item][sex];
+        double testScore = s.getTestScore();
+        if(s.getScoreRelation()==0){
+            for(j=0;j<length;j++){
+                if(testScore>=testStand[grade][item][sex][j]){
+                    return testGrade[grade][item][sex][j];
+                }
+            }
+        }
+        else{
+            for(j=1;j<=testStand[grade][item][sex][0];j++){
+                if(testStand[grade][item][sex][j]>=testScore){
+                    return testGrade[grade][item][sex][j];
+                }
+            }
+        }
+        return 0;
+    }
+
 }

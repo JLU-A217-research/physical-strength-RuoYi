@@ -34,7 +34,7 @@ public class Score extends BaseEntity
 
     /** 测试成绩 */
     @Excel(name = "测试成绩")
-    private BigDecimal testScore;
+    private double testScore;
 
     /** 学号 */
     @Excel(name = "学号")
@@ -60,9 +60,17 @@ public class Score extends BaseEntity
     @Excel(name = "测试得分")
     private Long testPoint;
 
-    /** 测试等级 */
-    @Excel(name = "测试等级")
+    /** 测试等级Id */
+    @Excel(name = "测试等级Id")
     private Long testGradeId;
+
+    public String getTestGrade() { return testGrade; }
+
+    public void setTestGrade(String testGrade) { this.testGrade = testGrade; }
+
+    /** 测试等级Id */
+    @Excel(name = "测试等级")
+    private String testGrade;
 
     /** 性别Id */
     @Excel(name = "性别ID")
@@ -179,12 +187,12 @@ public class Score extends BaseEntity
     {
         return testTime;
     }
-    public void setTestScore(BigDecimal testScore)
+    public void setTestScore(double testScore)
     {
         this.testScore = testScore;
     }
 
-    public BigDecimal getTestScore()
+    public double getTestScore()
     {
         return testScore;
     }
@@ -204,6 +212,7 @@ public class Score extends BaseEntity
             .append("itemUnit", getItemUnit())
             .append("testPoint", getTestPoint())
             .append("testGradeId", getTestGradeId())
+            .append("testGrade",getTestGrade())
             .append("sexId", getSexId())
             .append("scoreRelation", getScoreRelation())
             .toString();

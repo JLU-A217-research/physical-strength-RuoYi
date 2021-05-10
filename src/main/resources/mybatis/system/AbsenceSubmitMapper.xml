@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectAbsenceInfoVo"/>
             <where>
             <if test="stuId != null and stuId!= ''"> and stu_id = #{stuId}</if>
-            <if test="absenceRequestTime != null "> and absence_request_time = #{absenceRequestTime}</if>
+<!--            <if test="absenceRequestTime != null "> and absence_request_time = #{absenceRequestTime}</if>-->
             <if test="params.beginDate != null and params.beginDate != ''"><!-- 开始时间检索 -->
                 AND date_format(absence_date,'%y%m%d') &gt;= date_format(#{params.beginDate},'%y%m%d')
             </if>
@@ -33,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 AND date_format(absence_date,'%y%m%d') &lt;= date_format(#{params.endDate},'%y%m%d')
             </if>
             <if test="handleStatus != null  and handleStatus != ''"> and handle_status = #{handleStatus}</if>
-            <if test="absenceReason != null  and absenceReason != ''"> and absence_reason = #{absenceReason}</if>
+<!--            <if test="absenceReason != null  and absenceReason != ''"> and absence_reason = #{absenceReason}</if>-->
             </where>
     </select>
     

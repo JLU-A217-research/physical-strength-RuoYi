@@ -28,7 +28,7 @@ public class User extends BaseEntity
     private Long userId;
 
     /** 部门ID */
-    @Excel(name = "部门编号", type = Type.IMPORT)
+//    @Excel(name = "部门编号", type = Type.IMPORT)
     private Long deptId;
 
     /** 部门父ID */
@@ -38,14 +38,15 @@ public class User extends BaseEntity
     private Long roleId;
 
     /** 登录名称 */
-    @Excel(name = "登录名称")
+    @Excel(name = "账号")
     private String loginName;
 
     /** 用户名称 */
-    @Excel(name = "用户名称")
+    @Excel(name = "用户姓名")
     private String userName;
 
     /** 用户类型 */
+    @Excel(name = "用户类型", readConverterExp = "0=学生账号,1=教师账号,2=未知")
     private String userType;
 
     /** 用户邮箱 */
@@ -85,10 +86,10 @@ public class User extends BaseEntity
     private Date loginDate;
 
     /** 部门对象 */
-    @Excels({
-        @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
-        @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
-    })
+//    @Excels({
+//        @Excel(name = "部门名称", targetAttr = "deptName", type = Type.EXPORT),
+//        @Excel(name = "部门负责人", targetAttr = "leader", type = Type.EXPORT)
+//    })
     private Dept dept;
 
     private List<Role> roles;
