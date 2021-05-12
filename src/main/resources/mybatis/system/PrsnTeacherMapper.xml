@@ -63,6 +63,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectPrsnTeacherCopy"/>
         where teacher_id = #{teacherId}
     </select>
+
+
+    <select id="selectteaIdByAccountId" parameterType="Long" resultMap="PrsnTeacherResult">
+        select pa.account_id,ps.teacher_id, ps.teacher_no, ps.teacher_name, pa.psw,sdd.dict_label, teacher_job_id,
+               ps.teacher_nid, ps.teacher_email,  ps.teacher_phone, ps.teacher_wechat
+        from prsn_teacher ps, sys_dict_data sdd ,prsn_account pa
+        WHERE dict_type='sys_user_sex' and sdd.dict_value=ps.teacher_sex and pa.teacher_id=ps.teacher_id
+
+          and account_id = #{accountId}
+    </select>
         
     <insert id="insertPrsnTeacher" parameterType="PrsnTeacher" useGeneratedKeys="true" keyProperty="teacherId">
         insert into prsn_teacher

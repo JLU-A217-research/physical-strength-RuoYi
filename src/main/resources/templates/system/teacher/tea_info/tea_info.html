@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('教师信息 ')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+
+
+<div class="center">
+    <p class="user-info-center" onclick="avatar()"><img class="img-circle img-lg" src="/profile/avatar/2021/04/14/deefc580-c011-4b3d-bb1b-4604df9647b3.png"></p>
+
+</div>
+
+
+
+
+
+<input name="teacherId" id="teacherId" type="hidden" th:object="${prsnTeacher}" >
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label is-required">姓名：</label>
+            <div class="col-sm-8">
+                <input name="teacherName" placeholder="请输入教师姓名" class="form-control" type="text" maxlength="30" th:field="222" required>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label is-required">性别：</label>
+            <div class="col-sm-8">
+                <input name="teacherSex" placeholder="请输入教师性别" class="form-control" type="text" maxlength="30" th:field="33" required>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label is-required">教师学号：</label>
+            <div class="col-sm-8">
+                <input name="teacherNo" placeholder="请输入教师学号" class="form-control" type="text" maxlength="30" th:field="*{teacherNo}" required>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label is-required">出生日期：</label>
+            <div class="col-sm-8">
+                <input name="teacherNo" placeholder="请输入出生日期" class="form-control" type="text" maxlength="30" th:field="*{teacherNo}" required>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label is-required">年龄：</label>
+            <div class="col-sm-8">
+                <input name="teacherNo" placeholder="请输入教师学号" class="form-control" type="text" maxlength="30" th:field="*{teacherNo}" required>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label is-required">民族：</label>
+            <div class="col-sm-8">
+                <input name="teacherNo" placeholder="请输入出生日期" class="form-control" type="text" maxlength="30" th:field="*{teacherNo}" required>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label is-required">身份证号：</label>
+            <div class="col-sm-8">
+                <input name="teacherNid" placeholder="请输入身份证号" class="form-control" type="text" maxlength="30" th:field="*{teacherNid}" required>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label is-required">教师职务：</label>
+            <div class="col-sm-8">
+                <input name="teacherJobId" placeholder="请输入教师职务" class="form-control" type="text" maxlength="30" th:field="*{teacherJobId}" required>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label is-required">管理班级：</label>
+            <div class="col-sm-8">
+                <input name="eycg" placeholder="请输入管理班级" class="form-control" type="text" maxlength="30" th:field="*{eycg}" required>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label is-required">联系电话：</label>
+            <div class="col-sm-8">
+                <input name="teacherPhone" placeholder="请输入出生日期" class="form-control" type="text" maxlength="30" th:field="*{teacherPhone}" required>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label is-required">教师邮箱：</label>
+            <div class="col-sm-8">
+                <input name="teacherEmail" placeholder="请输入教师邮箱" class="form-control" type="text" maxlength="30" th:field="*{teacherEmail}" required>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label is-required">教师微信：</label>
+            <div class="col-sm-8">
+                <input name="teacherWechat" placeholder="请输入教师微信" class="form-control" type="text" maxlength="30" th:field="*{teacherWechat}" required>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="row">
+    <div class="col-sm-offset-5 col-sm-10">
+        <button type="button" class="btn btn-sm btn-primary" onclick="submitUserInfo()"><i class="fa fa-check"></i>保 存</button>&nbsp;
+        <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<script th:inline="javascript">
+    var prefix = ctx + "system/teacher/tea_info";
+    $("#form-teacher-edit").validate({//验证表单
+        focusCleanup: true
+    });
+
+    // function submitHandler() {
+    //     if ($.validate.form()) {
+    //         $.operate.save(prefix + "/edit", $('#form-teacher-edit').serialize());//.serialize() 方法创建以标准 URL 编码表示的文本字符串。
+    //     }
+    // }
+
+    function submitUserInfo() {
+        alert("sancjaslas");
+        if ($.validate.form()) {
+            $.operate.saveModal(prefix + "/update", $('#form-teacher-editsave').serialize());
+        }
+    }
+
+
+</script>
+</body>
+</html>

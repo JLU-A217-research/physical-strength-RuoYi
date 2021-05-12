@@ -32,6 +32,19 @@ public class PrsnTeacherServiceImpl implements IPrsnTeacherService
         return prsnTeacherMapper.selectPrsnTeacherById(teacherId);
     }
 
+
+    /**
+     * 根据accountId找到stuId
+     *
+     * @param accountId 教师信息 ID
+     * @return 教师信息
+     */
+    @Override
+    public PrsnTeacher selectteaIdByAccountId(Long accountId){
+        return prsnTeacherMapper.selectteaIdByAccountId(accountId);
+    }
+
+
     /**
      * 查询教师信息 列表
      * 

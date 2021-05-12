@@ -18,6 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="gradeClassId"    column="grade_class_id"    />
         <result property="stuPhone"    column="stu_phone"    />
         <result property="stuWechat"    column="stu_wechat"    />
+        <result property="stuWechat"    column="stu_wechat"    />
     </resultMap>
 
     <sql id="selectPrsnStudentVo">
@@ -27,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 --     WHERE dict_type='sys_user_sex' and sdd.dict_value=ps.stu_sex
 
             select pa.account_id,ps.stu_id, ps.stu_no, ps.stu_name, pa.psw,sdd.dict_label,ps.stu_birth, stu_nation_id,
-             ps.stu_nid, ps.stu_enroll_year, ps.grade_class_id, ps.stu_phone, ps.stu_wechat
+             ps.stu_nid, ps.stu_enroll_year, ps.grade_class_id, ps.stu_phone, ps.stu_wechat,p
             from prsn_student ps, sys_dict_data sdd ,prsn_account pa
              WHERE dict_type='sys_user_sex' and sdd.dict_value=ps.stu_sex and pa.stu_id=ps.stu_id
     </sql>
