@@ -1,4 +1,4 @@
-package com.ruoyi.project.system.studentscoremanage.service.impl;
+package com.ruoyi.project.system.scoreandevaluation.studentscoremanage.service.impl;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.CacheUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.project.system.studentscoremanage.mapper.ScoreMapper;
-import com.ruoyi.project.system.studentscoremanage.domain.Score;
-import com.ruoyi.project.system.studentscoremanage.service.IScoreService;
+import com.ruoyi.project.system.scoreandevaluation.studentscoremanage.mapper.ScoreMapper;
+import com.ruoyi.project.system.scoreandevaluation.studentscoremanage.domain.Score;
+import com.ruoyi.project.system.scoreandevaluation.studentscoremanage.service.IScoreService;
 import com.ruoyi.common.utils.text.Convert;
 
 /**
@@ -23,14 +23,9 @@ public class ScoreServiceImpl implements IScoreService
     @Autowired
     private ScoreMapper scoreMapper;
 
-    public Long matchPoint(Long itemId, Long classGrade, Long sexId, Long scoreRelation){
-        long point = 10;
-        return point;
-    }
-
-    public Long matchGradeId(Long itemId, Long classGrade, Long sexId, Long scoreRelation){
-        Long s = null;
-        return s;
+    @Override
+    public Score selectItemId(Score score){
+        return scoreMapper.selectItemId(score);
     }
 
     /**
@@ -43,8 +38,6 @@ public class ScoreServiceImpl implements IScoreService
     public Score selectScoreById(Long scoreRecordId)
     {
         Score s = scoreMapper.selectScoreById(scoreRecordId);
-        s.setTestPoint(matchPoint(s.getItemId(), s.getClassGrade(), s.getSexId(), s.getScoreRelation()));
-        s.setTestGradeId(matchGradeId(s.getItemId(), s.getClassGrade(), s.getSexId(), s.getScoreRelation()));
         return s;
     }
 
@@ -62,10 +55,6 @@ public class ScoreServiceImpl implements IScoreService
     public List<Score> selectScoreListByStu(Score score)
     {
         List<Score> s = scoreMapper.selectScoreListByStu(score);
-        for(int i = 0;i < s.size();i++){
-            s.get(i).setTestPoint(matchPoint(s.get(i).getItemId(), s.get(i).getClassGrade(), s.get(i).getSexId(), s.get(i).getScoreRelation()));
-            s.get(i).setTestGradeId(matchGradeId(s.get(i).getItemId(), s.get(i).getClassGrade(), s.get(i).getSexId(), s.get(i).getScoreRelation()));
-        }
         return s;
     }
 
@@ -78,9 +67,6 @@ public class ScoreServiceImpl implements IScoreService
     @Override
     public int insertScore(Score score)
     {
-        Score s = score;
-        s.setTestPoint(matchPoint(s.getItemId(), s.getClassGrade(), s.getSexId(), s.getScoreRelation()));
-        s.setTestGradeId(matchGradeId(s.getItemId(), s.getClassGrade(), s.getSexId(), s.getScoreRelation()));
         return scoreMapper.insertScore(score);
     }
 
@@ -94,8 +80,6 @@ public class ScoreServiceImpl implements IScoreService
     public int updateScore(Score score)
     {
         Score s = score;
-        s.setTestPoint(matchPoint(s.getItemId(), s.getClassGrade(), s.getSexId(), s.getScoreRelation()));
-        s.setTestGradeId(matchGradeId(s.getItemId(), s.getClassGrade(), s.getSexId(), s.getScoreRelation()));
         return scoreMapper.updateScore(score);
     }
 

@@ -1,6 +1,5 @@
-package com.ruoyi.project.system.studentscoremanage.domain;
+package com.ruoyi.project.system.scoreandevaluation.studentscoremanage.domain;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

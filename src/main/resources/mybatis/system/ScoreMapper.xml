@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.project.system.studentscoremanage.mapper.ScoreMapper">
+<mapper namespace="com.ruoyi.project.system.scoreandevaluation.studentscoremanage.mapper.ScoreMapper">
     
     <resultMap type="Score" id="ScoreResult">
         <result property="scoreRecordId"    column="score_record_id"    />
@@ -28,6 +28,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        s.tgs_id,
 	        s.test_time,
 	        s.test_score,
+            s.test_point,
+            s.test_grade_id,
 	        ps.stu_no,
 	        cgi.class_grade,
 	        ti.test_item_id,
@@ -88,12 +90,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="tgsId != null">tgs_id,</if>
             <if test="testTime != null">test_time,</if>
             <if test="testScore != null">test_score,</if>
+            <if test="testPoint != null">test_point,</if>
+            <if test="testGradeId != null">test_grade_id,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="stuId != null">#{stuId},</if>
             <if test="tgsId != null">#{tgsId},</if>
             <if test="testTime != null">#{testTime},</if>
             <if test="testScore != null">#{testScore},</if>
+            <if test="testPoint != null">#{testPoint},</if>
+            <if test="testGradeId != null">#{testGradeId},</if>
          </trim>
     </insert>
 
@@ -104,6 +110,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="tgsId != null">tgs_id = #{tgsId},</if>
             <if test="testTime != null">test_time = #{testTime},</if>
             <if test="testScore != null">test_score = #{testScore},</if>
+            <if test="testPoint != null">test_point = #{testPoint},</if>
+            <if test="testGradeId != null">test_grade_id = #{testGradeId},</if>
         </trim>
         where score_record_id = #{scoreRecordId}
     </update>
@@ -118,5 +126,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{scoreRecordId}
         </foreach>
     </delete>
+
+    <sql id="selectItemIdVo">
+
+    </sql>
+    <select id="selectItemId" parameterType="Score" resultMap="ScoreResult">
+        SELECT ti.test_item_id, ti.test_score_relation, tgsr.tgs_id
+        FROM test_item ti, test_grade_sex_relation tgsr
+        WHERE ti.test_item_name=#{itemName}
+        AND tgsr.grade = #{classGrade} AND tgsr.test_item_id = ti.test_item_id AND tgsr.stu_sex_id = #{sexId}
+    </select>
 
 </mapper>

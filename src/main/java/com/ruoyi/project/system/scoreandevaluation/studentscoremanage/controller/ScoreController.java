@@ -1,11 +1,7 @@
-package com.ruoyi.project.system.studentscoremanage.controller;
+package com.ruoyi.project.system.scoreandevaluation.studentscoremanage.controller;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.utils.CacheUtils;
-import com.ruoyi.project.system.standard.domain.InitTestStandard;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
-import com.ruoyi.project.system.studentscoremanage.domain.Score;
-import com.ruoyi.project.system.studentscoremanage.service.IScoreService;
+import com.ruoyi.project.system.scoreandevaluation.studentscoremanage.domain.Score;
+import com.ruoyi.project.system.scoreandevaluation.studentscoremanage.service.IScoreService;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
@@ -31,15 +27,15 @@ import com.ruoyi.framework.web.page.TableDataInfo;
  * @date 2021-04-02
  */
 @Controller
-@RequestMapping("/system/scoreandevaluation/personscore")
+@RequestMapping("/system/scoreandevaluation/studentscoremanage")
 public class ScoreController extends BaseController
 {
-    private String prefix = "system/scoreandevaluation/personscore";
+    private String prefix = "system/scoreandevaluation/studentscoremanage";
 
     @Autowired
     private IScoreService scoreService;
 
-    @RequiresPermissions("system:scoreandevaluation:personscore:view")
+    @RequiresPermissions("system:scoreandevaluation:studentscoremanage:view")
     @GetMapping()
     public String studentscoremanage()
     {
@@ -49,7 +45,7 @@ public class ScoreController extends BaseController
     /**
      * 查询学生成绩管理列表
      */
-    @RequiresPermissions("system:scoreandevaluation:personscore:list")
+    @RequiresPermissions("system:scoreandevaluation:studentscoremanage:list")
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(Score score)
@@ -82,7 +78,7 @@ public class ScoreController extends BaseController
     /**
      * 导出学生成绩管理列表
      */
-    @RequiresPermissions("system:scoreandevaluation:personscore:export")
+    @RequiresPermissions("system:scoreandevaluation:studentscoremanage:export")
     @Log(title = "学生成绩管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
@@ -90,15 +86,16 @@ public class ScoreController extends BaseController
     {
         List<Score> list = scoreService.selectScoreListByStu(score);
         ExcelUtil<Score> util = new ExcelUtil<Score>(Score.class);
-        return util.exportExcel(list, "personscore");
+        return util.exportExcel(list, "studentscoremanage");
     }
 
     /**
      * 新增学生成绩管理
      */
-    @GetMapping("/add{stuNo}")
+    @GetMapping("/add/{stuNo}")
     public String add(@PathVariable("stuNo") Long stuNo, ModelMap mmap)
     {
+        //这里需要有查询是为了针对某一个学生进行成绩添加
         Score score = scoreService.selectStudentByNo(stuNo);
         mmap.put("score", score);
         return prefix + "/add";
@@ -107,12 +104,19 @@ public class ScoreController extends BaseController
     /**
      * 新增保存学生成绩管理
      */
-    @RequiresPermissions("system:scoreandevaluation:personscore:add")
+    @RequiresPermissions("system:scoreandevaluation:studentscoremanage:add")
     @Log(title = "学生成绩管理", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(Score score)
     {
+        Score s = scoreService.selectItemId(score);
+        score.setItemId(s.getItemId());
+        score.setScoreRelation(s.getScoreRelation());
+        score.setTgsId(s.getTgsId());
+
+        score.setTestPoint(creatPoint(score));
+        score.setTestGradeId(creatTestGrade(score));
         return toAjax(scoreService.insertScore(score));
     }
 
@@ -130,19 +134,24 @@ public class ScoreController extends BaseController
     /**
      * 修改保存学生成绩管理
      */
-    @RequiresPermissions("system:scoreandevaluation:personscore:edit")
+    @RequiresPermissions("system:scoreandevaluation:studentscoremanage:edit")
     @Log(title = "学生成绩管理", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(Score score)
     {
+        Score s = scoreService.selectItemId(score);
+        score.setItemId(s.getItemId());
+        score.setScoreRelation(s.getScoreRelation());
+        score.setTestPoint(creatPoint(score));
+        score.setTestGradeId(creatTestGrade(score));
         return toAjax(scoreService.updateScore(score));
     }
 
     /**
      * 删除学生成绩管理
      */
-    @RequiresPermissions("system:scoreandevaluation:personscore:remove")
+    @RequiresPermissions("system:scoreandevaluation:studentscoremanage:remove")
     @Log(title = "学生成绩管理", businessType = BusinessType.DELETE)
     @PostMapping( "/remove")
     @ResponseBody

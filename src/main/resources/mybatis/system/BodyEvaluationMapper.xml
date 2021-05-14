@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.bodyevaluation.mapper.BodyEvaluationMapper">
+
+    <resultMap type="BodyScore" id="BodyScoreResult">
+        <result property="scoreRecordId"    column="score_record_id"    />
+        <result property="tgsId"    column="tgs_id"    />
+        <result property="testTime"    column="test_time"    />
+        <result property="testScore"    column="test_score"    />
+        <result property="itemId"    column="test_item_id"    />
+        <result property="itemName"    column="test_item_name"    />
+        <result property="scoreRelation"    column="test_score_relation"    />
+        <result property="classGrade"    column="grade"    />
+        <result property="sexId"    column="stu_sex_id"    />
+        <result property="classNo"    column="class_no"    />
+    </resultMap>
+
+    <resultMap type="BodyEvaluation" id="BodyEvaluationResult">
+        <result property="itemId"    column="test_item_id"    />
+        <result property="itemName"    column="test_item_name"    />
+    </resultMap>
+
+    <sql id="slectBodyScoreVo">
+        SELECT
+            s.score_record_id,
+            s.tgs_id,
+            s.test_time,
+            s.test_score,
+            ti.test_item_id,
+            ti.test_item_name,
+            ti.test_score_relation,
+            tgsr.stu_sex_id,
+            tgsr.grade,
+            cgi.class_no
+        FROM
+            score s, test_item ti, test_grade_sex_relation tgsr, prsn_student ps, class_grade_info cgi
+        WHERE
+            s.tgs_id=tgsr.tgs_id
+        AND
+            tgsr.test_item_id=ti.test_item_id
+        AND
+            s.stu_id=ps.stu_id AND ps.grade_class_id=cgi.grade_class_id
+    </sql>
+
+    <sql id="selectItemListVo">
+        SELECT
+            test_item_id,
+            test_item_name
+        FROM
+            test_item
+        ORDER BY test_item_id
+    </sql>
+
+    <select id="selectBodyScoreList" parameterType="BodyScore" resultMap="BodyScoreResult">
+        <include refid="slectBodyScoreVo"/>
+        <if test="classGrade != null"> AND tgsr.grade = #{classGrade} </if>
+        <if test="classNo != null"> AND cgi.class_no = #{classNo} </if>
+        <if test="sexId != null"> AND tgsr.stu_sex_id = #{sexId} </if>
+    </select>
+
+    <select id="selectItemList" parameterType="BodyEvaluation" resultMap="BodyEvaluationResult">
+        <include refid="selectItemListVo"/>
+    </select>
+
+    <select id="selectItemListLine" parameterType="BodyEvaluationLine" resultMap="BodyEvaluationResult">
+        <include refid="selectItemListVo"/>
+    </select>
+</mapper>
