@@ -1,7 +1,7 @@
-package com.ruoyi.project.system.studentscoremanage.service;
+package com.ruoyi.project.system.scoreandevaluation.studentscoremanage.service;
 
 import java.util.List;
-import com.ruoyi.project.system.studentscoremanage.domain.Score;
+import com.ruoyi.project.system.scoreandevaluation.studentscoremanage.domain.Score;
 
 /**
  * 学生成绩管理Service接口
@@ -42,6 +42,8 @@ public interface IScoreService
      * @return 结果
      */
     public int insertScore(Score score);
+
+    public Score selectItemId(Score score);
 
     /**
      * 修改学生成绩管理

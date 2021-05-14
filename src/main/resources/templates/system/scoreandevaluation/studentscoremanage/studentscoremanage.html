@@ -53,14 +53,14 @@
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('system:scoreandevaluation:personscore:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('system:scoreandevaluation:personscore:remove')}]];
-        var prefix = ctx + "system/scoreandevaluation/personscore";
+        var editFlag = [[${@permission.hasPermi('system:scoreandevaluation:studentscoremanage:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:scoreandevaluation:studentscoremanage:remove')}]];
+        var prefix = ctx + "system/scoreandevaluation/studentscoremanage";
 
         $(function() {
             var options = {
                 url: prefix + "/list",
-                createUrl: prefix + "/add{id}",
+                createUrl: prefix + "/add/{id}",
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",

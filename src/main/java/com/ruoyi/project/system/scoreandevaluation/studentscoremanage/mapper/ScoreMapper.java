@@ -1,7 +1,7 @@
-package com.ruoyi.project.system.studentscoremanage.mapper;
+package com.ruoyi.project.system.scoreandevaluation.studentscoremanage.mapper;
 
 import java.util.List;
-import com.ruoyi.project.system.studentscoremanage.domain.Score;
+import com.ruoyi.project.system.scoreandevaluation.studentscoremanage.domain.Score;
 
 /**
  * 学生成绩管理Mapper接口
@@ -28,6 +28,8 @@ public interface ScoreMapper
      */
     public List<Score> selectScoreListByStu(Score score);
 
+
+    public Score selectItemId(Score score);
     /**
      * 新增学生成绩管理
      * 

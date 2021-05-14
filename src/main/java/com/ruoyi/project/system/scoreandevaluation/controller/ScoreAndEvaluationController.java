@@ -40,7 +40,7 @@ public class ScoreAndEvaluationController extends BaseController
     private IScoreAndEvaluationService scoreAndEvaluationService;
 
     @RequiresPermissions("system:scoreandevaluation:view")
-    @GetMapping()
+    @GetMapping("")
     public String scoreandevaluation()
     {
         return prefix + "/scoreandevaluation";
@@ -142,11 +142,11 @@ public class ScoreAndEvaluationController extends BaseController
      * 个人成绩管理
      */
 
-     @GetMapping("/personscore/studentscoremanage/{stuId}")
+     @GetMapping("/studentscoremanage/studentscoremanage/{stuId}")
      public String personalscoremanage(@PathVariable("stuId") Long stuId, ModelMap mmap){
           ScoreAndEvaluation score = scoreAndEvaluationService.selectStuById(stuId);//功能错误
           mmap.put("score", score);
-          return prefix + "/personscore/studentscoremanage";
+          return prefix + "/studentscoremanage/studentscoremanage";
      }
 
 
