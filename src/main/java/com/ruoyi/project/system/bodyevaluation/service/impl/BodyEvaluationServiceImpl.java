@@ -47,9 +47,6 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
         //通过score里传回来的年级数据，获取数据库中所有该年级的成绩（年份不一样，表示不同届学生）
         //例如score.date.year == 7 则返回所有曾经在7年级时候测试的成绩
         List<BodyScore> scoreList = selectScoreList(score);
-        for(int i=0;i<scoreList.size();i++){
-            scoreList.get(i).setTestPoint(creatPoint(scoreList.get(i)));
-        }
 
         //获取当前年份
         Calendar calendar = Calendar.getInstance();
@@ -64,11 +61,12 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
             bodyScore = scoreList.get(i);
             c.setTime(bodyScore.getTestTime());
             int year = c.get(Calendar.YEAR);
-            int idex = nowYear - year;//idex表示距离我现在第几年
+            int yearIdex = nowYear - year;//idex表示距离我现在第几年
             int itemId = Integer.parseInt(""+bodyScore.getItemId());
-            if(idex < 6){
-                listLine.get(itemId - 1).setSumPoint(listLine.get(itemId - 1).getSumPoint(idex) + bodyScore.getTestPoint(), idex);
-                listLine.get(itemId - 1).setNum(listLine.get(itemId - 1).getNum(idex) + 1, idex);
+            int idex = itemId!=10 ? itemId - 1 : 7;
+            if(yearIdex < 6){
+                listLine.get(idex).setSumPoint(listLine.get(idex).getSumPoint(yearIdex) + bodyScore.getTestPoint(), yearIdex);
+                listLine.get(idex).setNum(listLine.get(idex).getNum(yearIdex) + 1, yearIdex);
             }
         }
         for(int i=0;i<listLine.size();i++){
@@ -82,7 +80,7 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
 
     @Override
     public List<BodyEvaluationBar> generateDataForBar(BodyScore score){
-
+        if(score.getClassGrade()==null) score.setClassGrade(8L);
         Calendar calendar = Calendar.getInstance();
         int nowYear = calendar.get(Calendar.YEAR);
         Calendar c = Calendar.getInstance();
@@ -92,18 +90,17 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
 
         //处理查询的年级今年的均分
         List<BodyScore> scoreList = selectScoreList(score);
-        for(int i=0;i<scoreList.size();i++){
-            scoreList.get(i).setTestPoint(creatPoint(scoreList.get(i)));
-        }
 
         for(int i=0;i<scoreList.size();i++){
             bodyScore = scoreList.get(i);
             c.setTime(bodyScore.getTestTime());
             int year = c.get(Calendar.YEAR);
             int itemId = Integer.parseInt(""+bodyScore.getItemId());
+            int idex = itemId!=10 ? itemId - 1 : 7;
             if(nowYear == year){
-                listBar.get(itemId - 1).setSumPointNow(listBar.get(itemId - 1).getSumPointNow() + bodyScore.getTestPoint());
-                listBar.get(itemId - 1).setNumNow(listBar.get(itemId - 1).getNumNow() + 1);
+//                System.out.println(itemId);
+                listBar.get(idex).setSumPointNow(listBar.get(idex).getSumPointNow() + bodyScore.getTestPoint());
+                listBar.get(idex).setNumNow(listBar.get(idex).getNumNow() + 1);
             }
         }
         for(int i=0;i<listBar.size();i++){
@@ -112,29 +109,28 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
         }
 
         //处理查询的年级去年的均分
-        if(score.getClassGrade() - 1 >= 0) {
+        if(score.getClassGrade() - 1 >= 7) {
             score.setClassGrade(score.getClassGrade() - 1);
 
             scoreList = selectScoreList(score);
-            for(int i=0;i<scoreList.size();i++){
-                scoreList.get(i).setTestPoint(creatPoint(scoreList.get(i)));
-            }
 
             for(int i=0;i<scoreList.size();i++){
+
                 bodyScore = scoreList.get(i);
                 c.setTime(bodyScore.getTestTime());
                 int year = c.get(Calendar.YEAR);
                 int itemId = Integer.parseInt(""+bodyScore.getItemId());
+                int idex = itemId!=10 ? itemId - 1 : 7;
+//                System.out.println(i+" "+year+" "+itemId+" "+idex);
                 if(nowYear - 1 == year){
-                    listBar.get(itemId - 1).setSumPointLast(listBar.get(itemId - 1).getSumPointLast() + bodyScore.getTestPoint());
-                    listBar.get(itemId - 1).setNumLast(listBar.get(itemId - 1).getNumLast() + 1);
+                    listBar.get(idex).setSumPointLast(listBar.get(idex).getSumPointLast() + bodyScore.getTestPoint());
+                    listBar.get(idex).setNumLast(listBar.get(idex).getNumLast() + 1);
                 }
             }
             for(int i=0;i<listBar.size();i++){
                 if(listBar.get(i).getNumLast() != 0)
                     listBar.get(i).setAveLast(1.0 * listBar.get(i).getSumPointLast() / listBar.get(i).getNumLast());
             }
-
         }
         else{
             for(int i=0;i<listBar.size();i++){
@@ -201,4 +197,25 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
         return 0;
     }
 
+    //计算统计数据
+
+
+    //更新统计数据
+    @Override
+    public void updateStatistical(){
+        List<BodyScore> bodyScores = bodyEvaluationMapper.selectBodyScoreList(null);
+        //获得今年的年份
+        Calendar calendar = Calendar.getInstance();
+        int nowYear = calendar.get(Calendar.YEAR);
+        Calendar c = Calendar.getInstance();
+
+
+
+        //向表中插入数据
+        bodyEvaluationMapper.truncateTable();
+        int length = bodyScores.size();
+        for(int i=0;i<length;i++) {
+            bodyEvaluationMapper.updateStatistical(bodyScores.get(i));
+        }
+    }
 }

@@ -831,8 +831,6 @@ var table = {
             },
             // 弹出层全屏
             openFull: function (title, url, width, height) {
-            	//如果是移动端，就使用自适应大小弹窗
-				// alert(url);
             	if ($.common.isMobile()) {
             	    width = 'auto';
             	    height = 'auto';

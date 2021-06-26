@@ -61,4 +61,10 @@ public interface ScoreMapper
      * @return 结果
      */
     public int deleteScoreByIds(String[] scoreRecordIds);
+
+    public List<Score> updateScorePoint();
+
+    public List<Score> updateBMI(Score s);
+
+    public long getTgsId(Score s);
 }

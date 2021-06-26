@@ -12,11 +12,14 @@ import io.swagger.models.auth.In;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.swing.text.AbstractDocument;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -80,23 +83,19 @@ public class BodyEvaluationController extends BaseController {
     }
 
 
-    @RequiresPermissions("system:scoreandevaluation:bodyevaluate:lineList")
-    @PostMapping("/lineList")
-    @ResponseBody
-    public List<BodyEvaluationLine> lineList(BodyScore score){
-        startPage();
-        List<BodyEvaluationLine> list = bodyEvaluationService.generateDataForLine(score);
-        return list;
-    }
+//    @RequiresPermissions("system:scoreandevaluation:bodyevaluate:lineList")
+//    @PostMapping("/lineList")
+//    @ResponseBody
+//    public String lineList(BodyScore score, ModelMap mmap){
+//        startPage();
+//        List<BodyEvaluationLine> list = bodyEvaluationService.generateDataForLine(score);
+//        mmap.put("lineList", list);
+//        return prefix + "/lineList";
+//    }
 
-    @RequiresPermissions("system:scoreandevaluation:bodyevaluate:barList")
-    @PostMapping("/barList")
-    @ResponseBody
-    public List<BodyEvaluationBar> barList(BodyScore score){
-        startPage();
-        List<BodyEvaluationBar> list = bodyEvaluationService.generateDataForBar(score);
-        return list;
-    }
+
+
+
     long creatPoint(BodyScore s){
         return bodyEvaluationService.creatPoint(s);
     }
@@ -104,4 +103,8 @@ public class BodyEvaluationController extends BaseController {
         return bodyEvaluationService.creatTestGrade(s);
     }
 
+    //统计数据更新
+    public void updateStatistical(){
+        bodyEvaluationService.updateStatistical();
+    }
 }

@@ -18,4 +18,8 @@ public interface BodyEvaluationMapper {
     public List<BodyEvaluationLine> selectItemListLine();
 
     public List<BodyEvaluationBar> selectItemListBar();
+
+    public void updateStatistical(BodyScore bodyScore);
+
+    public void truncateTable();
 }

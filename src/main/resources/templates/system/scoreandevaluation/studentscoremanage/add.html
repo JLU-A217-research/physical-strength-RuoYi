@@ -44,13 +44,14 @@
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: datetimepicker-js" />
     <script th:inline="javascript">
-        var prefix = ctx + "system/scoreandevaluation/personscore"
+        var prefix = ctx + "system/scoreandevaluation/studentscoremanage"
         $("#form-studentscoremanage-add").validate({
             focusCleanup: true
         });
 
         function submitHandler() {
-            if ($.validate.form()) {
+
+            if ($.validate.form()) {alert("dingch");
                 $.operate.save(prefix + "/add", $('#form-studentscoremanage-add').serialize());
             }
         }

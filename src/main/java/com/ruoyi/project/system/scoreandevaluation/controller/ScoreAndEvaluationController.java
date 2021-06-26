@@ -1,9 +1,14 @@
 package com.ruoyi.project.system.scoreandevaluation.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.CacheUtils;
+import com.ruoyi.project.system.bodyevaluation.domain.BodyEvaluationBar;
+import com.ruoyi.project.system.bodyevaluation.domain.BodyEvaluationLine;
+import com.ruoyi.project.system.bodyevaluation.domain.BodyScore;
+import com.ruoyi.project.system.bodyevaluation.service.IBodyEvaluationService;
 import com.ruoyi.project.system.user.domain.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +43,9 @@ public class ScoreAndEvaluationController extends BaseController
 
     @Autowired
     private IScoreAndEvaluationService scoreAndEvaluationService;
+
+    @Autowired
+    private IBodyEvaluationService bodyEvaluationService;
 
     @RequiresPermissions("system:scoreandevaluation:view")
     @GetMapping("")
@@ -136,7 +144,26 @@ public class ScoreAndEvaluationController extends BaseController
     public String scoreimport(){return prefix + "/scoreimport";}
 
     @GetMapping("/bodyEvaluate/bodyEvaluate")
-    public String bodyEvaluate(){return prefix + "/bodyEvaluate/bodyEvaluate";}
+    public String bodyEvaluate(BodyScore score, ModelMap mmap){
+        //barchart 数据
+        List<BodyEvaluationBar> barlist = bodyEvaluationService.generateDataForBar(score);
+        List<String> itemNameList = new ArrayList<>();
+        List<Double> aveNowList = new ArrayList<>();
+        List<Double> aveLastList = new ArrayList<>();
+        for(int i=0;i<barlist.size();i++){
+            itemNameList.add(barlist.get(i).getItemName());
+            aveNowList.add(barlist.get(i).getAveNow());
+            aveLastList.add(barlist.get(i).getAveLast());
+        }
+        mmap.put("itemNameList", itemNameList);
+        mmap.put("aveNowList",aveNowList);
+        mmap.put("aveLastList",aveLastList);
+
+        //linechart数据
+        //List<BodyEvaluationLine> linelist = bodyEvaluationService.generateDataForLine(score);
+
+        return prefix + "/bodyEvaluate/bodyEvaluate";
+    }
 
     /**
      * 个人成绩管理
@@ -173,4 +200,6 @@ public class ScoreAndEvaluationController extends BaseController
     {
         return toAjax(scoreAndEvaluationService.deleteScoreByIds(ids));
     }
+
+
 }

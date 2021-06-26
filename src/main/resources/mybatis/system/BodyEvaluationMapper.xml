@@ -9,6 +9,8 @@
         <result property="tgsId"    column="tgs_id"    />
         <result property="testTime"    column="test_time"    />
         <result property="testScore"    column="test_score"    />
+        <result property="testPoint"    column="test_point"/>
+        <result property="testGradeId"    column="test_grade_id"/>
         <result property="itemId"    column="test_item_id"    />
         <result property="itemName"    column="test_item_name"    />
         <result property="scoreRelation"    column="test_score_relation"    />
@@ -22,12 +24,28 @@
         <result property="itemName"    column="test_item_name"    />
     </resultMap>
 
+    <resultMap type="BodyEvaluationBar" id="BodyEvaluationBarResult">
+        <result property="itemId"    column="test_item_id"    />
+        <result property="itemName"    column="test_item_name"    />
+    </resultMap>
+
+    <resultMap type="Statistical" id="StatisticalResult">
+        <result property="testItemId" column="test_item_id" />
+        <result property="testYear" column="test_year" />
+        <result property="testClassGrade" column="test_class_grade" />
+        <result property="sumPoint" column="sum_point" />
+        <result property="sumStu" column="sum_stu" />
+        <result property="avePoint" column="ave_point" />
+    </resultMap>
+
     <sql id="slectBodyScoreVo">
         SELECT
             s.score_record_id,
             s.tgs_id,
             s.test_time,
             s.test_score,
+            s.test_point,
+            s.test_grade_id,
             ti.test_item_id,
             ti.test_item_name,
             ti.test_score_relation,
@@ -50,7 +68,6 @@
             test_item_name
         FROM
             test_item
-        ORDER BY test_item_id
     </sql>
 
     <select id="selectBodyScoreList" parameterType="BodyScore" resultMap="BodyScoreResult">
@@ -58,6 +75,8 @@
         <if test="classGrade != null"> AND tgsr.grade = #{classGrade} </if>
         <if test="classNo != null"> AND cgi.class_no = #{classNo} </if>
         <if test="sexId != null"> AND tgsr.stu_sex_id = #{sexId} </if>
+        AND ti.test_item_id != 9
+        AND ti.test_item_id != 8
     </select>
 
     <select id="selectItemList" parameterType="BodyEvaluation" resultMap="BodyEvaluationResult">
@@ -67,4 +86,33 @@
     <select id="selectItemListLine" parameterType="BodyEvaluationLine" resultMap="BodyEvaluationResult">
         <include refid="selectItemListVo"/>
     </select>
+    <select id="selectItemListBar" parameterType="BodyEvaluationBar" resultMap="BodyEvaluationBarResult">
+        <include refid="selectItemListVo"/>
+        WHERE test_item_id != 8
+        AND test_item_id != 9
+        ORDER BY test_item_id
+    </select>
+
+<!--    <update id="truncateTable">-->
+<!--        truncate table statistical_information-->
+<!--    </update>-->
+    <insert id="updateStatistical" parameterType="Statistical" useGeneratedKeys="true" keyProperty="scoreRecordId">
+        insert into statistical_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="testItemId != null">test_item_id,</if>
+            <if test="testYear != null">test_year,</if>
+            <if test="testClassGrade != null">test_class_grade,</if>
+            <if test="sumPoint != null">sum_point,</if>
+            <if test="sumStu != null">sum_stu,</if>
+            <if test="avePoint != null">ave_point,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="testItemId != null">#{testItemId},</if>
+            <if test="testYear != null">#{testYear},</if>
+            <if test="testClassGrade != null">#{testClassGrade},</if>
+            <if test="sumPoint != null">#{sumPoint},</if>
+            <if test="sumStu != null">#{sumStu},</if>
+            <if test="avePoint != null">#{avePoint},</if>
+        </trim>
+    </insert>
 </mapper>

@@ -22,4 +22,7 @@ public interface IBodyEvaluationService {
     public long creatPoint(BodyScore s);
 
     public long creatTestGrade(BodyScore s);
+
+    //更新统计数据
+    public void updateStatistical();
 }
