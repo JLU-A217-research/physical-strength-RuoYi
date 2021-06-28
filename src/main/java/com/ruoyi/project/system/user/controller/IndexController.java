@@ -17,6 +17,7 @@ import com.ruoyi.project.system.config.service.IConfigService;
 import com.ruoyi.project.system.menu.domain.Menu;
 import com.ruoyi.project.system.menu.service.IMenuService;
 import com.ruoyi.project.system.user.domain.User;
+import org.thymeleaf.cache.ICache;
 
 /**
  * 首页 业务处理
@@ -41,15 +42,20 @@ public class IndexController extends BaseController
     {
         // 取身份信息
         User user = getSysUser();
+        //取学校名称
+        String schoolName = configService.selectConfigByKey("sys.schoolname");
         // 根据用户id取出菜单
         List<Menu> menus = menuService.selectMenusByUser(user);
         mmap.put("menus", menus);
         mmap.put("user", user);
+        mmap.put("schoolname", schoolName);
         mmap.put("sideTheme", configService.selectConfigByKey("sys.index.sideTheme"));
         mmap.put("skinName", configService.selectConfigByKey("sys.index.skinName"));
         mmap.put("ignoreFooter", configService.selectConfigByKey("sys.index.ignoreFooter"));
         mmap.put("copyrightYear", ruoYiConfig.getCopyrightYear());
         mmap.put("demoEnabled", ruoYiConfig.isDemoEnabled());
+
+
 
         // 菜单导航显示风格
         String menuStyle = configService.selectConfigByKey("sys.index.menuStyle");
