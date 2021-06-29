@@ -7,11 +7,11 @@
      <div class="container-div">
          <div class="row">
             <div class="col-sm-12 search-collapse">
-                <form id="formId">
+                <form id="formId" name="formId">
                     <div class="select-list">
                         <ul>
                             <li>
-                                年级：<input type="text" name="stuEnrollYear"/>
+                                年级：<input type="text" id="stuEnrollYear" name="stuEnrollYear"/>
                             </li>
                             <li>
                                 班级：<input type="text" name="classNo"/>
@@ -19,7 +19,7 @@
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>重置</a>
-                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.modal.openFull('体质评价',table.options.bodyEvaluateUrl,null,null);"><i class="fa fa-bug"></i>生成评价</a>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.operate.bodyEvaluateTab(document.forms['formId'].stuEnrollYear.value);"><i class="fa fa-bug"></i>生成评价</a>
                                 <a class="btn btn-info btn-rounded btn-sm" onclick="$.modal.openFull('导入学生成绩',table.options.scoreImportUrl,null,null);"><i class="fa fa-upload"></i>导入</a>
                             </li>
                         </ul>
@@ -46,7 +46,7 @@
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
                 scoreImportUrl: prefix + "/scoreimport",
-                bodyEvaluateUrl: prefix + "/bodyEvaluate/bodyEvaluate",
+                bodyEvaluateUrl: prefix + "/bodyEvaluate/bodyEvaluate/{id}",
                 studentscoremanageUrl: prefix + "/studentscoremanage/studentscoremanage/{id}",
                 modalName: "成绩与体质评价",
                 columns: [{

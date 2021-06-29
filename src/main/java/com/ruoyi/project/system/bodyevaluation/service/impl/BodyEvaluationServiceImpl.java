@@ -3,12 +3,10 @@ package com.ruoyi.project.system.bodyevaluation.service.impl;
 
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.CacheUtils;
-import com.ruoyi.project.system.bodyevaluation.domain.BodyEvaluation;
-import com.ruoyi.project.system.bodyevaluation.domain.BodyEvaluationBar;
-import com.ruoyi.project.system.bodyevaluation.domain.BodyEvaluationLine;
-import com.ruoyi.project.system.bodyevaluation.domain.BodyScore;
+import com.ruoyi.project.system.bodyevaluation.domain.*;
 import com.ruoyi.project.system.bodyevaluation.mapper.BodyEvaluationMapper;
 import com.ruoyi.project.system.bodyevaluation.service.IBodyEvaluationService;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +26,8 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
 
     @Override
     public List<BodyEvaluation> selectItemList(){
-        return bodyEvaluationMapper.selectItemList();
+        List<BodyEvaluation> list = bodyEvaluationMapper.selectItemList();
+        return list;
     }
 
     @Override
@@ -79,65 +78,8 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
     }
 
     @Override
-    public List<BodyEvaluationBar> generateDataForBar(BodyScore score){
-        if(score.getClassGrade()==null) score.setClassGrade(8L);
-        Calendar calendar = Calendar.getInstance();
-        int nowYear = calendar.get(Calendar.YEAR);
-        Calendar c = Calendar.getInstance();
-
-        List<BodyEvaluationBar> listBar = selectItemListBar();
-        BodyScore bodyScore;
-
-        //处理查询的年级今年的均分
-        List<BodyScore> scoreList = selectScoreList(score);
-
-        for(int i=0;i<scoreList.size();i++){
-            bodyScore = scoreList.get(i);
-            c.setTime(bodyScore.getTestTime());
-            int year = c.get(Calendar.YEAR);
-            int itemId = Integer.parseInt(""+bodyScore.getItemId());
-            int idex = itemId!=10 ? itemId - 1 : 7;
-            if(nowYear == year){
-//                System.out.println(itemId);
-                listBar.get(idex).setSumPointNow(listBar.get(idex).getSumPointNow() + bodyScore.getTestPoint());
-                listBar.get(idex).setNumNow(listBar.get(idex).getNumNow() + 1);
-            }
-        }
-        for(int i=0;i<listBar.size();i++){
-            if(listBar.get(i).getNumNow() != 0)
-                listBar.get(i).setAveNow(1.0 * listBar.get(i).getSumPointNow() / listBar.get(i).getNumNow());
-        }
-
-        //处理查询的年级去年的均分
-        if(score.getClassGrade() - 1 >= 7) {
-            score.setClassGrade(score.getClassGrade() - 1);
-
-            scoreList = selectScoreList(score);
-
-            for(int i=0;i<scoreList.size();i++){
-
-                bodyScore = scoreList.get(i);
-                c.setTime(bodyScore.getTestTime());
-                int year = c.get(Calendar.YEAR);
-                int itemId = Integer.parseInt(""+bodyScore.getItemId());
-                int idex = itemId!=10 ? itemId - 1 : 7;
-//                System.out.println(i+" "+year+" "+itemId+" "+idex);
-                if(nowYear - 1 == year){
-                    listBar.get(idex).setSumPointLast(listBar.get(idex).getSumPointLast() + bodyScore.getTestPoint());
-                    listBar.get(idex).setNumLast(listBar.get(idex).getNumLast() + 1);
-                }
-            }
-            for(int i=0;i<listBar.size();i++){
-                if(listBar.get(i).getNumLast() != 0)
-                    listBar.get(i).setAveLast(1.0 * listBar.get(i).getSumPointLast() / listBar.get(i).getNumLast());
-            }
-        }
-        else{
-            for(int i=0;i<listBar.size();i++){
-                listBar.get(i).setAveLast(0);
-            }
-        }
-
+    public List<BodyEvaluationBar> generateDataForBar(BodyEvaluationBar bodyEvaluationBar){
+        List<BodyEvaluationBar> listBar = bodyEvaluationMapper.selectForBar(bodyEvaluationBar);
         return listBar;
     }
 
@@ -147,22 +89,24 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
         int[][][] lengthBase = (int[][][]) CacheUtils.get(Constants.Test_Standar_Base_Length, Constants.Test_Standar_Base_Length_Key);
         long[][][][] testPoint = (long[][][][]) CacheUtils.get(Constants.Test_Standar_Point, Constants.Test_Standar_Point_Key);
         int j;
-        int grade = Integer.parseInt(s.getClassGrade()+"");
-        int item = Integer.parseInt(s.getItemId()+"");
-        int sex = Integer.parseInt(s.getSexId()+"");
-        int length = lengthBase[grade][item][sex];
-        double testScore = s.getTestScore();
-        if(s.getScoreRelation()==0){
-            for(j=0;j<length;j++){
-                if(testScore>=testStand[grade][item][sex][j]){
-                    return testPoint[grade][item][sex][j];
+        if(s.getClassGrade() != null && s.getItemId() != null && s.getSexId() != null && s.getScoreRelation() != null){
+            int grade = Integer.parseInt(s.getClassGrade()+"");
+            int item = Integer.parseInt(s.getItemId()+"");
+            int sex = Integer.parseInt(s.getSexId()+"");
+            int length = lengthBase[grade][item][sex];
+            double testScore = s.getTestScore();
+            if(s.getScoreRelation()==0){
+                for(j=0;j<length;j++){
+                    if(testScore>=testStand[grade][item][sex][j]){
+                        return testPoint[grade][item][sex][j];
+                    }
                 }
             }
-        }
-        else{
-            for(j=1;j<=testStand[grade][item][sex][0];j++){
-                if(testStand[grade][item][sex][j]>=testScore){
-                    return testPoint[grade][item][sex][j];
+            else{
+                for(j=1;j<=testStand[grade][item][sex][0];j++){
+                    if(testStand[grade][item][sex][j]>=testScore){
+                        return testPoint[grade][item][sex][j];
+                    }
                 }
             }
         }
@@ -175,22 +119,23 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
         int[][][] lengthBase = (int[][][]) CacheUtils.get(Constants.Test_Standar_Base_Length, Constants.Test_Standar_Base_Length_Key);
         long[][][][] testGrade = (long[][][][]) CacheUtils.get(Constants.Test_Standar_Grade, Constants.Test_Standar_Grade_Key);
         int j;
-        int grade = Integer.parseInt(s.getClassGrade()+"");
-        int item = Integer.parseInt(s.getItemId()+"");
-        int sex = Integer.parseInt(s.getSexId()+"");
-        int length = lengthBase[grade][item][sex];
-        double testScore = s.getTestScore();
-        if(s.getScoreRelation()==0){
-            for(j=0;j<length;j++){
-                if(testScore>=testStand[grade][item][sex][j]){
-                    return testGrade[grade][item][sex][j];
+        if(s.getClassGrade() != null && s.getItemId() != null && s.getSexId() != null && s.getScoreRelation() != null) {
+            int grade = Integer.parseInt(s.getClassGrade() + "");
+            int item = Integer.parseInt(s.getItemId() + "");
+            int sex = Integer.parseInt(s.getSexId() + "");
+            int length = lengthBase[grade][item][sex];
+            double testScore = s.getTestScore();
+            if (s.getScoreRelation() == 0) {
+                for (j = 0; j < length; j++) {
+                    if (testScore >= testStand[grade][item][sex][j]) {
+                        return testGrade[grade][item][sex][j];
+                    }
                 }
-            }
-        }
-        else{
-            for(j=1;j<=testStand[grade][item][sex][0];j++){
-                if(testStand[grade][item][sex][j]>=testScore){
-                    return testGrade[grade][item][sex][j];
+            } else {
+                for (j = 1; j <= testStand[grade][item][sex][0]; j++) {
+                    if (testStand[grade][item][sex][j] >= testScore) {
+                        return testGrade[grade][item][sex][j];
+                    }
                 }
             }
         }
@@ -204,18 +149,47 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
     @Override
     public void updateStatistical(){
         List<BodyScore> bodyScores = bodyEvaluationMapper.selectBodyScoreList(null);
-        //获得今年的年份
-        Calendar calendar = Calendar.getInstance();
-        int nowYear = calendar.get(Calendar.YEAR);
         Calendar c = Calendar.getInstance();
 
-
-
+        Statistical[] statistical = new Statistical [10000];
+        int i=0,j=0,r=0,year=0;
+        for(i=0;i<10000;i++){
+            statistical[i] = new Statistical();
+        }
+        int n=bodyScores.size();
+        for(i=0;i<n;i++){
+            if(bodyScores.get(i).getTestTime()!=null&&bodyScores.get(i).getItemId()!=null
+                    &&bodyScores.get(i).getClassGrade()!=null){
+                c.setTime(bodyScores.get(i).getTestTime());
+                year = c.get(Calendar.YEAR);
+                for(j=0;j<r;j++){
+                    if(statistical[j].getTestItemId()==bodyScores.get(i).getItemId()
+                        && statistical[j].getTestClassGrade()==bodyScores.get(i).getClassGrade()
+                        && statistical[j].getTestYear()==year){
+                        break;
+                    }
+                }
+                if(j==r){
+                    statistical[j].setTestItemId(bodyScores.get(i).getItemId());
+                    statistical[j].setStatisticalInformationId(j+1);
+                    statistical[j].setTestClassGrade(bodyScores.get(i).getClassGrade());
+                    statistical[j].setTestYear(year);
+                    statistical[j].setSumPoint(0);
+                    statistical[j].setSumStu(0);
+                    r++;
+                }
+                statistical[j].setSumPoint(statistical[j].getSumPoint() + bodyScores.get(i).getTestPoint());
+                statistical[j].setSumStu(statistical[j].getSumStu() + 1);
+            }
+        }
+        for(j=0;j<r;j++){
+            if(statistical[j].getSumStu()!=0)statistical[j].setAvePoint(statistical[j].getSumPoint()*1.0/statistical[j].getSumStu());
+            else    statistical[j].setAvePoint(0);
+        }
         //向表中插入数据
         bodyEvaluationMapper.truncateTable();
-        int length = bodyScores.size();
-        for(int i=0;i<length;i++) {
-            bodyEvaluationMapper.updateStatistical(bodyScores.get(i));
+        for(i=0;i<r;i++) {
+            bodyEvaluationMapper.insertStatistical(statistical[i]);
         }
     }
 }

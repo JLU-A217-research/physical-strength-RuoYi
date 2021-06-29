@@ -93,12 +93,13 @@
         ORDER BY test_item_id
     </select>
 
-<!--    <update id="truncateTable">-->
-<!--        truncate table statistical_information-->
-<!--    </update>-->
-    <insert id="updateStatistical" parameterType="Statistical" useGeneratedKeys="true" keyProperty="scoreRecordId">
+    <update id="truncateTable">
+        truncate table statistical_information
+    </update>
+    <insert id="insertStatistical" parameterType="Statistical" keyProperty="scoreRecordId">
         insert into statistical_information
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="statisticalInformationId != null">statistical_information_id,</if>
             <if test="testItemId != null">test_item_id,</if>
             <if test="testYear != null">test_year,</if>
             <if test="testClassGrade != null">test_class_grade,</if>
@@ -107,6 +108,7 @@
             <if test="avePoint != null">ave_point,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="statisticalInformationId != null">#{statisticalInformationId},</if>
             <if test="testItemId != null">#{testItemId},</if>
             <if test="testYear != null">#{testYear},</if>
             <if test="testClassGrade != null">#{testClassGrade},</if>
@@ -115,4 +117,27 @@
             <if test="avePoint != null">#{avePoint},</if>
         </trim>
     </insert>
+
+    <resultMap type="BodyEvaluationBar" id="BodyEvaluationForBarResult">
+        <result property="itemId"    column="test_item_id"    />
+        <result property="itemName"    column="test_item_name"    />
+        <result property="ave"    column="ave_point"    />
+    </resultMap>
+    <sql id="selectForBarVo">
+        SELECT
+            ti.test_item_id,
+            ti.test_item_name,
+            si.ave_point
+        FROM
+            test_item ti,
+            statistical_information si
+        WHERE
+            ti.test_item_id=si.test_item_id
+    </sql>
+    <select id="selectForBar" parameterType="BodyEvaluationBar" resultMap="BodyEvaluationForBarResult">
+        <include refid="selectForBarVo"/>
+        <if test="classGrade != null"> AND si.test_class_grade = #{classGrade} </if>
+        <if test="year != null"> AND si.test_year = #{year} </if>
+        ORDER BY si.test_item_id
+    </select>
 </mapper>
