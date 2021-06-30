@@ -3,6 +3,8 @@ package com.ruoyi.project.system.user.controller;
 import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,6 +20,9 @@ import com.ruoyi.project.system.menu.domain.Menu;
 import com.ruoyi.project.system.menu.service.IMenuService;
 import com.ruoyi.project.system.user.domain.User;
 import org.thymeleaf.cache.ICache;
+
+import com.ruoyi.project.system.student.domain.PrsnStudent;
+import com.ruoyi.project.system.student.service.IPrsnStudentService;
 
 /**
  * 首页 业务处理
@@ -35,6 +40,9 @@ public class IndexController extends BaseController
 
     @Autowired
     private RuoYiConfig ruoYiConfig;
+
+    @Autowired
+    private IPrsnStudentService prsnStudentService;
 
     // 系统首页
     @GetMapping("/index")
@@ -54,7 +62,6 @@ public class IndexController extends BaseController
         mmap.put("ignoreFooter", configService.selectConfigByKey("sys.index.ignoreFooter"));
         mmap.put("copyrightYear", ruoYiConfig.getCopyrightYear());
         mmap.put("demoEnabled", ruoYiConfig.isDemoEnabled());
-
 
 
         // 菜单导航显示风格
@@ -97,6 +104,13 @@ public class IndexController extends BaseController
         mmap.put("version", ruoYiConfig.getVersion());
         User user = getSysUser();
         mmap.put("user", user);
+
+        //取学生信息
+        //Long accountId= user.getUserId();
+        Long accountId = 1L;
+        PrsnStudent prsnStudent=prsnStudentService.selectstuIdByAccountId(accountId);
+        mmap.put("prsnStudent", prsnStudent);
+
         return "main";
     }
 }
