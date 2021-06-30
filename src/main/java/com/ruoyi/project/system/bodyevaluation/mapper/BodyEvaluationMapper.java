@@ -12,10 +12,6 @@ public interface BodyEvaluationMapper {
 
     public List<BodyEvaluation> selectItemList();
 
-    public List<BodyEvaluationLine> selectItemListLine();
-
-    public List<BodyEvaluationBar> selectItemListBar();
-
     public List<BodyEvaluationBar> selectForBar(BodyEvaluationBar bodyEvaluationBar);
 
     public void insertStatistical(Statistical statistical);

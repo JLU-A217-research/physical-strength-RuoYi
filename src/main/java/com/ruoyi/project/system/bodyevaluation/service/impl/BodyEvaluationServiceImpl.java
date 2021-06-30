@@ -31,53 +31,6 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
     }
 
     @Override
-    public List<BodyEvaluationLine> selectItemListLine(){
-        return bodyEvaluationMapper.selectItemListLine();
-    }
-
-    @Override
-    public List<BodyEvaluationBar> selectItemListBar(){
-        return bodyEvaluationMapper.selectItemListBar();
-    }
-
-
-    @Override
-    public List<BodyEvaluationLine> generateDataForLine(BodyScore score){
-        //通过score里传回来的年级数据，获取数据库中所有该年级的成绩（年份不一样，表示不同届学生）
-        //例如score.date.year == 7 则返回所有曾经在7年级时候测试的成绩
-        List<BodyScore> scoreList = selectScoreList(score);
-
-        //获取当前年份
-        Calendar calendar = Calendar.getInstance();
-        int nowYear = calendar.get(Calendar.YEAR);
-        Calendar c = Calendar.getInstance();
-
-        //获取项目id和名称存放在一个list里面，list的下标与itemid-1保持一致
-        List<BodyEvaluationLine> listLine = selectItemListLine();
-        //对scoreList里的每一个值，分配到对应的sumPoint中
-        BodyScore bodyScore;
-        for(int i=0;i<scoreList.size();i++){
-            bodyScore = scoreList.get(i);
-            c.setTime(bodyScore.getTestTime());
-            int year = c.get(Calendar.YEAR);
-            int yearIdex = nowYear - year;//idex表示距离我现在第几年
-            int itemId = Integer.parseInt(""+bodyScore.getItemId());
-            int idex = itemId!=10 ? itemId - 1 : 7;
-            if(yearIdex < 6){
-                listLine.get(idex).setSumPoint(listLine.get(idex).getSumPoint(yearIdex) + bodyScore.getTestPoint(), yearIdex);
-                listLine.get(idex).setNum(listLine.get(idex).getNum(yearIdex) + 1, yearIdex);
-            }
-        }
-        for(int i=0;i<listLine.size();i++){
-            for(int j=0;j<6;j++){
-                if(listLine.get(i).getNum(j) != 0)
-                    listLine.get(i).setAve(1.0 * listLine.get(i).getSumPoint(j) / listLine.get(i).getNum(j) , j);
-            }
-        }
-        return listLine;
-    }
-
-    @Override
     public List<BodyEvaluationBar> generateDataForBar(BodyEvaluationBar bodyEvaluationBar){
         List<BodyEvaluationBar> listBar = bodyEvaluationMapper.selectForBar(bodyEvaluationBar);
         return listBar;
@@ -103,7 +56,7 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
                 }
             }
             else{
-                for(j=1;j<=testStand[grade][item][sex][0];j++){
+                for(j=0;j<length;j++){
                     if(testStand[grade][item][sex][j]>=testScore){
                         return testPoint[grade][item][sex][j];
                     }
@@ -132,7 +85,7 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
                     }
                 }
             } else {
-                for (j = 1; j <= testStand[grade][item][sex][0]; j++) {
+                for (j = 0; j < length; j++) {
                     if (testStand[grade][item][sex][j] >= testScore) {
                         return testGrade[grade][item][sex][j];
                     }
@@ -141,10 +94,6 @@ public class BodyEvaluationServiceImpl implements IBodyEvaluationService {
         }
         return 0;
     }
-
-    //计算统计数据
-
-
     //更新统计数据
     @Override
     public void updateStatistical(){

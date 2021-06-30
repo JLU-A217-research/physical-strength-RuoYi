@@ -14,10 +14,7 @@ public interface IBodyEvaluationService {
     public List<BodyScore> selectScoreList(BodyScore score);
 
     public List<BodyEvaluation> selectItemList();
-    public List<BodyEvaluationLine> generateDataForLine(BodyScore score);
     public List<BodyEvaluationBar> generateDataForBar(BodyEvaluationBar bodyEvaluationBar);
-    public List<BodyEvaluationLine> selectItemListLine();
-    public List<BodyEvaluationBar> selectItemListBar();
 
     public long creatPoint(BodyScore s);
 

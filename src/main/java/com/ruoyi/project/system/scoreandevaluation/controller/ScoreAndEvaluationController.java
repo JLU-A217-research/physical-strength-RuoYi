@@ -152,15 +152,13 @@ public class ScoreAndEvaluationController extends BaseController
         List<Double> aveNowList = new ArrayList<>();
         List<Double> aveLastList = new ArrayList<>();
 
-        List<String> itemNameListLine = new ArrayList<>();
-
 
         BodyEvaluationBar bodyEvaluationBar = new BodyEvaluationBar();
         Calendar calendar = Calendar.getInstance();
         long nowYear = calendar.get(Calendar.YEAR);
         bodyEvaluationBar.setYear(nowYear);
         long classGrade = nowYear - year + 7;
-        //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + classGrade);
+        if(classGrade>9)    classGrade=9;//年级最高等于9
         bodyEvaluationBar.setClassGrade(classGrade);
 
         //获得指定年级当前年份的成绩均值
@@ -187,14 +185,36 @@ public class ScoreAndEvaluationController extends BaseController
         }
 
         //linechart数据
-        //List<BodyEvaluationLine> linelist = bodyEvaluationService.generateDataForLine(score);
+        List<String> itemNameListLine = new ArrayList<>();
+        List<Long> yearList = new ArrayList<>();
+        for(int i=4;i>=0;i--){
+            yearList.add(nowYear - i);
+        }
+        mmap.put("yearList", yearList);
         if(bodyEvaluationBar.getClassGrade() != null){
             bodyEvaluationBar.setYear(null);
+            List<BodyEvaluation> itemName = bodyEvaluationService.selectItemList();
             List<BodyEvaluationBar> lineList = bodyEvaluationService.generateDataForBar(bodyEvaluationBar);
-            int i,len = lineList.size();
-            for(i=0;i<len;i++){
-
+            int i,len = itemName.size();
+            for(i=0;i<itemName.size();i++){
+                if(itemName.get(i).getItemId()!=8&&itemName.get(i).getItemId()!=9)
+                    itemNameListLine.add(itemName.get(i).getItemName());
             }
+            mmap.put("itemNameListLine", itemNameListLine);
+            ArrayList<ArrayList<Double>> aveListLine = new ArrayList<ArrayList<Double>>();
+            for(i=0;i<20;i++){
+                ArrayList<Double> d = new ArrayList<Double>();
+                aveListLine.add(d);
+            }
+            len = lineList.size();
+            for(i=0;i<len;i++){
+                int iyear = Integer.parseInt(lineList.get(i).getYear() + "");
+                if(iyear >= yearList.get(0) && iyear <= yearList.get(4)){
+                    int idx = Integer.parseInt(lineList.get(i).getItemId() + "");
+                    aveListLine.get(idx).add(lineList.get(i).getAve());
+                }
+            }
+            mmap.put("aveListLine", aveListLine);
         }
 
         return prefix + "/bodyEvaluate/bodyEvaluate";
