@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectInformationList" parameterType="Information" resultMap="InformationResult">
         <include refid="selectInformationVo"/>
-        where info.send_id = pt.teacher_id
+        where info.send_id = pt.teacher_no
             <if test="receiveId != null  and receiveId != ''"> and info.receive_id = #{receiveId}</if>
             <if test="params.beginSendTime != null and params.beginSendTime != ''"><!-- 开始时间检索 -->
                 AND date_format(info.send_time,'%y%m%d') &gt;= date_format(#{params.beginSendTime},'%y%m%d')
@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectInformationById" parameterType="Long" resultMap="InformationResult">
         <include refid="selectInformationVo"/>
-        where info.info_id = #{infoId} and  info.send_id = pt.teacher_id
+        where info.info_id = #{infoId} and  info.send_id = pt.teacher_no
     </select>
         
     <insert id="insertInformation" parameterType="Information" useGeneratedKeys="true" keyProperty="infoId">
