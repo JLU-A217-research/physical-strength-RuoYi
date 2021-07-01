@@ -1,5 +1,6 @@
 package com.ruoyi.project.system.scoreandevaluation.studentscoremanage.service.impl;
 
+import java.util.Calendar;
 import java.util.List;
 
 import com.ruoyi.common.constant.Constants;
@@ -55,6 +56,17 @@ public class ScoreServiceImpl implements IScoreService
     public List<Score> selectScoreListByStu(Score score)
     {
         List<Score> s = scoreMapper.selectScoreListByStu(score);
+        //更新测试年级
+        Calendar calendar = Calendar.getInstance();
+        long nowYear = calendar.get(Calendar.YEAR);
+        Calendar c = Calendar.getInstance();
+        int len = s.size();
+        long enrollYear;
+        for(int i=0;i<len;i++){
+            c.setTime(s.get(i).getTestTime());
+            enrollYear = c.get(Calendar.YEAR);
+            s.get(i).setClassGrade(nowYear - enrollYear + s.get(i).getClassGrade());
+        }
         return s;
     }
 
@@ -124,13 +136,15 @@ public class ScoreServiceImpl implements IScoreService
                     return testPoint[grade][item][sex][j];
                 }
             }
+            if(j>=length)  return 0;
         }
         else{
-            for(j=1;j<=testStand[grade][item][sex][0];j++){
+            for(j=0;j<length;j++){
                 if(testStand[grade][item][sex][j]>=testScore){
                     return testPoint[grade][item][sex][j];
                 }
             }
+            if(j>=length)  return 0;
         }
         return 0;
     }
@@ -152,13 +166,15 @@ public class ScoreServiceImpl implements IScoreService
                     return testGrade[grade][item][sex][j];
                 }
             }
+            if(j>=length)  return 3;
         }
         else{
-            for(j=1;j<=testStand[grade][item][sex][0];j++){
+            for(j=0;j<length;j++){
                 if(testStand[grade][item][sex][j]>=testScore){
                     return testGrade[grade][item][sex][j];
                 }
             }
+            if(j>=length)  return 3;
         }
         return 0;
     }

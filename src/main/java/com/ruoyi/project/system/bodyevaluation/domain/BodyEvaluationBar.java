@@ -7,11 +7,38 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class BodyEvaluationBar extends BaseEntity {
     private long itemId;
     private String itemName;
+    private Long year;
+    private double ave;
+    private Long classGrade;
 
+    public Long getYear() {
+        return year;
+    }
+
+    public void setYear(Long year) {
+        this.year = year;
+    }
+
+    public double getAve() {
+        return ave;
+    }
+
+    public void setAve(double ave) {
+        this.ave = ave;
+    }
+
+    public Long getClassGrade() {
+        return classGrade;
+    }
+
+    public void setClassGrade(Long classGrade) {
+        this.classGrade = classGrade;
+    }
+
+    //以下属性的都要删除
     long sumPointNow;
     long numNow;
     double aveNow;
-
     long sumPointLast;
     long numLast;
     double aveLast;

@@ -74,4 +74,5 @@ public interface IScoreAndEvaluationService
     public String importScore(List<ScoreAndEvaluation> scoreList, Boolean isUpdateSupport);
 
     public ScoreAndEvaluation selectStuById(Long stuId);
+
 }

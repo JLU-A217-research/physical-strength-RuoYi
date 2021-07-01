@@ -4,131 +4,147 @@
     <th:block th:include="include :: header('成绩与体质评价列表')" />
 </head>
 <body class="gray-bg">
-<div class="container-div">
+<div class="container-div wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12 search-collapse">
-                <form id="formId">
-                    <div class="select-list">
-                        <ul>
-                            <li>
-                                年级：<input type="text" name="classGrade"/>
-                            </li>
-                            <li>
-                                班级：<input type="text" name="classNo"/>
-                            </li>
-                            <li>
-                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>搜索</a>
-                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>重置</a>
-                           </li>
-                        </ul>
-                    </div>
-                </form>
-            <div class="col-sm-12 select-table table-striped">
-                <table id="bootstrap-table"></table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-sm-12 search-collapse">
-            <form id="linechartformId">
-                <div class="select-list">
-                <ul>
-                    <li>
-                        年级：<input type="text" name="classGrade"/>
-                    </li>
-                    <li>
-                        班级：<input type="text" name="classNo"/>
-                    </li>
-                    <li>
-                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search('linechartformId')"><i class="fa fa-search"></i>搜索</a>
-                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset('linechartformId')"><i class="fa fa-refresh"></i>重置</a>
-                    </li>
-                </ul>
-            </div>
-            </form>
-            <div class="col-sm-12 select-table table-striped">
-                <div class="echarts" id="echarts-line-chart"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-sm-12 search-collapse">
-            <form id="barchartformId">
+            <form id="formId">
                 <div class="select-list">
                     <ul>
                         <li>
-                            年级：<input type="text" name="classGrade"/>
+                            年级：<input type="text" name="stuEnrollYear"/>
                         </li>
                         <li>
                             班级：<input type="text" name="classNo"/>
                         </li>
                         <li>
-                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search('barchartformId')"><i class="fa fa-search"></i>搜索</a>
-                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset('barchartformId')"><i class="fa fa-refresh"></i>重置</a>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>重置</a>
                         </li>
                     </ul>
                 </div>
             </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+
+<!--        <div class="col-sm-12 search-collapse">-->
+<!--            <div class="col-sm-12 select-table table-striped">-->
+<!--                <div class="echarts" id="echarts-line-chart"></div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+        <div class="col-sm-12 search-collapse">
             <div class="col-sm-12 select-table table-striped">
                 <div class="echarts" id="echarts-bar-chart"></div>
             </div>
         </div>
+
+        <div class="col-sm-12 search-collapse">
+            <div class="col-sm-12 select-table table-striped">
+                <div class="echarts" id="echarts-line-chart"></div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <th:block th:include="include :: footer" />
 <th:block th:include="include :: echarts-js" />
-<script type="text/javascript" th:inline="javascript">
+<th:block th:include="include :: sparkline-js" />
+<script th:inline="javascript">
     var prefix = ctx + "system/scoreandevaluation/bodyevaluate";
 
     $(function() {
+        var itemNameList = [[${itemNameList}]];
+        var aveNowList = [[${aveNowList}]];
+        var aveLastList = [[${aveLastList}]];
+
+        var itemNameListLine = [[${itemNameListLine}]];
+        var aveListLine = [[${aveListLine}]];
+        var yearList = [[${yearList}]];
+
         var options = {
             url: prefix + "/list",
-            lineurl: prefix + "/lineList",
-            barurl: prefix + "/barList",
-            modalName: "体质评价",
-            title : {
-                text: '评价等级比率'
-            },
             columns: [{
                 checkbox: true
             },
                 {
                     field: 'itemName',
-                    title: '测试名称'
-                },
-                {
-                    field: 'passRate',
-                    title: '合格率'
-                },
-                {
-                    field: 'goodRate',
-                    title: '良好率'
+                    title: '项目名称'
                 },
                 {
                     field: 'excellentRate',
-                    title: '优秀率'
+                    title: '优秀率',
+                },
+                {
+                    field: 'goodRate',
+                    title: '良好率',
+                },
+                {
+                    field: 'passRate',
+                    title: '通过率',
                 }]
         };
         $.table.init(options);
 
-
-        var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
-        var lineoption = {
+        var barChart = echarts.init(document.getElementById("echarts-bar-chart"));
+        var baroption = {
+            url: prefix + "/barStatistic",
             title : {
-                text: '未来一周气温变化'
+                text: '年级各项目环比增长'
             },
             tooltip : {
                 trigger: 'axis'
             },
             legend: {
-                data:['最高气温','最低气温']
+                data:['今年','往年']
+            },
+            grid:{
+                x:30,
+                x2:40,
+                y2:24
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    data : itemNameList
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'往年',
+                    type:'bar',
+                    data:aveLastList
+                },
+                {
+                    name:'今年',
+                    type:'bar',
+                    data:aveNowList
+                }
+            ]
+        };
+        barChart.setOption(baroption);
+        window.onresize = barChart.resize;
+
+        var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
+        var lineoption = {
+            title : {
+                text: '同比增长'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:itemNameListLine//这里需要变成各个项目的名称
             },
             grid:{
                 x:40,
@@ -140,7 +156,7 @@
                 {
                     type : 'category',
                     boundaryGap : false,
-                    data : ['周一','周二','周三','周四','周五','周六','周日']
+                    data : yearList//这里变成连续多届x年级
                 }
             ],
             yAxis : [
@@ -153,9 +169,9 @@
             ],
             series : [
                 {
-                    name:'最高气温',
+                    name:itemNameListLine[0],//某个项目
                     type:'line',
-                    data:[11, 11, 15, 13, 12, 13, 10],
+                    data:aveListLine[1],//各年级得分
                     markPoint : {
                         data : [
                             {type : 'max', name: '最大值'},
@@ -169,9 +185,100 @@
                     }
                 },
                 {
-                    name:'最低气温',
+                    name:itemNameListLine[1],
                     type:'line',
-                    data:[1, -2, 2, 5, 3, 2, 0],
+                    data:aveListLine[2],//各年级得分
+                    markPoint : {
+                        data : [
+                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:itemNameListLine[2],
+                    type:'line',
+                    data:aveListLine[3],//各年级得分
+                    markPoint : {
+                        data : [
+                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:itemNameListLine[3],
+                    type:'line',
+                    data:aveListLine[4],//各年级得分
+                    markPoint : {
+                        data : [
+                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:itemNameListLine[4],
+                    type:'line',
+                    data:aveListLine[5],//各年级得分
+                    markPoint : {
+                        data : [
+                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:itemNameListLine[5],
+                    type:'line',
+                    data:aveListLine[6],//各年级得分
+                    markPoint : {
+                        data : [
+                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:itemNameListLine[6],
+                    type:'line',
+                    data:aveListLine[7],//各年级得分
+                    markPoint : {
+                        data : [
+                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                }
+                ,
+                {
+                    name:itemNameListLine[7],
+                    type:'line',
+                    data:aveListLine[10],//各年级得分
                     markPoint : {
                         data : [
                             {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
@@ -187,74 +294,6 @@
         };
         lineChart.setOption(lineoption);
         $(window).resize(lineChart.resize);
-
-        var barChart = echarts.init(document.getElementById("echarts-bar-chart"));
-        var baroption = {
-            title : {
-                text: '某地区蒸发量和降水量'
-            },
-            tooltip : {
-                trigger: 'axis'
-            },
-            legend: {
-                data:['蒸发量','降水量']
-            },
-            grid:{
-                x:30,
-                x2:40,
-                y2:24
-            },
-            calculable : true,
-            xAxis : [
-                {
-                    type : 'category',
-                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-                }
-            ],
-            yAxis : [
-                {
-                    type : 'value'
-                }
-            ],
-            series : [
-                {
-                    name:'蒸发量',
-                    type:'bar',
-                    data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
-                    markPoint : {
-                        data : [
-                            {type : 'max', name: '最大值'},
-                            {type : 'min', name: '最小值'}
-                        ]
-                    },
-                    markLine : {
-                        data : [
-                            {type : 'average', name: '平均值'}
-                        ]
-                    }
-                },
-                {
-                    name:'降水量',
-                    type:'bar',
-                    data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
-                    markPoint : {
-                        data : [
-                            {name : '年最高', value : 182.2, xAxis: 7, yAxis: 183, symbolSize:18},
-                            {name : '年最低', value : 2.3, xAxis: 11, yAxis: 3}
-                        ]
-                    },
-                    markLine : {
-                        data : [
-                            {type : 'average', name : '平均值'}
-                        ]
-                    }
-                }
-            ]
-        };
-        barChart.setOption(baroption);
-
-        window.onresize = barChart.resize;
-
     });
 </script>
 </body>

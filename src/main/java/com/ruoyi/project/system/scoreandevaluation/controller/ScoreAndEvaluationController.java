@@ -1,9 +1,16 @@
 package com.ruoyi.project.system.scoreandevaluation.controller;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.CacheUtils;
+import com.ruoyi.project.system.bodyevaluation.domain.BodyEvaluation;
+import com.ruoyi.project.system.bodyevaluation.domain.BodyEvaluationBar;
+import com.ruoyi.project.system.bodyevaluation.domain.BodyEvaluationLine;
+import com.ruoyi.project.system.bodyevaluation.domain.BodyScore;
+import com.ruoyi.project.system.bodyevaluation.service.IBodyEvaluationService;
 import com.ruoyi.project.system.user.domain.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +45,9 @@ public class ScoreAndEvaluationController extends BaseController
 
     @Autowired
     private IScoreAndEvaluationService scoreAndEvaluationService;
+
+    @Autowired
+    private IBodyEvaluationService bodyEvaluationService;
 
     @RequiresPermissions("system:scoreandevaluation:view")
     @GetMapping("")
@@ -135,8 +145,80 @@ public class ScoreAndEvaluationController extends BaseController
     @GetMapping("/scoreimport")
     public String scoreimport(){return prefix + "/scoreimport";}
 
-    @GetMapping("/bodyEvaluate/bodyEvaluate")
-    public String bodyEvaluate(){return prefix + "/bodyEvaluate/bodyEvaluate";}
+    @GetMapping("/bodyEvaluate/bodyEvaluate/{year}")
+    public String bodyEvaluate(@PathVariable("year")Long year, ModelMap mmap){//score里传过来的应该是年级
+        //barchart 数据
+        List<String> itemNameList = new ArrayList<>();
+        List<Double> aveNowList = new ArrayList<>();
+        List<Double> aveLastList = new ArrayList<>();
+
+
+        BodyEvaluationBar bodyEvaluationBar = new BodyEvaluationBar();
+        Calendar calendar = Calendar.getInstance();
+        long nowYear = calendar.get(Calendar.YEAR);
+        bodyEvaluationBar.setYear(nowYear);
+        long classGrade = nowYear - year + 7;
+        if(classGrade>9)    classGrade=9;//年级最高等于9
+        bodyEvaluationBar.setClassGrade(classGrade);
+
+        //获得指定年级当前年份的成绩均值
+        if(bodyEvaluationBar.getClassGrade() != null && bodyEvaluationBar.getYear() != null){
+            List<BodyEvaluationBar> barlist = bodyEvaluationService.generateDataForBar(bodyEvaluationBar);
+            int i,len = barlist.size();
+            for(i=0;i<len;i++){
+                itemNameList.add(barlist.get(i).getItemName());
+                aveNowList.add(barlist.get(i).getAve());
+            }
+            mmap.put("itemNameList", itemNameList);
+            mmap.put("aveNowList",aveNowList);
+
+            //获取指定年级往年的成绩均值
+            if(bodyEvaluationBar.getClassGrade()>7){
+                bodyEvaluationBar.setClassGrade(bodyEvaluationBar.getClassGrade()-1);
+                bodyEvaluationBar.setYear(bodyEvaluationBar.getYear()-1);
+                barlist = bodyEvaluationService.generateDataForBar(bodyEvaluationBar);
+                for(i=0;i<barlist.size();i++){
+                    aveLastList.add(barlist.get(i).getAve());
+                }
+                mmap.put("aveLastList",aveLastList);
+            }
+        }
+
+        //linechart数据
+        List<String> itemNameListLine = new ArrayList<>();
+        List<Long> yearList = new ArrayList<>();
+        for(int i=4;i>=0;i--){
+            yearList.add(nowYear - i);
+        }
+        mmap.put("yearList", yearList);
+        if(bodyEvaluationBar.getClassGrade() != null){
+            bodyEvaluationBar.setYear(null);
+            List<BodyEvaluation> itemName = bodyEvaluationService.selectItemList();
+            List<BodyEvaluationBar> lineList = bodyEvaluationService.generateDataForBar(bodyEvaluationBar);
+            int i,len = itemName.size();
+            for(i=0;i<itemName.size();i++){
+                if(itemName.get(i).getItemId()!=8&&itemName.get(i).getItemId()!=9)
+                    itemNameListLine.add(itemName.get(i).getItemName());
+            }
+            mmap.put("itemNameListLine", itemNameListLine);
+            ArrayList<ArrayList<Double>> aveListLine = new ArrayList<ArrayList<Double>>();
+            for(i=0;i<20;i++){
+                ArrayList<Double> d = new ArrayList<Double>();
+                aveListLine.add(d);
+            }
+            len = lineList.size();
+            for(i=0;i<len;i++){
+                int iyear = Integer.parseInt(lineList.get(i).getYear() + "");
+                if(iyear >= yearList.get(0) && iyear <= yearList.get(4)){
+                    int idx = Integer.parseInt(lineList.get(i).getItemId() + "");
+                    aveListLine.get(idx).add(lineList.get(i).getAve());
+                }
+            }
+            mmap.put("aveListLine", aveListLine);
+        }
+
+        return prefix + "/bodyEvaluate/bodyEvaluate";
+    }
 
     /**
      * 个人成绩管理
@@ -173,4 +255,6 @@ public class ScoreAndEvaluationController extends BaseController
     {
         return toAjax(scoreAndEvaluationService.deleteScoreByIds(ids));
     }
+
+
 }

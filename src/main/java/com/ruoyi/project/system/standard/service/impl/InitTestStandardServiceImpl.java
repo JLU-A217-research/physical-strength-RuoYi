@@ -36,17 +36,20 @@ public class InitTestStandardServiceImpl implements InitTestStantardService {
         InitTestStandard ts;
         for(int i=0;i<list.size();i++){
             ts = list.get(i);
-            grade = Integer.parseInt(ts.getGrade()+"");
-            itemId = Integer.parseInt(ts.getTestItemId()+"");
-            sexId = Integer.parseInt(ts.getStuSexId()+"");
-            double testBase = ts.getTestBase();
-            long point = ts.getTestPoint();
-            long tsgrade = ts.getTestGradeId();
+            if(ts.getGrade() != null && ts.getTestItemId() != null && ts.getStuSexId() != null &&
+                    ts.getTestBase() !=null && ts.getTestGradeId() != null){
+                grade = Integer.parseInt(ts.getGrade()+"");
+                itemId = Integer.parseInt(ts.getTestItemId()+"");
+                sexId = Integer.parseInt(ts.getStuSexId()+"");
+                double testBase = ts.getTestBase();
+                long point = ts.getTestPoint();
+                long tsgrade = ts.getTestGradeId();
 //            System.out.println("testBase="+testBase);
-            testStandar[grade][itemId][sexId][lengthBase[grade][itemId][sexId]] = testBase;
-            testPoint[grade][itemId][sexId][lengthBase[grade][itemId][sexId]] = point;
-            testGrade[grade][itemId][sexId][lengthBase[grade][itemId][sexId]] = tsgrade;
-            lengthBase[grade][itemId][sexId]++;
+                testStandar[grade][itemId][sexId][lengthBase[grade][itemId][sexId]] = testBase;
+                testPoint[grade][itemId][sexId][lengthBase[grade][itemId][sexId]] = point;
+                testGrade[grade][itemId][sexId][lengthBase[grade][itemId][sexId]] = tsgrade;
+                lengthBase[grade][itemId][sexId]++;
+            }
         }
         CacheUtils.put(Constants.Test_Standar_Base, Constants.Test_Standar_Base_Key, testStandar);
         CacheUtils.put(Constants.Test_Standar_Base_Length, Constants.Test_Standar_Base_Length_Key, lengthBase);

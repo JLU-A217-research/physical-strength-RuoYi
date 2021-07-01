@@ -2,10 +2,7 @@ package com.ruoyi.project.system.bodyevaluation.mapper;
 
 
 
-import com.ruoyi.project.system.bodyevaluation.domain.BodyEvaluation;
-import com.ruoyi.project.system.bodyevaluation.domain.BodyEvaluationBar;
-import com.ruoyi.project.system.bodyevaluation.domain.BodyEvaluationLine;
-import com.ruoyi.project.system.bodyevaluation.domain.BodyScore;
+import com.ruoyi.project.system.bodyevaluation.domain.*;
 
 import java.util.List;
 
@@ -15,7 +12,9 @@ public interface BodyEvaluationMapper {
 
     public List<BodyEvaluation> selectItemList();
 
-    public List<BodyEvaluationLine> selectItemListLine();
+    public List<BodyEvaluationBar> selectForBar(BodyEvaluationBar bodyEvaluationBar);
 
-    public List<BodyEvaluationBar> selectItemListBar();
+    public void insertStatistical(Statistical statistical);
+
+    public void truncateTable();
 }
