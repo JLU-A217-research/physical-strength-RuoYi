@@ -154,7 +154,7 @@
         /* 角色状态显示 */
         function statusTools(row) {
             if (row.handleStatus == 2) {
-                return '<a class="btn btn-success btn-xs" onclick="AcceptStatus(\'' + row.absenceInfoId + '\')">同意</a>' +
+                return '<a class="btn btn-success btn-xs" onclick="AcceptStatus(\'' + row.absenceInfoId + '\')">同意</a>' + ' ' +
                     '<a class="btn btn-danger btn-xs" onclick="RefuseStatus(\'' + row.absenceInfoId + '\')">不同意</a> ';
             }
         }

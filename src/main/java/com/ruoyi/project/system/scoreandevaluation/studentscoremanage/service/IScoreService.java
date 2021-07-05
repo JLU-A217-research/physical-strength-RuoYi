@@ -72,4 +72,5 @@ public interface IScoreService
     public long creatPoint(Score s);
 
     public long creatTestGrade(Score s);
+
 }

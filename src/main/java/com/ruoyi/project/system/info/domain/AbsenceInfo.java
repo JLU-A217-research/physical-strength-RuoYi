@@ -23,7 +23,7 @@ public class AbsenceInfo extends BaseEntity
     private Long stuId;
     /** 学生号 */
     @Excel(name = "学生号")
-    private Long stuNo;
+    private String stuNo;
     @Excel(name = "年级")
     private Long classGrade;
     @Excel(name = "班级")
@@ -78,11 +78,11 @@ public class AbsenceInfo extends BaseEntity
     @Excel(name = "处理状态",readConverterExp = "0=同意,1=不同意,2=待处理")
     private String handleStatus;
 
-    public Long getStuNo() {
+    public String getStuNo() {
         return stuNo;
     }
 
-    public void setStuNo(Long stuNo) {
+    public void setStuNo(String stuNo) {
         this.stuNo = stuNo;
     }
 

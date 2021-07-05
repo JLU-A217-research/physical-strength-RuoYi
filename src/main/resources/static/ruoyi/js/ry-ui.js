@@ -346,6 +346,7 @@ var table = {
     			} else{
     				$("#" + table.options.id).bootstrapTable('refresh', params);
     			}
+    		    // alert(table.options.formId);
     		},
     		// 导出数据
     		exportExcel: function(formId) {
@@ -831,8 +832,6 @@ var table = {
             },
             // 弹出层全屏
             openFull: function (title, url, width, height) {
-            	//如果是移动端，就使用自适应大小弹窗
-				// alert(url);
             	if ($.common.isMobile()) {
             	    width = 'auto';
             	    height = 'auto';
@@ -1051,6 +1050,26 @@ var table = {
 						return;
 					}
 					url = table.options.studentscoremanageUrl.replace("{id}",id);
+				}
+				return url;
+			},
+			//体测评价-dingch
+			bodyEvaluateTab: function(id){
+
+				table.set();
+				$.modal.openTab("个人" + table.options.modalName, $.operate.bodyEvaluateUrl(id));
+			},
+			bodyEvaluateUrl: function(id){
+				var url = "/404.html";
+				if($.common.isNotEmpty(id)){
+					url = table.options.bodyEvaluateUrl.replace("{id}", id);
+				} else{
+					var id = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+					if (id.length == 0) {
+						$.modal.alertWarning("请输入年级");
+						return;
+					}
+					url = table.options.bodyEvaluateUrl.replace("{id}",id);
 				}
 				return url;
 			},

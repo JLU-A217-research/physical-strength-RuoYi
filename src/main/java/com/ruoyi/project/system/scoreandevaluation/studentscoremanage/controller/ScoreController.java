@@ -1,5 +1,6 @@
 package com.ruoyi.project.system.scoreandevaluation.studentscoremanage.controller;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -52,18 +53,6 @@ public class ScoreController extends BaseController
     {
         startPage();
         List<Score> list = scoreService.selectScoreListByStu(score);
-        int i;
-        Score s;
-        for(i=0;i<list.size();i++){
-            s = list.get(i);
-            list.get(i).setTestPoint(creatPoint(s));
-            long gradeId = creatTestGrade(s);
-            list.get(i).setTestGradeId(gradeId);
-            if(gradeId == 0)    list.get(i).setTestGrade("优");
-            else if(gradeId == 1)    list.get(i).setTestGrade("良");
-            else if(gradeId == 2)    list.get(i).setTestGrade("中");
-            else    list.get(i).setTestGrade("差");
-        }
         return getDataTable(list);
     }
 

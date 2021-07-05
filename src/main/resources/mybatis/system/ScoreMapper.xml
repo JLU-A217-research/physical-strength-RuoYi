@@ -17,40 +17,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="itemUnit"    column="test_item_unit"    />
         <result property="testPoint"    column="test_point"    />
         <result property="testGradeId"    column="test_grade_id"    />
+        <result property="testGrade"    column="dict_label"    />
         <result property="sexId"    column="stu_sex"    />
         <result property="scoreRelation"    column="test_score_relation"    />
     </resultMap>
 
     <sql id="selectScoreVo">
         SELECT
-	        s.score_record_id,
-	        s.stu_id,
-	        s.tgs_id,
-	        s.test_time,
-	        s.test_score,
+            s.score_record_id,
+            s.stu_id,
+            s.tgs_id,
+            s.test_time,
+            s.test_score,
             s.test_point,
             s.test_grade_id,
-	        ps.stu_no,
-	        cgi.class_grade,
-	        ti.test_item_id,
-	        ti.test_item_name,
-	        ti.test_item_unit,
+            sdd.dict_label,
+            ps.stu_no,
+            cgi.class_grade,
+            ti.test_item_id,
+            ti.test_item_name,
+            ti.test_item_unit,
             ps.stu_sex,
             ti.test_score_relation
         FROM
-	        score s,
-	        class_grade_info cgi,
-	        test_item ti,
-	        prsn_student ps,
-	        test_grade_sex_relation	tgsr
+            score s,
+            class_grade_info cgi,
+            test_item ti,
+            prsn_student ps,
+            test_grade_sex_relation tgsr,
+            sys_dict_data sdd
         WHERE
             ps.stu_id = s.stu_id
-          AND
-            ps.grade_class_id = cgi.grade_class_id
-          AND
-            s.tgs_id = tgsr.tgs_id
-          AND
-            tgsr.test_item_id = ti.test_item_id
+          AND ps.grade_class_id = cgi.grade_class_id
+          AND s.tgs_id = tgsr.tgs_id
+          AND tgsr.test_item_id = ti.test_item_id
+          AND sdd.dict_type = "test_grade" AND sdd.dict_value = s.test_grade_id
     </sql>
 
     <select id="selectScoreListByStu" parameterType="Score" resultMap="ScoreResult">
@@ -68,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     </select>
     
-    <select id="selectScoreById" parameterType="Long" resultMap="ScoreResult">
+    <select id="selectScoreById" parameterType="Score" resultMap="ScoreResult">
         <include refid="selectScoreVo"/>
         AND score_record_id = #{scoreRecordId}
     </select>
@@ -127,14 +128,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <sql id="selectItemIdVo">
-
-    </sql>
     <select id="selectItemId" parameterType="Score" resultMap="ScoreResult">
         SELECT ti.test_item_id, ti.test_score_relation, tgsr.tgs_id
         FROM test_item ti, test_grade_sex_relation tgsr
         WHERE ti.test_item_name=#{itemName}
         AND tgsr.grade = #{classGrade} AND tgsr.test_item_id = ti.test_item_id AND tgsr.stu_sex_id = #{sexId}
     </select>
-
 </mapper>
