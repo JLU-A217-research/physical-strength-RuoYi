@@ -23,7 +23,7 @@ import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.project.system.config.service.IConfigService;
+
 
 /**
  * 年班信息Controller
@@ -50,8 +50,9 @@ public class ClassGradeInfoController extends BaseController
         return prefix + "/classmanage";
     }
 
-//    int schoolGradeStart = Integer.parseInt(configService.selectConfigByKey("sys.schoolgradestart"));
-//    String schoolName = configService.selectConfigByKey("sys.schoolname");
+//    int schoolGradeStart1 = Integer.parseInt(configService.selectConfigByKey("sys.schoolgradestart"));
+//    mmap.put("schoolgradestart", configService.selectConfigByKey("sys.schoolgradestart"));
+
 
     public static int getSysYear(){
         Calendar date = Calendar.getInstance();
@@ -67,11 +68,12 @@ public class ClassGradeInfoController extends BaseController
     @ResponseBody
     public TableDataInfo list(ClassGradeInfo classGradeInfo)
     {
+        int schoolGradeStart = Integer.parseInt(configService.selectConfigByKey("sys.schoolgradestart"));
         startPage();
         List<ClassGradeInfo> list = classGradeInfoService.selectClassGradeInfoList(classGradeInfo);
         for (ClassGradeInfo x: list) {
-//            x.setClassGrade((long) (getSysYear() - x.getEnrollYear() + schoolGradeStart));
-            x.setClassGrade((long) (getSysYear() - x.getEnrollYear() + 1));
+            x.setClassGrade((long) (getSysYear() - x.getEnrollYear() + schoolGradeStart));
+//            x.setClassGrade((long) (getSysYear() - x.getEnrollYear() + 1));
         }
         return getDataTable(list);
     }

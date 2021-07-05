@@ -1,5 +1,7 @@
 package com.ruoyi.project.system.user.controller;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +23,7 @@ import com.ruoyi.project.system.user.domain.User;
 import org.thymeleaf.cache.ICache;
 import com.ruoyi.project.system.student.domain.PrsnStudent;
 import com.ruoyi.project.system.student.service.IPrsnStudentService;
+import static com.ruoyi.project.system.dict.utils.DictUtils.getDictLabel;
 
 /**
  * 首页 业务处理
@@ -103,12 +106,25 @@ public class IndexController extends BaseController
         User user = getSysUser();
         mmap.put("user", user);
 
-        //取学生信息
+        //学生信息
         //Long accountId= user.getUserId();
         Long accountId = 1L;
         PrsnStudent prsnStudent=prsnStudentService.selectstuIdByAccountId(accountId);
-        mmap.put("prsnStudent", prsnStudent);
+        String stuNation = getDictLabel("sys_user_nation",String.valueOf(prsnStudent.getStuNationId()));
 
+
+        int stuAge = getAge(prsnStudent.getStuBirth());
+        mmap.put("prsnStudent", prsnStudent);
+        mmap.put("stuNation", stuNation); //等荣荣的学生domain改完之后改这里
+        mmap.put("stuAge", stuAge);
         return "main";
+    }
+
+    //年龄计算
+    public int getAge(Date birthday){
+        Calendar today = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
+        c.setTime(birthday);
+        return (today.get(Calendar.YEAR) - c.get(Calendar.YEAR));
     }
 }
