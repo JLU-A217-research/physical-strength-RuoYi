@@ -39,16 +39,16 @@
                                 <td th:text="${prsnStudent.stuSex}==1?女:男"></td>
                             </tr>
                             <tr>
-                                <td>职务</td>
-                                <td th:text="${user.roleId}"></td>
-                                <td>工号</td>
-                                <td th:text="${user.userId}"></td>
+                                <td>年龄</td>
+                                <td th:text="${prsnStudent.stuBirth}"></td>
+                                <td>民族</td>
+                                <td th:text="${prsnStudent.stuNationId}"></td>
                             </tr>
                             <tr>
-                                <td>手机</td>
-                                <td th:text="${user.phonenumber}"></td>
-                                <td>邮箱</td>
-                                <td th:text="${user.email}"></td>
+                                <td>班级</td>
+                                <td th:text="${prsnStudent.gradeClassId}"></td>
+                                <td>学号</td>
+                                <td th:text="${prsnStudent.stuNo}"></td>
                             </tr>
                         </table>
                     </div>

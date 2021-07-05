@@ -3,7 +3,6 @@ package com.ruoyi.project.system.user.controller;
 import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,6 @@ import com.ruoyi.project.system.menu.domain.Menu;
 import com.ruoyi.project.system.menu.service.IMenuService;
 import com.ruoyi.project.system.user.domain.User;
 import org.thymeleaf.cache.ICache;
-
 import com.ruoyi.project.system.student.domain.PrsnStudent;
 import com.ruoyi.project.system.student.service.IPrsnStudentService;
 

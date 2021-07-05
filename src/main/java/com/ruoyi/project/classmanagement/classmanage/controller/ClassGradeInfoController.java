@@ -1,6 +1,11 @@
 package com.ruoyi.project.classmanagement.classmanage.controller;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import com.ruoyi.framework.config.RuoYiConfig;
+import com.ruoyi.project.system.config.service.IConfigService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +23,7 @@ import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.web.page.TableDataInfo;
+import com.ruoyi.project.system.config.service.IConfigService;
 
 /**
  * 年班信息Controller
@@ -34,11 +40,23 @@ public class ClassGradeInfoController extends BaseController
     @Autowired
     private IClassGradeInfoService classGradeInfoService;
 
+    @Autowired
+    private IConfigService configService;
+
     @RequiresPermissions("classmanagement:classmanage:view")
     @GetMapping()
     public String classmanage()
     {
         return prefix + "/classmanage";
+    }
+
+//    int schoolGradeStart = Integer.parseInt(configService.selectConfigByKey("sys.schoolgradestart"));
+//    String schoolName = configService.selectConfigByKey("sys.schoolname");
+
+    public static int getSysYear(){
+        Calendar date = Calendar.getInstance();
+        int year = date.get(Calendar.YEAR);
+        return year;
     }
 
     /**
@@ -51,6 +69,10 @@ public class ClassGradeInfoController extends BaseController
     {
         startPage();
         List<ClassGradeInfo> list = classGradeInfoService.selectClassGradeInfoList(classGradeInfo);
+        for (ClassGradeInfo x: list) {
+//            x.setClassGrade((long) (getSysYear() - x.getEnrollYear() + schoolGradeStart));
+            x.setClassGrade((long) (getSysYear() - x.getEnrollYear() + 1));
+        }
         return getDataTable(list);
     }
 
