@@ -8,7 +8,7 @@ import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.absence_submit.domain.AbsenceSubmit;
 import com.ruoyi.project.system.absence_submit.service.IAbsenceSubmitService;
-import com.ruoyi.project.system.common.domain.ClassGradeData;
+import com.ruoyi.project.system.info.domain.ClassGradeData;
 import com.ruoyi.project.system.user.domain.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

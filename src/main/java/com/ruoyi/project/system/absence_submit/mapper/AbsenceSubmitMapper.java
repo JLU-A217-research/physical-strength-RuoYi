@@ -1,7 +1,7 @@
 package com.ruoyi.project.system.absence_submit.mapper;
 
 import com.ruoyi.project.system.absence_submit.domain.AbsenceSubmit;
-import com.ruoyi.project.system.common.domain.ClassGradeData;
+import com.ruoyi.project.system.info.domain.ClassGradeData;
 
 import java.util.List;
 
