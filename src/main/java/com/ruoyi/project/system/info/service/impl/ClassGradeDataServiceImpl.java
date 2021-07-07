@@ -1,7 +1,8 @@
-package com.ruoyi.project.system.common.service;
+package com.ruoyi.project.system.info.service.impl;
 
-import com.ruoyi.project.system.common.domain.ClassGradeData;
-import com.ruoyi.project.system.common.mapper.ClassGradeDataMapper;
+import com.ruoyi.project.system.info.domain.ClassGradeData;
+import com.ruoyi.project.system.info.mapper.ClassGradeDataMapper;
+import com.ruoyi.project.system.info.service.ClassGradeDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.information.mapper.UnReadInfoMapper">
+	
+	<resultMap type="UnReadInfo" id="UnReadInfoCntResult">
+		<result property="unReadInfoCnt"   column="un_read_cnt"   />
+
+	</resultMap>
+	
+	<sql id="selectUnReadInfoCntVo">
+        select count(*) as un_read_cnt
+		from information where read_status = 0
+    </sql>
+
+	
+	<select id="getUnReadInfoCnt"  parameterType="User" resultMap="UnReadInfoCntResult">
+		<include refid="selectUnReadInfoCntVo"/>
+		<if test="userId != null  and userId != ''"> and receive_id = #{userId}</if>
+	</select>
+	
+
+	
+</mapper> 

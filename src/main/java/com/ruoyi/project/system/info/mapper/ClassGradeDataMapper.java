@@ -1,6 +1,6 @@
-package com.ruoyi.project.system.common.mapper;
+package com.ruoyi.project.system.info.mapper;
 
-import com.ruoyi.project.system.common.domain.ClassGradeData;
+import com.ruoyi.project.system.info.domain.ClassGradeData;
 
 import java.util.List;
 

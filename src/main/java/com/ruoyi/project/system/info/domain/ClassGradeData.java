@@ -1,4 +1,4 @@
-package com.ruoyi.project.system.common.domain;
+package com.ruoyi.project.system.info.domain;
 
 import com.ruoyi.framework.web.domain.BaseEntity;
 
