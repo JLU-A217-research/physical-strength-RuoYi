@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('测试学生列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+<!--            <div class="col-sm-12 search-collapse">-->
+<!--                <form id="formId">-->
+<!--                    <div class="select-list">-->
+<!--                        <ul>-->
+<!--                            <li>-->
+<!--                                <label>测试学生ID：</label>-->
+<!--                                <input type="text" name="stuId"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>测试记录ID：</label>-->
+<!--                                <input type="text" name="testRecordId"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>测试项目ID：</label>-->
+<!--                                <input type="text" name="testItemId"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <label>是否通过：</label>-->
+<!--                                <input type="text" name="passOrNot"/>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>-->
+<!--                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:stu:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:stu:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:stu:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:stu:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:stu:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:stu:remove')}]];
+        var prefix = ctx + "system/stu";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "测试学生列 ",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'testStuId',
+                    title: '测试学生列表ID',
+                    visible: false
+                },
+                {
+                    field: 'stuId',
+                    title: '测试学生ID'
+                },
+                {
+                    field: 'testRecordId',
+                    title: '测试记录ID'
+                },
+                {
+                    field: 'testItemId',
+                    title: '测试项目ID'
+                },
+                {
+                    field: 'passOrNot',
+                    title: '是否通过'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.testStuId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.testStuId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

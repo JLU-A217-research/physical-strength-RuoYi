@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.stu.mapper.TestStuMapper">
+    
+    <resultMap type="TestStu" id="TestStuResult">
+        <result property="testStuId"    column="test_stu_id"    />
+        <result property="stuId"    column="stu_id"    />
+        <result property="testRecordId"    column="test_record_id"    />
+        <result property="testItemId"    column="test_item_id"    />
+        <result property="passOrNot"    column="pass_or_not"    />
+    </resultMap>
+
+    <sql id="selectTestStuVo">
+        select test_stu_id, stu_id, test_record_id, test_item_id, pass_or_not from test_stu
+    </sql>
+
+    <select id="selectTestStuList" parameterType="TestStu" resultMap="TestStuResult">
+        <include refid="selectTestStuVo"/>
+        <where>  
+            <if test="stuId != null "> and stu_id = #{stuId}</if>
+            <if test="testRecordId != null "> and test_record_id = #{testRecordId}</if>
+            <if test="testItemId != null "> and test_item_id = #{testItemId}</if>
+            <if test="passOrNot != null "> and pass_or_not = #{passOrNot}</if>
+        </where>
+    </select>
+    
+    <select id="selectTestStuById" parameterType="Long" resultMap="TestStuResult">
+        <include refid="selectTestStuVo"/>
+        where test_stu_id = #{testStuId}
+    </select>
+        
+    <insert id="insertTestStu" parameterType="TestStu" useGeneratedKeys="true" keyProperty="testStuId">
+        insert into test_stu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">stu_id,</if>
+            <if test="testRecordId != null">test_record_id,</if>
+            <if test="testItemId != null">test_item_id,</if>
+            <if test="passOrNot != null">pass_or_not,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">#{stuId},</if>
+            <if test="testRecordId != null">#{testRecordId},</if>
+            <if test="testItemId != null">#{testItemId},</if>
+            <if test="passOrNot != null">#{passOrNot},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestStu" parameterType="TestStu">
+        update test_stu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stuId != null">stu_id = #{stuId},</if>
+            <if test="testRecordId != null">test_record_id = #{testRecordId},</if>
+            <if test="testItemId != null">test_item_id = #{testItemId},</if>
+            <if test="passOrNot != null">pass_or_not = #{passOrNot},</if>
+        </trim>
+        where test_stu_id = #{testStuId}
+    </update>
+
+    <delete id="deleteTestStuById" parameterType="Long">
+        delete from test_stu where test_stu_id = #{testStuId}
+    </delete>
+
+    <delete id="deleteTestStuByIds" parameterType="String">
+        delete from test_stu where test_stu_id in 
+        <foreach item="testStuId" collection="array" open="(" separator="," close=")">
+            #{testStuId}
+        </foreach>
+    </delete>
+
+</mapper>
