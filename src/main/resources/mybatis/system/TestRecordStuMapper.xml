@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.record.mapper.TestRecordStuMapper">
+
+    <resultMap type="TestRecordStu" id="TestRecordStuResult">
+        <result property="testRecordId"     column="test_record_id"      />
+        <result property="testItemId"     column="test_item_id"      />
+        <result property="stuId" column="stu_id"/>
+    </resultMap>
+    <insert id="insertTestRecordStu" parameterType="TestRecordStu" >
+        insert into test_stu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="testRecordId != null">test_record_id,</if>
+            <if test=" testItemId!= null">test_item_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="testRecordId != null">#{testRecordId},</if>
+            <if test="testItemId != null">#{testItemId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTestRecordStu" parameterType="java.util.List">
+        UPDATE test_stu ts,
+            test_class_relation tcr,
+            prsn_student ps
+        SET ts.stu_id = ps.stu_id
+        WHERE
+          ts.test_record_id=#{testRecordId}
+          AND  ts.test_record_id = tcr.test_record_id
+          AND tcr.enroll_year = ps.stu_enroll_year
+          AND tcr.class_no = ps.grade_class_id
+    </update>
+
+</mapper>
