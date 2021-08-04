@@ -18,7 +18,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="gradeClassId"    column="grade_class_id"    />
         <result property="stuPhone"    column="stu_phone"    />
         <result property="stuWechat"    column="stu_wechat"    />
-        <result property="stuWechat"    column="stu_wechat"    />
     </resultMap>
 
     <sql id="selectPrsnStudentVo">
@@ -27,8 +26,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 --     from prsn_student ps, sys_dict_data sdd
 --     WHERE dict_type='sys_user_sex' and sdd.dict_value=ps.stu_sex
 
-            select pa.account_id,ps.stu_id, ps.stu_no, ps.stu_name, pa.psw,sdd.dict_label,ps.stu_birth, stu_nation_id,
-             ps.stu_nid, ps.stu_enroll_year, ps.grade_class_id, ps.stu_phone, ps.stu_wechat,p
+            select ps.stu_id, ps.stu_no, ps.stu_name, pa.psw,sdd.dict_label,ps.stu_birth, stu_nation_id,
+             ps.stu_nid, ps.stu_enroll_year, ps.grade_class_id, ps.stu_phone, ps.stu_wechat
             from prsn_student ps, sys_dict_data sdd ,prsn_account pa
              WHERE dict_type='sys_user_sex' and sdd.dict_value=ps.stu_sex and pa.stu_id=ps.stu_id
     </sql>
@@ -112,16 +111,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </trim>
         where stu_id = #{stuId}
     </update>
-
-
-    <select id="selectstuIdByAccountId" parameterType="Long" resultMap="PrsnStudentResult">
-        select pa.account_id,ps.stu_id, ps.stu_no, ps.stu_name, pa.psw,sdd.dict_label,ps.stu_birth, stu_nation_id,
-               ps.stu_nid, ps.stu_enroll_year, ps.grade_class_id, ps.stu_phone, ps.stu_wechat
-        from prsn_student ps, sys_dict_data sdd ,prsn_account pa
-        WHERE dict_type='sys_user_sex' and sdd.dict_value=ps.stu_sex and pa.stu_id=ps.stu_id
-
-        and account_id = #{accountId}
-    </select>
 
     <delete id="deletePrsnStudentById" parameterType="Long">
         delete from prsn_student where stu_id = #{stuId}
