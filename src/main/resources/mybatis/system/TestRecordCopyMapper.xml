@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.recordCopy.mapper.TestRecordCopyMapper">
+    
+    <resultMap type="TestRecordCopy" id="TestRecordResult">
+        <result property="testRecordId"    column="test_record_id"    />
+        <result property="testOrSupId"    column="test_or_sup_id"    />
+        <result property="testName"    column="test_name"    />
+        <result property="testTime"    column="test_time"    />
+        <result property="testSiteIdCopy"    column="test_site_id"    />
+        <result property="testSite" column="dict_label"/>
+        <result property="testStatus"    column="test_status"    />
+        <result property="testItemName" column="test_item_name"/>
+        <result property="teacherNameCopy" column="test_teacher_name"/>
+        <result property="enrollYear" column="enroll_year"/>
+        <result property="classNo" column="class_no"/>
+    </resultMap>
+
+
+    <sql id="selectTestRecordVo">
+        SELECT
+            tr.test_record_id,
+            tr.test_name,
+            tr.test_time,
+            group_concat( dict_label ) AS dict_label,
+            group_concat( ti.test_item_name ) AS test_item_name,
+            CONCAT(tcr.enroll_year,'-',tcr.class_no)  AS class_no,
+            tr.test_status
+        FROM
+            test_record tr,
+            sys_dict_data sdd,
+            test_item ti,
+            test_item_relation tir,
+            test_class_relation tcr
+        WHERE
+            sdd.dict_type = 'test_site'
+          AND tr.test_site_id = sdd.dict_value
+          AND tr.test_record_id = tir.test_record_id
+          AND tir.test_item_id = ti.test_item_id
+          AND tr.test_record_id = tcr.test_record_id
+          AND test_or_sup_id = 1
+        GROUP BY
+            test_record_id
+    </sql>
+
+    <sql id="selectTestRecordCopy">
+        SELECT
+            tr.test_record_id,
+            tr.test_name,
+            tr.test_time,
+            group_concat( dict_label ) AS dict_label,
+            group_concat( ti.test_item_name ) AS test_item_name,
+            tr.test_status
+        FROM
+            test_record tr,
+            sys_dict_data sdd,
+            test_item_relation tir,
+            test_item ti
+        WHERE
+            sdd.dict_type = 'test_site'
+          and tr.test_site_id = sdd.dict_value
+          and tr.test_record_id=#{testRecordId}
+          and tr.test_record_id=tir.test_record_id
+          and tir.test_item_id=ti.test_item_id
+
+    </sql>
+
+
+    <select id="selectTestRecordCopyList" parameterType="TestRecordCopy" resultMap="TestRecordResult">
+        <include refid="selectTestRecordVo"/>
+            <if test="testOrSupId != null "> and test_or_sup_id = #{testOrSupId}</if>
+            <if test="testName != null and testName != '' "> and test_name like concat('%', #{testName}, '%')</if>
+            <if test="testTime != null "> and test_time = #{testTime}</if>
+            <if test="testSiteIdCopy != null"> and test_site_id = #{testSiteIdCopy}</if>
+            <if test="testSite != null"> and dict_label = #{testSite}</if>
+            <if test="testItemCopy !=null and testItemCopy !=''" > and test_item_name = #{testItemCopy}</if>
+            <if test="testItemName !=null and testItemName !=''" > and ti.test_item_name = #{testItemName}</if>
+            <if test="teacherNameCopy !=null and teacherNameCopy !=''"> and test_teacher_name = #{teacherNameCopy}</if>
+            <if test="testStatus != null "> and test_status = #{testStatus}</if>
+            <if test="classNo!=null">and tcr.class_no =#{classNo}</if>
+            <if test="enrollYear!=null">and tcr.enroll_year =#{enrollYear}</if>
+            <if test="classGradeCopy!=null">and grade_class_id=#{classGradeCopy}</if>
+
+    </select>
+    
+    <select id="selectTestRecordCopyById" parameterType="Long" resultMap="TestRecordResult">
+       <include refid="selectTestRecordCopy"/>
+    </select>
+        
+    <insert id="insertTestRecordCopy" parameterType="TestRecordCopy" useGeneratedKeys="true" keyProperty="testRecordId">
+        insert into test_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="testOrSupId != null">test_or_sup_id,</if>
+            <if test="testName != null and testName != ''">test_name,</if>
+            <if test="testTime != null">test_time,</if>
+            <if test="testSiteIdCopy != null">test_site_id,</if>
+            <if test="testItemCopy !=null">test_item_name,</if>
+            <if test="teacherNameCopy !=null">test_teacher_name,</if>
+            <if test="testStatus != null">test_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="testOrSupId != null">#{testOrSupId},</if>
+            <if test="testName != null">#{testName},</if>
+            <if test="testTime != null">#{testTime},</if>
+            <if test="testSiteIdCopy != null">#{testSiteIdCopy},</if>
+            <if test="testItemCopy !=null">#{testItemCopy},</if>
+            <if test="teacherNameCopy !=null">#{teacherNameCopy},</if>
+            <if test="testStatus != null">#{testStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestRecordCopy" parameterType="TestRecordCopy">
+        update test_record
+        <trim prefix="SET" suffixOverrides=",">
+<!--            <if test="testOrSupId != null">test_or_sup_id = #{testOrSupId},</if>-->
+<!--            <if test="testName != null">test_name = #{testName},</if>-->
+<!--            <if test="testTime != null">test_time = #{testTime},</if>-->
+<!--            <if test="testSiteIdCopy != null">test_site_id = #{testSiteIdCopy},</if>-->
+<!--            <if test="testItemCopy !=null">test_item_name= #{testItemCopy},</if>-->
+<!--             <if test="testItemName !=null and testItemName !=''" > and test_item_name = #{testItemName}</if>-->
+<!--            <if test="teacherNameCopy !=null">test_teacher_name= #{teacherNameCopy},</if>-->
+            <if test="testStatus != null">test_status = #{testStatus},</if>
+        </trim>
+        where test_record_id = #{testRecordId}
+    </update>
+
+    <delete id="deleteTestRecordCopyById" parameterType="Long">
+        delete from test_record where test_record_id = #{testRecordId}
+    </delete>
+
+    <delete id="deleteTestRecordCopyByIds" parameterType="String">
+        delete from test_record where test_record_id in 
+        <foreach item="testRecordId" collection="array" open="(" separator="," close=")">
+            #{testRecordId}
+        </foreach>
+    </delete>
+
+</mapper>

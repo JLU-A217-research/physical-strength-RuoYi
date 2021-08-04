@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('选择班级')" />
+    <th:block th:include="include :: ztree-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-class-add">
+
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">菜单权限：</label>
+            <div class="col-sm-8">
+                <label class="check-box">
+                    <input type="checkbox" value="1">展开/折叠</label>
+                <label class="check-box">
+                    <input type="checkbox" value="2">全选/全不选</label>
+                <label class="check-box">
+                    <input type="checkbox" value="3" checked>父子联动</label>
+                <div id="classTree" class="ztree ztree-border"></div>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: ztree-js" />
+<script type="text/javascript">
+    $(function() {
+        var url = ctx + "system/classmanage/treeData";
+        var options = {
+            id: "classTree",
+            url: url,
+            check: { enable: true },
+            expandLevel: 0
+        };
+        $.tree.init(options);
+    });
+
+
+    $('input').on('ifChanged', function(obj){
+        var type = $(this).val();
+        var checked = obj.currentTarget.checked;
+        if (type == 1) {
+            if (checked) {
+                $._tree.expandAll(true);
+            } else {
+                $._tree.expandAll(false);
+            }
+        } else if (type == "2") {
+            if (checked) {
+                $._tree.checkAllNodes(true);
+            } else {
+                $._tree.checkAllNodes(false);
+            }
+        } else if (type == "3") {
+            if (checked) {
+                $._tree.setting.check.chkboxType = { "Y": "ps", "N": "ps" };
+            } else {
+                $._tree.setting.check.chkboxType = { "Y": "", "N": "" };
+            }
+        }
+    })
+
+    // function submitHandler() {
+    //     if ($.validate.form()) {
+    //         add();
+    //     }
+    // }
+    //
+    // function add() {
+    //
+    //     var classId = $.tree.getCheckedNodes();
+    //     $.ajax({
+    //         cache : true,
+    //         type : "POST",
+    //         url : ctx + "system/recordCopy/addTree",
+    //         data : {
+    //             "classId": classId
+    //         },
+    //         async : false,
+    //         error : function(request) {
+    //             $.modal.alertError("系统错误");
+    //         },
+    //         success : function(data) {
+    //             $.operate.successCallback(data);
+    //         }
+    //     });
+    // }
+</script>
+</body>
+</html>
