@@ -1,12 +1,14 @@
 package com.ruoyi.project.system.teacher.service.impl;
 
-import java.util.List;
+import com.ruoyi.common.utils.text.Convert;
+import com.ruoyi.project.system.recordCopy.mapper.TestRecordTeacherMapper;
+import com.ruoyi.project.system.teacher.domain.PrsnTeacher;
+import com.ruoyi.project.system.teacher.mapper.PrsnTeacherMapper;
+import com.ruoyi.project.system.teacher.service.IPrsnTeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.project.system.teacher.mapper.PrsnTeacherMapper;
-import com.ruoyi.project.system.teacher.domain.PrsnTeacher;
-import com.ruoyi.project.system.teacher.service.IPrsnTeacherService;
-import com.ruoyi.common.utils.text.Convert;
+
+import java.util.List;
 
 /**
  * 教师信息 Service业务层处理
@@ -15,10 +17,12 @@ import com.ruoyi.common.utils.text.Convert;
  * @date 2021-03-22
  */
 @Service
-public class PrsnTeacherServiceImpl implements IPrsnTeacherService 
+public class PrsnTeacherServiceImpl implements IPrsnTeacherService
 {
     @Autowired
     private PrsnTeacherMapper prsnTeacherMapper;
+    @Autowired
+    private TestRecordTeacherMapper testRecordTeacherMapper;
 
     /**
      * 查询教师信息 
@@ -54,8 +58,38 @@ public class PrsnTeacherServiceImpl implements IPrsnTeacherService
     @Override
     public List<PrsnTeacher> selectPrsnTeacherList(PrsnTeacher prsnTeacher)
     {
+
         return prsnTeacherMapper.selectPrsnTeacherList(prsnTeacher);
     }
+    /*
+    查询所有教师 列表
+     */
+    @Override
+    public List<PrsnTeacher> selectPrsnTeacherAll(){
+        return prsnTeacherMapper.selectPrsnTeacherAll(); }
+    /*
+    根据测试记录查询教师列表
+     */
+    @Override
+    public List<PrsnTeacher> selectPrsnTeacherByTestRecordId(Long testRecordId)
+    {
+        List<PrsnTeacher> testRecordTeachers = prsnTeacherMapper.selectPrsnTeacherByTestRecordId(testRecordId);
+        List<PrsnTeacher> teachers = prsnTeacherMapper.selectPrsnTeacherAll();
+        for (PrsnTeacher prsnTeacher : teachers)
+        {
+            for (PrsnTeacher testRecordTeacher : testRecordTeachers)
+            {
+                if (prsnTeacher.getPrsnTeacherId().longValue() == testRecordTeacher.getPrsnTeacherId().longValue())
+                {
+                    prsnTeacher.setFlag(true);
+                    break;
+                }
+            }
+        }
+        return teachers;
+    }
+
+
 
     /**
      * 新增教师信息 

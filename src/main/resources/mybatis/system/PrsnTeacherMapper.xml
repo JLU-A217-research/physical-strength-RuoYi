@@ -11,7 +11,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="teacherSex"    column="dict_label"    />
         <result property="teacherNid"    column="teacher_nid"    />
         <result property="teacherJobId"    column="teacher_job_id"    />
-        <result property="eycg"     column="eycg"  />
+        <result property="classGrade"     column="class_grade"  />
+        <result property="classId"          column="class_no"/>
         <result property="teacherPhone"    column="teacher_phone"    />
         <result property="teacherEmail"    column="teacher_email"    />
         <result property="teacherWechat"    column="teacher_wechat"    />
@@ -24,29 +25,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                sdd.dict_label,
                pt.teacher_nid,
                pt.teacher_job_id,
-              concat(cgi.enroll_year,cgi.class_grade) as eycg,                      /*class_grade会返回多条查询结果  如何显示是个问题*/
+               concat(cgi.class_grade,cgi.class_no) as class_grade,
                pt.teacher_phone,
                pt.teacher_email,
                pt.teacher_wechat
         FROM prsn_teacher pt,sys_dict_data sdd,class_grade_info cgi
-        WHERE cgi.main_teacher_id=pt.teacher_id
-          AND sdd.dict_value=pt.teacher_sex
+        WHERE (cgi.main_teacher_id=pt.teacher_id or cgi.phy_teacher_id=pt.teacher_id)
           AND sdd.dict_type='sys_user_sex'
-
-#         select pt.teacher_id, pt.teacher_no, pt.teacher_name, sdd.dict_label, pt.teacher_nid, pt.teacher_job_id,pt.teacher_job_id, pt.teacher_phone,
-#                pt.teacher_email, pt.teacher_wechat
-#         from prsn_teacher pt,sys_dict_data sdd
-#         where sdd.dict_type='sys_user_sex' and sdd.dict_value=pt.teacher_sex
+          AND sdd.dict_value=pt.teacher_sex
     </sql>
 
     <select id="selectPrsnTeacherList" parameterType="PrsnTeacher" resultMap="PrsnTeacherResult">
         <include refid="selectPrsnTeacherVo"/>
             <if test="teacherNo != null "> and teacher_no = #{teacherNo}</if>
             <if test="teacherName != null  and teacherName != '' "> and teacher_name like concat('%', #{teacherName}, '%')</if>
-            <if test="teacherSex != null and teacherSex != '' "> and sdd.dict_value = #{teacherSex}</if>
+            <if test="teacherSex != null and teacherSex != '' "> and dict_value = #{teacherSex}</if>
             <if test="teacherNid != null  and teacherNid != '' "> and teacher_nid = #{teacherNid}</if>
             <if test="teacherJobId != null "> and teacher_job_id = #{teacherJobId}</if>
-            <if test="classGrade != null ">and eycg = #{eycg}</if>
+            <if test="classGrade != null ">and cgi.class_grade = #{classGrade}</if>
+            <if test="classId!=null ">and cgi.class_no = #{classId}</if>
             <if test="teacherPhone != null  and teacherPhone != '' "> and teacher_phone = #{teacherPhone}</if>
             <if test="teacherEmail != null  and teacherEmail != '' "> and techer_email = #{teacherEmail}</if>
             <if test="teacherWechat != null  and teacherWechat != '' "> and teacher_wechat = #{teacherWechat}</if>
@@ -73,7 +70,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
           and account_id = #{accountId}
     </select>
-        
+
+<!--    <select id="selectTeacherByTestRecordId" parameterType="Long" resultMap="PrsnTeacherResult">-->
+<!--        select tr.teacher_id,tr.teacher_name-->
+<!--        from test_record tr-->
+<!--            left join test_teacher_relation ttr on tr.test_record_id=ttr.test_record_id-->
+<!--            left join prsn_teacher pt on ttr.teacher_id = pt.teacher_id-->
+<!--    </select>-->
+
+    <select id="selectPrsnTeacherAll" parameterType="Long" resultMap="PrsnTeacherResult">
+        <include refid="selectPrsnTeacherVo"></include>
+    </select>
+
     <insert id="insertPrsnTeacher" parameterType="PrsnTeacher" useGeneratedKeys="true" keyProperty="teacherId">
         insert into prsn_teacher
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -82,7 +90,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="teacherSex != null">teacher_sex,</if>
             <if test="teacherNid != null">teacher_nid,</if>
             <if test="teacherJobId != null">teacher_job_id,</if>
-#             <if test="classGrade != null">cgi.class_grade</if>
+            <if test="classGrade != null">cgi.class_grade,</if>
+            <if test="classId != null">cgi.class_no,</if>
             <if test="teacherPhone != null">teacher_phone,</if>
             <if test="teacherEmail != null">teacher_email,</if>
             <if test="teacherWechat != null">teacher_wechat,</if>
@@ -93,7 +102,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="teacherSex != null">#{teacherSex},</if>
             <if test="teacherNid != null">#{teacherNid},</if>
             <if test="teacherJobId != null">#{teacherJobId},</if>
-#             <if test="classGrade !=null">{classGrade},</if>
+            <if test="classGrade !=null">#{classGrade},</if>
+            <if test="classId !=null">#{classId},</if>
             <if test="teacherPhone != null">#{teacherPhone},</if>
             <if test="teacherEmail != null">#{teacherEmail},</if>
             <if test="teacherWechat != null">#{teacherWechat},</if>
@@ -108,7 +118,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="teacherSex != null">teacher_sex = #{teacherSex},</if>
             <if test="teacherNid != null">teacher_nid = #{teacherNid},</if>
             <if test="teacherJobId != null">teacher_job_id = #{teacherJobId},</if>
-#             <if test="classGrade !=null">cgi.class_grade = #{classGrade},</if>
+            <if test="classGrade !=null">cgi.class_grade = #{classGrade},</if>
+            <if test="classId !=null">cgi.class_no = #{classId},</if>
             <if test="teacherPhone != null">teacher_phone = #{teacherPhone},</if>
             <if test="teacherEmail != null">teacher_email = #{teacherEmail},</if>
             <if test="teacherWechat != null">teacher_wechat = #{teacherWechat},</if>
@@ -122,7 +133,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <delete id="deletePrsnTeacherByIds" parameterType="String">
         delete from prsn_teacher where teacher_id in 
-        <foreach item="teacherId" collection="array" open="(" separator="," close=")">
+        <foreach item="prsnTeacherId" collection="array" open="(" separator="," close=")">
             #{teacherId}
         </foreach>
     </delete>
