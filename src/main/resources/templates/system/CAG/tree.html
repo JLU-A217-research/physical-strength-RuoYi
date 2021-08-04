@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('班级树选择')" />
+	<th:block th:include="include :: ztree-css" />
+</head>
+<style>
+	body{height:auto;font-family: "Microsoft YaHei";}
+	button{font-family: "SimSun","Helvetica Neue",Helvetica,Arial;}
+</style>
+<body class="hold-transition box box-main">
+<!--	<input id="treeId"   name="treeId"    type="hidden" th:value="${CAG.gradeClassId}"/>-->
+	<input id="CheckNodes"   name="CheckNodes"    type="hidden" />
+<!--	<input id="treeName" name="treeName"  type="hidden" th:value="${CAG.classNo}"/>-->
+	<div class="form-group">
+<!--		<label class="col-sm-3 control-label">菜单权限：</label>-->
+		<div class="col-sm-8">
+			<label class="check-box">
+				<input type="checkbox" value="1">展开/折叠</label>
+			<label class="check-box">
+				<input type="checkbox" value="2">全选/全不选</label>
+			<label class="check-box">
+				<input type="checkbox" value="3" checked>父子联动</label>
+			<div id="CAGTrees" class="ztree ztree-border"></div>
+		</div>
+	</div>
+
+	<div id="tree" class="ztree treeselect"></div>
+	</div>
+	<th:block th:include="include :: footer" />
+	<th:block th:include="include :: ztree-js" />
+	<script th:inline="javascript">
+	    var url = ctx + "system/CAG/treeData"
+		$(function() {
+			var options = {
+				id: "CAGTrees",
+		        url: url,
+		        expandLevel: 0,
+				check: { enable: true },
+				onCheck: zCheck
+		    };
+			$.tree.init(options);
+		});
+		
+		// function zOnClick(event, treeId, treeNode) {
+		//     var treeId = treeNode.id;
+		//     var treeName = treeNode.name;
+		//     $("#treeId").val(treeId);
+		//     $("#treeName").val(treeName);
+		// }
+		function zCheck(event){
+			var menuIds = $.tree.getCheckedNodes();
+			// var tmp = "";
+			// for(var node in $.tree.getCheckedNodes()){
+			// 	tmp += node.name;
+			// }
+			$("#CheckNodes").val(menuIds);
+		}
+		$('input').on('ifChanged', function(obj){
+			var type = $(this).val();
+			var checked = obj.currentTarget.checked;
+			if (type == 1) {
+				if (checked) {
+					$._tree.expandAll(true);
+				} else {
+					$._tree.expandAll(false);
+				}
+			} else if (type == "2") {
+				if (checked) {
+					$._tree.checkAllNodes(true);
+				} else {
+					$._tree.checkAllNodes(false);
+				}
+			} else if (type == "3") {
+				if (checked) {
+					$._tree.setting.check.chkboxType = { "Y": "ps", "N": "ps" };
+				} else {
+					$._tree.setting.check.chkboxType = { "Y": "", "N": "" };
+				}
+			}
+		})
+	</script>
+</body>
+</html>
