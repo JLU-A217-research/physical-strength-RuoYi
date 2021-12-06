@@ -1,7 +1,4 @@
-package com.ruoyi.project.system.student.controller.stu_info;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.ruoyi.project.system.student.controller.Stu_Info;
 
 import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.project.system.user.domain.User;
@@ -63,10 +60,9 @@ public class StuInfoController extends BaseController
         startPage();
         User user = ShiroUtils.getSysUser();
         Long accountId= user.getUserId();
+        StuInfo stuInfo=prsnsStudentService.selectstuIdByAccountId(accountId);
 
-        PrsnStudent prsnStudent=prsnsStudentService.selectstuIdByAccountId(accountId);
-
-        mmap.put("prsnStudent", prsnStudent);
+        mmap.put("prsnStudent", stuInfo);
         return prefix + "/stu_info";
     }
 
@@ -81,7 +77,7 @@ public class StuInfoController extends BaseController
     public AjaxResult update(PrsnStudent prsnStudent)
     {
 
-        return toAjax(prsnsStudentService.updatePrsnStudent(prsnStudent));
+        return toAjax(prsnsStudentService.updatepartPrsnStudent(prsnStudent));
     }
 
 }
