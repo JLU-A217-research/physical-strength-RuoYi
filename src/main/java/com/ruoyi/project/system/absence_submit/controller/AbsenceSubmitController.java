@@ -8,7 +8,8 @@ import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.system.absence_submit.domain.AbsenceSubmit;
 import com.ruoyi.project.system.absence_submit.service.IAbsenceSubmitService;
-import com.ruoyi.project.system.common.domain.ClassGradeData;
+import com.ruoyi.project.system.info.domain.ClassGradeData;
+import com.ruoyi.project.system.user.domain.User;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,8 +35,10 @@ public class AbsenceSubmitController extends BaseController
 
     @RequiresPermissions("system:absence_submit:view")
     @GetMapping()
-    public String info()
+    public String info(ModelMap mmap)
     {
+        User user = getSysUser();
+        mmap.put("user", user);
         return prefix + "/absence_submit";
     }
 
@@ -70,8 +73,10 @@ public class AbsenceSubmitController extends BaseController
      * 新增请假信息
      */
     @GetMapping("/add")
-    public String add()
+    public String add(ModelMap mmap)
     {
+        User user = getSysUser();
+        mmap.put("user", user);
         return prefix + "/add";
     }
 

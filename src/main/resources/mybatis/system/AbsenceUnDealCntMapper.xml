@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.info.mapper.AbsenceUnDealCntMapper">
+	
+	<resultMap type="AbsenceUnDealCnt" id="AbsenceUnDealCntResult">
+		<result property="unDealCnt"   column="un_deal_cnt"   />
+
+	</resultMap>
+	
+	<sql id="selectUnDealCntVo">
+        select count(*) as un_deal_cnt
+		from absence_info where handle_status = 2
+    </sql>
+
+	
+	<select id="getAbsenceUnDealCnt"  resultMap="AbsenceUnDealCntResult">
+		<include refid="selectUnDealCntVo"/>
+
+	</select>
+	
+
+	
+</mapper> 

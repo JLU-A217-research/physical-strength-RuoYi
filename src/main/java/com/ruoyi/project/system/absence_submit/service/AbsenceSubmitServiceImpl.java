@@ -3,7 +3,7 @@ package com.ruoyi.project.system.absence_submit.service;
 import com.ruoyi.common.utils.text.Convert;
 import com.ruoyi.project.system.absence_submit.domain.AbsenceSubmit;
 import com.ruoyi.project.system.absence_submit.mapper.AbsenceSubmitMapper;
-import com.ruoyi.project.system.common.domain.ClassGradeData;
+import com.ruoyi.project.system.info.domain.ClassGradeData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

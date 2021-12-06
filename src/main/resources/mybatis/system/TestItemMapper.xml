@@ -20,6 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="testItemName != null  and testItemName != ''"> and test_item_name like concat('%', #{testItemName}, '%')</if>
             <if test="testItemUnit != null  and testItemUnit != ''"> and test_item_unit = #{testItemUnit}</if>
+            <if test="testItemId != null  and testItemId != ''"> and test_item_id = #{testItemId}</if>
             <if test="testScoreRelation != null "> and test_score_relation = #{testScoreRelation}</if>
         </where>
     </select>

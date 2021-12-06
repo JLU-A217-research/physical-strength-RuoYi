@@ -35,6 +35,7 @@ public class PostServiceImpl implements IPostService
     @Override
     public List<Post> selectPostList(Post post)
     {
+
         return postMapper.selectPostList(post);
     }
 
@@ -46,6 +47,7 @@ public class PostServiceImpl implements IPostService
     @Override
     public List<Post> selectPostAll()
     {
+
         return postMapper.selectPostAll();
     }
 

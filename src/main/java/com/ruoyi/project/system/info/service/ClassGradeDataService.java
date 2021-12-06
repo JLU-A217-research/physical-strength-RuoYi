@@ -1,6 +1,6 @@
-package com.ruoyi.project.system.common.service;
+package com.ruoyi.project.system.info.service;
 
-import com.ruoyi.project.system.common.domain.ClassGradeData;
+import com.ruoyi.project.system.info.domain.ClassGradeData;
 
 import java.util.List;
 
