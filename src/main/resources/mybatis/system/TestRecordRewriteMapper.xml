@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.common.mapper.TestRecordRewriteMapper">
+    <resultMap type="TestRecordRewrite" id="TestRecordRewriteResult" >
+        <result property="testRecordId" column="test_record_id"/>
+        <result property="testRecordName" column="test_name"/>
+    </resultMap>
+    <sql id="selectTestRecordRewriteVo">
+        select test_record_id,test_name from test_record
+    </sql>
+    <select id="selectTestRecordRewriteByNo" resultMap="TestRecordRewriteResult">
+        <include refid="selectTestRecordRewriteVo"></include>
+    </select>
+</mapper>

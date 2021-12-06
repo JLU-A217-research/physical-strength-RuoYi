@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-stu-edit" th:object="${recordStu}">
+            <input name="testStuId" th:field="*{testStuId}" type="hidden">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">编号：</label>
+                <div class="col-sm-8">
+                    <input name="testStuId" th:field="*{testStuId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">体测记录Id：</label>
+                <div class="col-sm-8">
+                    <input name="testRecordId" th:field="*{testRecordId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学生Id：</label>
+                <div class="col-sm-8">
+                    <input name="stuId" th:field="*{stuId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">学生年级：</label>
+                <div class="col-sm-8">
+                    <input name="enrollYear" th:field="*{enrollYear}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">学生班级：</label>
+                <div class="col-sm-8">
+                    <input name="classNo" th:field="*{classNo}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">体测项目ID：</label>
+                <div class="col-sm-8">
+                    <input name="testItemId" th:field="*{testItemId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">体测项目名称：</label>
+                <div class="col-sm-8">
+                    <input name="testItemName" th:field="*{testItemName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">分数：</label>
+                <div class="col-sm-8">
+                    <input name="score" th:field="*{score}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">是否通过：</label>
+                <div class="col-sm-8">
+                    <select name="passOrNot" class="form-control m-b">
+                        <option value="0">不通过</option>
+                        <option value="1">通过</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/recordstu";
+        $("#form-stu-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-stu-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

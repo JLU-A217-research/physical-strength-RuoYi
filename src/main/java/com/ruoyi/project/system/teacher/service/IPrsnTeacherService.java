@@ -1,7 +1,9 @@
 package com.ruoyi.project.system.teacher.service;
 
-import java.util.List;
 import com.ruoyi.project.system.teacher.domain.PrsnTeacher;
+import com.ruoyi.project.system.teacher.domain.TeaInfo;
+
+import java.util.List;
 
 /**
  * 教师信息 Service接口
@@ -26,6 +28,16 @@ public interface IPrsnTeacherService
      * @return 教师信息 集合
      */
     public List<PrsnTeacher> selectPrsnTeacherList(PrsnTeacher prsnTeacher);
+
+    /*
+    根据测试记录id查询教师 列表
+     */
+    public List<PrsnTeacher> selectPrsnTeacherByTestRecordId(Long testRecordId);
+
+    /*
+    查询所有教师 列表
+     */
+    public List<PrsnTeacher> selectPrsnTeacherAll();
 
     /**
      * 新增教师信息 
@@ -58,4 +70,23 @@ public interface IPrsnTeacherService
      * @return 结果
      */
     public int deletePrsnTeacherById(Long teacherId);
+
+//    public int countTestRecordTeacherById(Long prsnTeacherId);
+    /**章荣荣
+     * 根据accountId找到stuId
+     *
+     * @param accountId 教师信息 ID
+     * @return 教师信息
+     */
+    public TeaInfo selectteaIdByAccountId(Long accountId);
+
+    /**
+     * 修改教师信息
+     *
+     * @param prsnTeacher 教师信息
+     * @return 结果
+     */
+    public int updatepartPrsnTeacher(PrsnTeacher prsnTeacher);
+
+
 }

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.recordstu.mapper.RecordStuMapper">
+    
+    <resultMap type="RecordStu" id="RecordStuResult">
+        <result property="testRecordId"    column="test_record_id"    />
+        <result property="stuId"    column="stu_id"    />
+        <result property="enrollYear"    column="stu_enroll_year"    />
+        <result property="classNo"    column="grade_class_id"    />
+        <result property="testItemId"    column="test_item_id"    />
+        <result property="testItemName" column="test_item_name"     />
+        <result property="score" column="score"   />
+        <result property="passOrNot" column="pass_or_not"   />
+        <result property="testStuId" column="test_stu_id" />
+    </resultMap>
+
+    <sql id="selectRecordStuVo">
+        SELECT
+            ts.test_stu_id,
+            ts.stu_id,
+            ts.test_record_id,
+            ps.stu_enroll_year,
+            ps.grade_class_id,
+            ti.test_item_name,
+            ts.score,
+            ts.test_item_id
+        FROM
+            prsn_student ps,
+            test_record tr,
+            test_item ti,
+            test_stu ts
+        WHERE
+            tr.test_or_sup_id = 0
+          AND tr.test_record_id = ts.test_record_id
+          AND ts.stu_id = ps.stu_id
+          AND ti.test_item_id = ts.test_item_id
+
+        order by ts.test_record_id desc
+
+    </sql>
+
+    <sql id="selectRecordStuCopy">
+        SELECT
+            ts.test_stu_id,
+            ts.stu_id,
+            ts.test_record_id,
+            ps.stu_enroll_year,
+            ps.grade_class_id,
+            ti.test_item_name,
+            ts.score,
+            ts.test_item_id
+        FROM
+            prsn_student ps,
+            test_record tr,
+            test_stu ts,
+            test_item ti
+        WHERE
+            ts.test_stu_id = #{testStuId}
+
+          AND ts.stu_id = ps.stu_id
+          AND ts.test_record_id = tr.test_record_id
+          and ts.test_item_id = ti.test_item_id
+    </sql>
+
+    <select id="selectRecordStuList" parameterType="RecordStu" resultMap="RecordStuResult">
+        <include refid="selectRecordStuVo"/>
+        <where>
+            <if test="testStuId !=null and testStuId != '' ">and ts.test_stu_id = #{testStuId}</if>
+            <if test="testRecordId != null  and testRecordId != ''"> and ts.test_record_id = #{testRecordId}</if>
+            <if test="stuId != null  and stuId != ''"> and ts.stu_id = #{stuId}</if>
+            <if test="enrollYear != null  and enrollYear != ''"> and ps.stu_enroll_year = #{enrollYear}</if>
+            <if test="classNo != null  and classNo != ''"> and ps.grade_class_id = #{classNo}</if>
+            <if test="testItemId != null  and testItemId != ''"> and ts.test_item_id = #{testItemId}</if>
+            <if test="testItemName !=null and testItemName != ''"> and ti.test_item_name = #{testItemName}</if>
+        </where>
+    </select>
+    
+    <select id="selectRecordStuById" parameterType="Long" resultMap="RecordStuResult">
+        SELECT
+            ts.test_stu_id,
+            ts.stu_id,
+            ts.test_record_id,
+            ps.stu_enroll_year,
+            ps.grade_class_id,
+            ti.test_item_name,
+            ts.score,
+            ts.test_item_id
+        FROM
+            prsn_student ps,
+            test_record tr,
+            test_stu ts,
+            test_item ti
+        WHERE
+            ts.test_stu_id = #{testStuId}
+          AND ts.stu_id = ps.stu_id
+          AND ts.test_record_id = tr.test_record_id
+          and ts.test_item_id = ti.test_item_id
+    </select>
+
+<!--    <select id="selectRecordStuById" parameterType="String" resultMap="RecordStuResult">-->
+<!--        SELECT-->
+<!--            ts.test_stu_id,-->
+<!--            ts.stu_id,-->
+<!--            ts.test_record_id,-->
+<!--            ps.stu_enroll_year,-->
+<!--            ps.grade_class_id,-->
+<!--            ti.test_item_name,-->
+<!--            ts.score,-->
+<!--            ts.test_item_id-->
+<!--        FROM-->
+<!--            prsn_student ps,-->
+<!--            test_class_relation tcr,-->
+<!--            test_record tr,-->
+<!--            test_item ti,-->
+<!--            test_stu ts-->
+<!--        WHERE-->
+<!--            ts.test_stu_id = #{testStuId}-->
+
+<!--          AND ps.stu_id = ts.stu_id-->
+<!--          AND tr.test_record_id = tcr.test_record_id-->
+<!--          AND ts.test_record_id = tr.test_record_id-->
+<!--          AND tcr.enroll_year = ps.stu_enroll_year-->
+<!--          AND tcr.class_no = ps.grade_class_id-->
+<!--          AND ti.test_item_id = ts.test_item_id-->
+<!--    </select>-->
+        
+    <insert id="insertRecordStu" parameterType="RecordStu">
+        insert into record_stu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="testRecordId != null">test_record_id,</if>
+            <if test="stuId != null">stu_id,</if>
+            <if test="enrollYear != null">enroll_year,</if>
+            <if test="classNo != null">class_no,</if>
+            <if test="testItemId != null">test_item_id,</if>
+            <if test="passOrNot !=null">pass_or_not,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="testRecordId != null">#{testRecordId},</if>
+            <if test="stuId != null">#{stuId},</if>
+            <if test="enrollYear != null">#{enrollYear},</if>
+            <if test="classNo != null">#{classNo},</if>
+            <if test="testItemId != null">#{testItemId},</if>
+            <if test="passOrNot !=null">#{passOrNot},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestStu" parameterType="RecordStu">
+        update test_stu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="score != null">score = #{score},</if>
+        </trim>
+        where test_stu_id= #{testStuId}
+    </update>
+
+    <update id="updateRecordStu" parameterType="RecordStu">
+        update record_stu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="testRecordId != null">test_record_id = #{testRecordId},</if>
+            <if test="stuId != null">stu_id = #{stuId},</if>
+            <if test="enrollYear != null">enroll_year = #{enrollYear},</if>
+            <if test="classNo != null">class_no = #{classNo},</if>
+            <if test="testItemId !=null">test_item_id = #{testItemId},</if>
+            <if test="passOrNot !=null">pass_or_not = #{passOrNot},</if>
+        </trim>
+        where test_record_id = #{testRecordId} and stu_id = #{stuId} and test_item_id = #{testItemId}
+    </update>
+
+    <delete id="deleteRecordStuById" parameterType="String">
+        delete from test_stu where test_stu_id= #{testStuId}
+    </delete>
+
+    <delete id="deleteRecordStuByIds" parameterType="String">
+        delete from test_stu where test_stu_id in
+        <foreach item="testStuId" collection="array" open="(" separator="," close=")">
+            #{testStuId}
+        </foreach>
+    </delete>
+
+</mapper>

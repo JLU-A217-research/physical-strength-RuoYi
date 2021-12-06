@@ -703,7 +703,7 @@ var table = {
             	layer.msg(msg, {
             	    icon: $.modal.icon(type),
             	    time: 500,
-            	    shade: [0.1, '#8F8F8F']
+            	    shade: [0.1, '#8f8f8f']
             	},
             	function() {
             	    $.modal.reload();
@@ -1034,6 +1034,83 @@ var table = {
             	var url = $.common.isEmpty(id) ? table.options.createUrl.replace("{id}", "") : table.options.createUrl.replace("{id}", id);
                 return url;
             },
+			//个人成绩管理-dingch
+			personalscoremanageTab: function(id){
+				table.set();
+				$.modal.openTab("个人" + table.options.modalName, $.operate.psscoremanageUrl(id));
+			},
+			psscoremanageUrl: function(id){
+				var url = "/404.html";
+				if($.common.isNotEmpty(id)){
+					url = table.options.studentscoremanageUrl.replace("{id}", id);
+				} else{
+					var id = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+					if (id.length == 0) {
+						$.modal.alertWarning("请至少选择一条记录");
+						return;
+					}
+					url = table.options.studentscoremanageUrl.replace("{id}",id);
+				}
+				return url;
+			},
+			//体测评价-dingch
+			bodyEvaluateTab: function(id){
+
+				table.set();
+				$.modal.openTab("个人" + table.options.modalName, $.operate.bodyEvaluateUrl(id));
+			},
+			bodyEvaluateUrl: function(id){
+				var url = "/404.html";
+				if($.common.isNotEmpty(id)){
+					url = table.options.bodyEvaluateUrl.replace("{id}", id);
+				} else{
+					var id = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+					if (id.length == 0) {
+						$.modal.alertWarning("请输入年级");
+						return;
+					}
+					url = table.options.bodyEvaluateUrl.replace("{id}",id);
+				}
+				return url;
+			},
+			//体侧平价直方图-dingch
+			bodyEvaluateBarTab: function(id){
+				table.set();
+				$.modal.openTab(table.options.modalName + "Bar", $.operate.bodyEvaluateBarUrl(id));
+			},
+			bodyEvaluateBarUrl: function(id){
+				var url = "/404.html";
+				if($.common.isNotEmpty(id)){
+					url = table.options.barEvaluateUrl.replace("{id}", id);
+				} else{
+					var id = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+					if (id.length == 0) {
+						$.modal.alertWarning("请输入年级");
+						return;
+					}
+					url = table.options.barEvaluateUrl.replace("{id}",id);
+				}
+				return url;
+			},
+			//体侧平价直方图-dingch
+			bodyEvaluateLineTab: function(id){
+				table.set();
+				$.modal.openTab(table.options.modalName + "Line", $.operate.bodyEvaluateLineUrl(id));
+			},
+			bodyEvaluateLineUrl: function(id){
+				var url = "/404.html";
+				if($.common.isNotEmpty(id)){
+					url = table.options.lineEvaluateUrl.replace("{id}", id);
+				} else{
+					var id = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+					if (id.length == 0) {
+						$.modal.alertWarning("请输入年级");
+						return;
+					}
+					url = table.options.lineEvaluateUrl.replace("{id}",id);
+				}
+				return url;
+			},
             // 修改信息
             edit: function(id) {
             	table.set();
@@ -1431,6 +1508,7 @@ var table = {
         		$._tree.expandAll(true);
         	}
         },
+		
         // 通用方法封装处理
     	common: {
     		// 判断字符串是否为空

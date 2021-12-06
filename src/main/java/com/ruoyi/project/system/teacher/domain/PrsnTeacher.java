@@ -1,11 +1,7 @@
 package com.ruoyi.project.system.teacher.domain;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
-
-import java.util.List;
 
 /**
  * 教师信息 对象 prsn_teacher
@@ -16,9 +12,79 @@ import java.util.List;
 public class PrsnTeacher extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
+    private boolean flag=false;
+
+    public Long getPrsnTeacherId() {
+        return prsnTeacherId;
+    }
+
+    public void setPrsnTeacherId(Long prsnTeacherId) {
+        this.prsnTeacherId = prsnTeacherId;
+    }
 
     /** 教师ID */
-    private long  teacherId;
+    private Long  prsnTeacherId;
+    private Long teacherId;
+
+    public String getEnrollYear() {
+        return enrollYear;
+    }
+
+    public void setEnrollYear(String enrollYear) {
+        this.enrollYear = enrollYear;
+    }
+
+    private String enrollYear;
+    public String getStr1() {
+        return str1;
+    }
+
+    public void setStr1(String str1) {
+        this.str1 = str1;
+    }
+
+    private String str1;
+
+    public Long getTeacherId() {
+        return teacherId;
+    }
+
+    public int getEycg() {
+        return eycg;
+    }
+
+    public void setEycg(int eycg) {
+        this.eycg = eycg;
+    }
+
+    private int eycg;
+
+    @Override
+    public String toString() {
+        return "PrsnTeacher{" +
+                "flag=" + flag +
+                ", prsnTeacherId=" + prsnTeacherId +
+                ", teacherId=" + teacherId +
+                ", teacherNo=" + teacherNo +
+                ", teacherName='" + teacherName + '\'' +
+                ", teacherSex='" + teacherSex + '\'' +
+                ", teacherNid='" + teacherNid + '\'' +
+                ", teacherJobId=" + teacherJobId +
+                ", classGrade=" + classGrade +
+                ", classId=" + classId +
+                ", teacherPhone='" + teacherPhone + '\'' +
+                ", teacherEmail='" + teacherEmail + '\'' +
+                ", teacherWechat='" + teacherWechat + '\'' +
+                ", str1='" + str1 +
+                ", enrollYear='" + enrollYear +
+                ", eycg='"+ eycg +
+                ", stringName='" + stringName +
+                '}';
+    }
+
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
+    }
 
     /** 教师号 */
     @Excel(name = "教师号")
@@ -42,10 +108,20 @@ public class PrsnTeacher extends BaseEntity
 
     /** 管理班级 **/
     @Excel(name="管理班级")
-    private int eycg;
+    private Long classGrade;
 //    private List classGrade;
 
-    /** 教师电话 */
+    public Long getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Long classId) {
+        this.classId = classId;
+    }
+
+    @Excel(name = "班级ID")
+    private Long classId;
+
     @Excel(name = "教师电话")
     private String teacherPhone;
 
@@ -57,15 +133,18 @@ public class PrsnTeacher extends BaseEntity
     @Excel(name = "教师微信")
     private String teacherWechat;
 
-    public void setTeacherId(int teacherId)
-    {
-        this.teacherId = teacherId;
+    public String getStringName() {
+        return stringName;
     }
 
-    public long getTeacherId()
-    {
-        return teacherId;
+    public void setStringName(String stringName) {
+        this.stringName = stringName;
     }
+
+    /** 班级年级连接之后需要一个新的名字*/
+    private String stringName;
+
+
     public void setTeacherNo(Long teacherNo)
     {
         this.teacherNo = teacherNo;
@@ -138,28 +217,15 @@ public class PrsnTeacher extends BaseEntity
     {
         return teacherWechat;
     }
-    public int  getClassGrade() {
-        return eycg;
+    public Long  getClassGrade() {
+        return classGrade;
     }
 
-    public void setClassGrade(int eycg) {
-        this.eycg = eycg;
+    public void setClassGrade(Long classGrade) {
+        this.classGrade = classGrade;
     }
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("teacherId", getTeacherId())
-            .append("teacherNo", getTeacherNo())
-            .append("teacherName", getTeacherName())
-            .append("teacherSex", getTeacherSex())
-            .append("teacherNid", getTeacherNid())
-            .append("teacherJobId", getTeacherJobId())
-             .append("eycg",getClassGrade())
-
-            .append("teacherPhone", getTeacherPhone())
-            .append("teacherEmail", getTeacherEmail())
-            .append("teacherWechat", getTeacherWechat())
-            .toString();
+    public void setFlag(boolean flag){
+        this.flag=flag;
     }
 
 

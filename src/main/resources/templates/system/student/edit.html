@@ -43,12 +43,6 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">年龄：</label>
-                <div class="col-sm-8">
-                    <input  name="stuEnrollYear" class="form-control" type="text" id="t2"  >
-                </div>
-            </div>
-            <div class="form-group">
                 <label class="col-sm-3 control-label">民族：</label>
                 <div class="col-sm-8">
                     <select name="stu_nation_id" class="form-control m-b">
@@ -109,29 +103,54 @@
                         <option value="54">赫哲族</option>
                         <option value="55">珞巴族</option>
 
-
                     </select>
-<!--                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>-->
                 </div>
             </div>
+
+
             <div class="form-group">    
                 <label class="col-sm-3 control-label">身份证号：</label>
                 <div class="col-sm-8">
                     <input name="stuNid" th:field="*{stuNid}" class="form-control" type="text">
                 </div>
             </div>
-            <div class="form-group">    
+            <div class="form-group">
                 <label class="col-sm-3 control-label">年级：</label>
                 <div class="col-sm-8">
                     <input name="stuEnrollYear" th:field="*{stuEnrollYear}" class="form-control" type="text">
                 </div>
             </div>
-            <div class="form-group">    
+
+            <div class="form-group">
                 <label class="col-sm-3 control-label">班级：</label>
                 <div class="col-sm-8">
                     <input name="gradeClassId" th:field="*{gradeClassId}" class="form-control" type="text">
                 </div>
             </div>
+
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">年级：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <select name="classGrade" th:field="*{stuEnrollYear}" class="form-control m-b" th:with="type=${@classGrade.selectClassGradeDataList()}">-->
+<!--                        <option value="">所有</option>-->
+<!--                        <option  th:each="classGrade : ${type}" th:text="${classGrade.classGrade}" th:value="${classGrade.classGrade}"></option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">班级：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <select name="classGrade" th:field="*{gradeClassId}" class="form-control m-b" th:with="type=${@classGrade.selectClassGradeDataList()}">-->
+<!--                        <option value="">所有</option>-->
+<!--                        <option  th:each="classGrade : ${type}" th:text="${classGrade.ClassNo}" th:value="${classGrade.ClassNo}"></option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+
+
             <div class="form-group">
                 <label class="col-sm-3 control-label">联系电话：</label>
                 <div class="col-sm-8">

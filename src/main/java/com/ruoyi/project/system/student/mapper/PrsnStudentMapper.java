@@ -1,7 +1,8 @@
 package com.ruoyi.project.system.student.mapper;
 
-import java.util.List;
 import com.ruoyi.project.system.student.domain.PrsnStudent;
+
+import java.util.List;
 
 /**
  * 学生信息 Mapper接口
@@ -44,6 +45,14 @@ public interface PrsnStudentMapper
     public int updatePrsnStudent(PrsnStudent prsnStudent);
 
     /**
+     * 修改学生信息
+     *
+     * @param prsnStudent 学生信息
+     * @return 结果
+     */
+    public int updatepartPrsnStudent(PrsnStudent prsnStudent);
+
+    /**
      * 删除学生信息 
      * 
      * @param stuId 学生信息 ID
@@ -58,4 +67,21 @@ public interface PrsnStudentMapper
      * @return 结果
      */
     public int deletePrsnStudentByIds(String[] stuIds);
+
+    /**
+     * 校验手机号码是否唯一
+     *
+     * @param accountId 手机号码
+     * @return 结果
+     */
+    public PrsnStudent selectstuIdByAccountId(Long accountId);
+
+
+    /**
+     * 校验手机号码是否唯一
+     *
+     * @param gradeClassId 手机号码
+     * @return 结果
+     */
+    public Long selectclassById(Long gradeClassId);
 }

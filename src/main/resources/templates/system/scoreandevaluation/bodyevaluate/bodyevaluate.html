@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('成绩与体质评价列表')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId" name="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            年级：<input type="text" id="classGrade" name="classGrade"/>
+                        </li>
+                        <li>
+                            班级：<input type="text" id="classNo" name="classNo"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+
+    </div>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: echarts-js" />
+<th:block th:include="include :: sparkline-js" />
+<script th:inline="javascript">
+    var prefix = ctx + "system/scoreandevaluation/bodyevaluate";
+
+    // function evaluateSearch(classGrade){//document.formId.classGrade.value
+    //     window.location.href = prefix+ "/bodyevaluate/" + classGrade;
+    // }
+
+    $(function() {
+        var itemNameList = [[${itemNameList}]];
+        var aveNowList = [[${aveNowList}]];
+        var aveLastList = [[${aveLastList}]];
+
+        var itemNameListLine = [[${itemNameListLine}]];
+        var aveListLine = [[${aveListLine}]];
+        var yearList = [[${yearList}]];
+
+        var options = {
+            url: prefix + "/list",
+            modalName: "成绩与体质评价",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'itemName',
+                    title: '项目名称'
+                },
+                {
+                    field: 'excellentRate',
+                    title: '优秀率',
+                },
+                {
+                    field: 'goodRate',
+                    title: '良好率',
+                },
+                {
+                    field: 'passRate',
+                    title: '通过率',
+                }]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

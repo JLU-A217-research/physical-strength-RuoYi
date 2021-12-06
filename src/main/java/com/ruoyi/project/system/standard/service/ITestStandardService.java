@@ -1,7 +1,8 @@
 package com.ruoyi.project.system.standard.service;
 
-import java.util.List;
 import com.ruoyi.project.system.standard.domain.TestStandard;
+
+import java.util.List;
 
 /**
  * 测试指标 Service接口
@@ -9,11 +10,11 @@ import com.ruoyi.project.system.standard.domain.TestStandard;
  * @author ruoyi
  * @date 2021-03-29
  */
-public interface ITestStandardService 
+public interface ITestStandardService
 {
     /**
      * 查询测试指标 
-     * 
+     *
      * @param testStandardId 测试指标 ID
      * @return 测试指标 
      */
@@ -58,4 +59,6 @@ public interface ITestStandardService
      * @return 结果
      */
     public int deleteTestStandardById(Long testStandardId);
+
+
 }

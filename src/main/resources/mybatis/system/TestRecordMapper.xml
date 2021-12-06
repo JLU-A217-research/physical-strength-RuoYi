@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.record.mapper.TestRecordMapper">
+    
+    <resultMap type="TestRecord" id="TestRecordResult">
+        <result property="testRecordId"    column="test_record_id"    />
+        <result property="testOrSupId"    column="test_or_sup_id"    />
+        <result property="testName"    column="test_name"    />
+        <result property="testTime"    column="test_time"    />
+        <result property="testSiteIdCopy"    column="test_site_id"    />
+        <result property="testSite" column="dict_label"/>
+        <result property="testStatus"    column="test_status"    />
+        <result property="testItemName" column="test_item_name" />
+        <result property="teacherNameCopy" column="test_teacher_name"/>
+        <result property="classGradeCopy" column="grade_class_id"/>
+        <result property="enrollYear" column="enroll_year"/>
+        <result property="classNo" column="class_no"/>
+    </resultMap>
+
+    <resultMap id="RecordStuResult" type="RecordStu">
+        <result property="testRecordId" column="test_record_id"/>
+        <result property="stuId" column="stu_id"/>
+        <result property="enrollYear" column="getEnrollYear"/>
+        <result property="classNo" column="getClassNo"/>
+        <result property="testItemId" column="getTestItemId"/>
+    </resultMap>
+
+
+    <sql id="selectTestRecordVo">
+        SELECT
+            tr.test_record_id,
+            tr.test_name,
+            tr.test_time,
+            group_concat( distinct sdd.dict_label ) AS dict_label,
+            group_concat( distinct ti.test_item_name ) AS test_item_name,
+            CONCAT(tcr.enroll_year,'-',tcr.class_no)  AS class_no,
+            tr.test_status
+        FROM
+            test_record tr,
+            sys_dict_data sdd,
+            test_item ti,
+            test_item_relation tir,
+            test_class_relation tcr
+        WHERE
+            sdd.dict_type = 'test_site'
+          AND tr.test_site_id = sdd.dict_value
+          AND tr.test_record_id = tir.test_record_id
+          AND tir.test_item_id = ti.test_item_id
+          AND tr.test_record_id = tcr.test_record_id
+          AND test_or_sup_id = 0
+        group by tr.test_record_id
+        ORDER BY
+            test_record_id desc
+    </sql>
+    <sql id="selectTestRecordCopy">
+        SELECT
+            tr.test_record_id,
+            tr.test_name,
+            tr.test_time,
+            group_concat( sdd.dict_label ) AS dict_label,
+            group_concat( ti.test_item_name ) AS test_item_name,
+            tr.test_status
+        FROM
+            test_record tr,
+            sys_dict_data sdd,
+            test_item_relation tir,
+            test_item ti
+        WHERE
+            sdd.dict_type = 'test_site'
+          and tr.test_site_id = sdd.dict_value
+          and tr.test_record_id=#{testRecordId}
+          and tr.test_record_id=tir.test_record_id
+          and tir.test_item_id=ti.test_item_id
+
+    </sql>
+
+    <sql id="selectStuList">
+        select tr.test_record_id ,ps.stu_id,ps.stu_enroll_year,ps.grade_class_id
+        from test_record tr,test_class_relation tcr,prsn_student ps
+        where tr.test_record_id=#{testRecordId}
+            and tr.test_record_id=tcr.test_record_id
+            and tcr.enroll_year=ps.stu_enroll_year
+            and tcr.class_no=ps.grade_class_id
+    </sql>
+
+    <sql id="selectRecordStu">
+        select ps.stu_id,tr.test_record_id
+        from prsn_student ps, test_class_relation tcr, test_record tr
+        where
+              tr.test_record_id=#{testRecordId}
+            and tr.test_record_id=tcr.test_record_id
+            and tcr.enroll_year=ps.stu_enroll_year
+            and tcr.class_no=ps.grade_class_id
+
+    </sql>
+
+    <sql id="selectTestStu">
+        SELECT
+            ps.stu_id,
+            tcr.test_record_id,
+            tir.test_item_id
+        FROM
+            test_class_relation tcr,
+            prsn_student ps ,
+            test_item_relation tir
+        WHERE
+            tcr.test_record_id = #{testRecordId}
+          AND tcr.enroll_year = ps.stu_enroll_year
+          AND tcr.class_no = ps.grade_class_id
+          AND tir.test_record_id=#{testRecordId}
+    </sql>
+
+
+    <select id="selectTestRecordList" parameterType="TestRecord" resultMap="TestRecordResult">
+        <include refid="selectTestRecordVo"/>
+            <if test="testOrSupId != null "> and test_or_sup_id = #{testOrSupId}</if>
+            <if test="testName != null  and testName != ''"> and test_name like concat('%', #{testName}, '%')</if>
+            <if test="testTime != null "> and test_time = #{testTime}</if>
+            <if test="testSiteIdCopy != null and testSiteIdCopy !=''"> and test_site_id = #{testSiteIdCopy}</if>
+             <if test="testSite !=null and testSite !=''">and sdd.dict_label = #{testSite}</if>
+             <if test="testItemName !=null and testItemName !=''" > and ti.test_item_name = #{testItemName}</if>
+            <if test="teacherNameCopy !=null and teacherNameCopy !=''"> and test_teacher_name = #{teacherNameCopy}</if>
+            <if test="testStatus != null "> and test_status = #{testStatus}</if>
+            <if test="enrollYear!=null"> and tcr.enroll_year = #{enrollYear}</if>
+             <if test="classNo!=null">and tcr.class_no =#{classNo}</if>
+             <if test="classGradeCopy!=null">and grade_class_id=#{classGradeCopy}</if>
+
+    </select>
+
+    <select id="selectTestStuList" parameterType="TestRecord" resultMap="TestRecordResult">
+        <include refid="selectTestStu"/>
+            <if test="stuId !=null "> and ps.stu_id = #{stuId}</if>
+            <if test="testRecordId != null "> and test_record_id = #{testRecordId}</if>
+            <if test="testItemId != null "> and tir.test_item_id = #{testItemId}</if>
+    </select>
+    
+    <select id="selectTestRecordById" parameterType="Long" resultMap="TestRecordResult">
+        <include refid="selectTestRecordCopy"/>
+    </select>
+
+<!--    <insert id="insertTestStu" parameterType="list" useGeneratedKeys="false" >-->
+<!--        INSERT INTO test_stu(stu_id,test_record_id,test_item_id)-->
+<!--        <foreach collection="list" item="item" separator="union all">-->
+<!--            SELECT-->
+<!--            ps.stu_id,-->
+<!--            tcr.test_record_id,-->
+<!--            tir.test_item_id-->
+<!--            FROM-->
+<!--            test_class_relation tcr,-->
+<!--            prsn_student ps ,-->
+<!--            test_item_relation tir-->
+<!--            WHERE-->
+<!--            tcr.test_record_id = #{testRecordId}-->
+<!--            AND tcr.enroll_year = ps.stu_enroll_year-->
+<!--            AND tcr.class_no = ps.grade_class_id-->
+<!--            AND tir.test_record_id=#{testRecordId}-->
+<!--        </foreach>-->
+<!--    </insert>-->
+
+    <insert id="insertTestStu" parameterType="TestRecord" useGeneratedKeys="true">
+        insert into test_stu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">stu_id,</if>
+            <if test="testRecordId != null">test_record_id,</if>
+            <if test="testItemId != null">test_item_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">#{stuId},</if>
+            <if test="testRecordId != null">#{testRecordId},</if>
+            <if test="testItemId != null">#{testItemId},</if>
+        </trim>
+    </insert>
+
+    <insert id="insertTestRecord" parameterType="TestRecord" useGeneratedKeys="true" keyProperty="testRecordId">
+        insert into test_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="testOrSupId != null">test_or_sup_id,</if>
+            <if test="testName != null">test_name,</if>
+            <if test="testTime != null">test_time,</if>
+            <if test="testSiteIdCopy != null">test_site_id,</if>
+            <if test="testItemName !=null">ti.test_item_name,</if>
+            <if test="teacherNameCopy !=null">test_teacher_name,</if>
+            <if test="testStatus != null">test_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+           <if test="testOrSupId != null">#{testOrSupId},</if>
+            <if test="testName != null">#{testName},</if>
+            <if test="testTime != null">#{testTime},</if>
+            <if test="testSiteIdCopy != null">#{testSiteIdCopy},</if>
+            <if test="testItemName !=null">#{testItemName},</if>
+            <if test="teacherNameCopy !=null">#{teacherNameCopy},</if>
+            <if test="testStatus != null">#{testStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestRecord" parameterType="TestRecord">
+        update test_record
+        <trim prefix="SET" suffixOverrides=",">
+<!--            <if test="testOrSupId != null">test_or_sup_id = #{testOrSupId},</if>-->
+<!--            <if test="testName != null">test_name = #{testName},</if>-->
+<!--            <if test="testTime != null">test_time = #{testTime},</if>-->
+<!--            <if test="testSiteIdCopy != null">test_site_id = #{testSiteIdCopy},</if>-->
+<!--            <if test="testItemName !=null">ti.test_item_name= #{testItemName},</if>-->
+<!--            <if test="teacherNameCopy !=null">test_teacher_name= #{teacherNameCopy},</if>-->
+            <if test="testStatus != null">test_status = #{testStatus},</if>
+        </trim>
+        where test_record_id = #{testRecordId}
+    </update>
+
+    <delete id="deleteTestRecordById" parameterType="Long">
+        delete from test_record where test_record_id = #{testRecordId}
+    </delete>
+
+    <delete id="deleteTestRecordByIds" parameterType="String">
+        delete from test_record where test_record_id in 
+        <foreach item="testRecordId" collection="array" open="(" separator="," close=")">
+            #{testRecordId}
+        </foreach>
+    </delete>
+
+</mapper>

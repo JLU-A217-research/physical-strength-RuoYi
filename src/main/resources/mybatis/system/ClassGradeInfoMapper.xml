@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.classmanage.mapper.ClassGradeInfoMapper">
+    
+    <resultMap type="ClassGradeInfo" id="ClassGradeInfoResult">
+        <result property="gradeClassId"    column="grade_class_id"    />
+        <result property="enrollYear"    column="enroll_year"    />
+        <result property="classGrade"    column="class_grade"    />
+        <result property="classId"    column="class_no"    />
+        <result property="mainTeacherId"    column="main_teacher_id"    />
+        <result property="phyTeacherId"    column="phy_teacher_id"    />
+        <result property="stuCount"    column="stu_count"    />
+    </resultMap>
+
+    <sql id="selectClassGradeInfoVo">
+        select grade_class_id, enroll_year, class_grade, class_no, main_teacher_id, phy_teacher_id, stu_count from class_grade_info
+    </sql>
+
+    <select id="selectClassGradeInfoList" parameterType="ClassGradeInfo" resultMap="ClassGradeInfoResult">
+        <include refid="selectClassGradeInfoVo"/>
+<!--        <where>-->
+<!--            <if test="gradeClassId !=null "> and grade_class_id= #{gradeClassId}</if>-->
+<!--            <if test="enrollYear != null "> and enroll_year = #{enrollYear}</if>-->
+<!--            <if test="classGrade != null "> and class_grade = #{classGrade}</if>-->
+<!--            <if test="classId != null "> and class_no = #{classId}</if>-->
+<!--            <if test="mainTeacherId != null "> and main_teacher_id = #{mainTeacherId}</if>-->
+<!--            <if test="phyTeacherId != null "> and phy_teacher_id = #{phyTeacherId}</if>-->
+<!--            <if test="stuCount != null "> and stu_count = #{stuCount}</if>-->
+<!--        </where>-->
+    </select>
+    
+    <select id="selectClassGradeInfoById" parameterType="Long" resultMap="ClassGradeInfoResult">
+        select cgi.grade_class_id, cgi.enroll_year, cgi.class_grade, cgi.class_no, cgi.main_teacher_id, cgi.phy_teacher_id, cgi.stu_count
+        from class_grade_info cgi
+        where grade_class_id = #{gradeClassId}
+    </select>
+        
+    <insert id="insertClassGradeInfo" parameterType="ClassGradeInfo" useGeneratedKeys="true" keyProperty="gradeClassId">
+        insert into class_grade_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="enrollYear != null">enroll_year,</if>
+            <if test="classGrade != null">class_grade,</if>
+            <if test="classId != null">class_no,</if>
+            <if test="mainTeacherId != null">main_teacher_id,</if>
+            <if test="phyTeacherId != null">phy_teacher_id,</if>
+            <if test="stuCount != null">stu_count,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="enrollYear != null">#{enrollYear},</if>
+            <if test="classGrade != null">#{classGrade},</if>
+            <if test="classId != null">#{classId},</if>
+            <if test="mainTeacherId != null">#{mainTeacherId},</if>
+            <if test="phyTeacherId != null">#{phyTeacherId},</if>
+            <if test="stuCount != null">#{stuCount},</if>
+         </trim>
+    </insert>
+
+    <update id="updateClassGradeInfo" parameterType="ClassGradeInfo">
+        update class_grade_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="enrollYear != null">enroll_year = #{enrollYear},</if>
+            <if test="classGrade != null">class_grade = #{classGrade},</if>
+            <if test="classId != null">class_no = #{classId},</if>
+            <if test="mainTeacherId != null">main_teacher_id = #{mainTeacherId},</if>
+            <if test="phyTeacherId != null">phy_teacher_id = #{phyTeacherId},</if>
+            <if test="stuCount != null">stu_count = #{stuCount},</if>
+        </trim>
+        where grade_class_id = #{gradeClassId}
+    </update>
+
+    <delete id="deleteClassGradeInfoById" parameterType="Long">
+        delete from class_grade_info where grade_class_id = #{gradeClassId}
+    </delete>
+
+    <delete id="deleteClassGradeInfoByIds" parameterType="String">
+        delete from class_grade_info where grade_class_id in 
+        <foreach item="gradeClassId" collection="array" open="(" separator="," close=")">
+            #{gradeClassId}
+        </foreach>
+    </delete>
+
+</mapper>

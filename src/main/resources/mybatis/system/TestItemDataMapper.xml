@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.item.mapper.TestItemDataMapper">
+	
+	<resultMap type="TestItemData" id="TestItemDataResult">
+		<result property="testItemName"   column="test_item_name"   />
+		<result property="testItemId"   column="test_item_id"   />
+
+	</resultMap>
+	
+	<sql id="selectDictDataVo">
+        select distinct test_item_name,test_item_id
+		from test_item
+    </sql>
+
+	
+	<select id="selectTestItemDataByType"  resultMap="TestItemDataResult">
+		<include refid="selectDictDataVo"/>
+
+	</select>
+	
+
+	
+</mapper> 

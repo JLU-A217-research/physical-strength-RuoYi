@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.scoreandevaluation.studentscoremanage.mapper.ScoreMapper">
+    
+    <resultMap type="Score" id="ScoreResult">
+        <result property="scoreRecordId"    column="score_record_id"    />
+        <result property="stuId"    column="stu_id"    />
+        <result property="tgsId"    column="tgs_id"    />
+        <result property="testTime"    column="test_time"    />
+        <result property="testScore"    column="test_score"    />
+        <result property="stuNo"    column="stu_no"    />
+        <result property="classGrade"    column="class_grade"    />
+        <result property="itemId"    column="test_item_id"    />
+        <result property="itemName"    column="test_item_name"    />
+        <result property="itemUnit"    column="test_item_unit"    />
+        <result property="testPoint"    column="test_point"    />
+        <result property="testGradeId"    column="test_grade_id"    />
+        <result property="testGrade"    column="dict_label"    />
+        <result property="sexId"    column="stu_sex"    />
+        <result property="scoreRelation"    column="test_score_relation"    />
+    </resultMap>
+
+    <sql id="selectScoreVo">
+        SELECT
+            s.score_record_id,
+            s.stu_id,
+            s.tgs_id,
+            s.test_time,
+            s.test_score,
+            s.test_point,
+            s.test_grade_id,
+            sdd.dict_label,
+            ps.stu_no,
+            cgi.class_grade,
+            ti.test_item_id,
+            ti.test_item_name,
+            ti.test_item_unit,
+            ps.stu_sex,
+            ti.test_score_relation
+        FROM
+            score s,
+            class_grade_info cgi,
+            test_item ti,
+            prsn_student ps,
+            test_grade_sex_relation tgsr,
+            sys_dict_data sdd
+        WHERE
+            ps.stu_id = s.stu_id
+          AND ps.grade_class_id = cgi.grade_class_id
+          AND s.tgs_id = tgsr.tgs_id
+          AND tgsr.test_item_id = ti.test_item_id
+          AND sdd.dict_type = "test_grade" AND sdd.dict_value = s.test_grade_id
+    </sql>
+
+    <select id="selectScoreListByStu" parameterType="Score" resultMap="ScoreResult">
+        <include refid="selectScoreVo"/>
+        AND ps.stu_no = #{stuNo}
+<!--            <if test="stuId != null "> and stu_id = #{stuId}</if>-->
+<!--            <if test="tgsId != null "> and tgs_id = #{tgsId}</if>-->
+<!--            <if test="testTime != null "> and test_time = #{testTime}</if>-->
+<!--            <if test="testScore != null "> and test_score = #{testScore}</if>-->
+<!--            <if test="stuNo != null "> and stu_no = #{stuNo}</if>-->
+<!--            <if test="classGrade != null "> and class_grade = #{classGrade}</if>-->
+<!--            <if test="itemId != null "> and test_item_id = #{itemId}</if>-->
+<!--            <if test="itemName != null and itemName != ‘’ "> and test_item_name = #{itemName}</if>-->
+<!--            <if test="itemUnit != null and itemUnit != ‘’ "> and test_item_unit = #{itemUnit}</if>-->
+
+    </select>
+    
+    <select id="selectScoreById" parameterType="Score" resultMap="ScoreResult">
+        <include refid="selectScoreVo"/>
+        AND score_record_id = #{scoreRecordId}
+    </select>
+
+    <select id="selectstudentByNo" parameterType="Long" resultMap="ScoreResult">
+        SELECT
+            ps.stu_id,
+            ps.stu_sex
+        FROM
+            prsn_student ps
+        WHERE
+            ps.stu_no = #{stuNo}
+    </select>
+
+    <insert id="insertScore" parameterType="Score" useGeneratedKeys="true" keyProperty="scoreRecordId">
+        insert into score
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">stu_id,</if>
+            <if test="tgsId != null">tgs_id,</if>
+            <if test="testTime != null">test_time,</if>
+            <if test="testScore != null">test_score,</if>
+            <if test="testPoint != null">test_point,</if>
+            <if test="testGradeId != null">test_grade_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stuId != null">#{stuId},</if>
+            <if test="tgsId != null">#{tgsId},</if>
+            <if test="testTime != null">#{testTime},</if>
+            <if test="testScore != null">#{testScore},</if>
+            <if test="testPoint != null">#{testPoint},</if>
+            <if test="testGradeId != null">#{testGradeId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateScore" parameterType="Score">
+        update score
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stuId != null">stu_id = #{stuId},</if>
+            <if test="tgsId != null">tgs_id = #{tgsId},</if>
+            <if test="testTime != null">test_time = #{testTime},</if>
+            <if test="testScore != null">test_score = #{testScore},</if>
+            <if test="testPoint != null">test_point = #{testPoint},</if>
+            <if test="testGradeId != null">test_grade_id = #{testGradeId},</if>
+        </trim>
+        where score_record_id = #{scoreRecordId}
+    </update>
+
+    <delete id="deleteScoreById" parameterType="Long">
+        delete from score where score_record_id = #{scoreRecordId}
+    </delete>
+
+    <delete id="deleteScoreByIds" parameterType="String">
+        delete from score where score_record_id in 
+        <foreach item="scoreRecordId" collection="array" open="(" separator="," close=")">
+            #{scoreRecordId}
+        </foreach>
+    </delete>
+
+    <select id="selectItemId" parameterType="Score" resultMap="ScoreResult">
+        SELECT ti.test_item_id, ti.test_score_relation, tgsr.tgs_id
+        FROM test_item ti, test_grade_sex_relation tgsr
+        WHERE ti.test_item_name=#{itemName}
+        AND tgsr.grade = #{classGrade} AND tgsr.test_item_id = ti.test_item_id AND tgsr.stu_sex_id = #{sexId}
+    </select>
+
+<!--UpdateMBI-->
+    <sql id="selectScorePointVo">
+        SELECT
+            s.score_record_id,
+            s.stu_id,
+            s.tgs_id,
+            s.test_time,
+            s.test_score,
+            s.test_point,
+            s.test_grade_id,
+            ps.stu_no,
+            cgi.class_grade,
+            ti.test_item_id,
+            ti.test_item_name,
+            ti.test_item_unit,
+            ps.stu_sex,
+            ti.test_score_relation
+        FROM
+            score s,
+            class_grade_info cgi,
+            test_item ti,
+            prsn_student ps,
+            test_grade_sex_relation tgsr
+        WHERE
+            ps.stu_id = s.stu_id
+          AND ps.grade_class_id = cgi.grade_class_id
+          AND s.tgs_id = tgsr.tgs_id
+          AND tgsr.test_item_id = ti.test_item_id
+          AND ti.test_item_id IN (8,9)
+    </sql>
+
+    <select id="updateBMI" parameterType="Score" resultMap="ScoreResult">
+        <include refid="selectScorePointVo"/>
+        AND s.stu_id = #{stuId}
+        ORDER BY s.test_time, ti.test_item_id
+    </select>
+
+    <select id="getTgsId" parameterType="Score" resultType="Long">
+        SELECT
+            tgs_id
+        FROM
+            test_grade_sex_relation
+        WHERE
+            grade = #{classGrade}
+          AND test_item_id = #{itemId}
+          AND stu_sex_id = #{sexId}
+    </select>
+
+    <select id="getStuInfo" resultMap="ScoreResult">
+        SELECT
+            stu_id,
+            stu_sex
+        FROM
+            prsn_student
+    </select>
+
+    <select id="getClassGradeByTgsId" parameterType="Score" resultType="Long">
+        SELECT
+            tgsr.grade
+        FROM
+            test_grade_sex_relation tgsr
+        WHERE
+            tgsr.tgs_id = #{tgsId}
+    </select>
+
+    <select id="getRecordIdByS" parameterType="Score" resultType="Long">
+        SELECT
+            score_record_id
+        FROM
+            score
+        WHERE
+            stu_id = #{stuId}
+        AND
+            tgs_id = #{tgsId}
+    </select>
+</mapper>

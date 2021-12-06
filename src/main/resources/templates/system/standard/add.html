@@ -6,30 +6,63 @@
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-standard-add">
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">年级-性别-项目ID：</label>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">体测项目名称：</label>
                 <div class="col-sm-8">
-                    <input name="tgsId" class="form-control" type="text">
+                <select id="testItemId" onchange="getClass()" name="testItemId" th:with="type=${@testItemId.selectTestItemDataList()}">
+                    <option value="">所有</option>
+                    <option  th:each="testItemId1 : ${type}" th:text="${testItemId1.testItemName}" th:value="${testItemId1.testItemId}"></option>
+                </select>
                 </div>
             </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">性别：</label>
+                <div class="col-sm-8">
+                    <!--<input name="testScoreRelation" class="form-control" type="text">  -->
+                    <select name="stuSexId" th:with="type=${@dict.getType('sys_user_sex')}">
+                        <option value="">所有</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">年级：</label>
+                <div class="col-sm-8">
+                    <input name="grade" class="form-control" type="text">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">等级：</label>
+                <div class="col-sm-8">
+                    <select name="testGradeId" th:with="type=${@dict.getType('test_grade')}">
+                        <option value="">所有</option>
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">得分：</label>
+                <div class="col-sm-8">
+                    <input name="testPoint" class="form-control" type="text">
+                </div>
+            </div>
+
             <div class="form-group">    
                 <label class="col-sm-3 control-label">测试基准：</label>
                 <div class="col-sm-8">
                     <input name="testBase" class="form-control" type="text">
                 </div>
             </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">得分：</label>
-                <div class="col-sm-8">
-                    <input name="testPoint" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">等级ID：</label>
-                <div class="col-sm-8">
-                    <input name="testGradeId" class="form-control" type="text">
-                </div>
-            </div>
+
+
+
         </form>
     </div>
     <th:block th:include="include :: footer" />

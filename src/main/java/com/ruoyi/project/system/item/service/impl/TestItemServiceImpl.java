@@ -1,12 +1,14 @@
 package com.ruoyi.project.system.item.service.impl;
 
-import java.util.List;
+import com.ruoyi.common.utils.text.Convert;
+import com.ruoyi.project.system.item.domain.TestItem;
+import com.ruoyi.project.system.item.mapper.TestItemMapper;
+import com.ruoyi.project.system.item.service.ITestItemService;
+import com.ruoyi.project.system.recordCopy.mapper.TestRecordItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.project.system.item.mapper.TestItemMapper;
-import com.ruoyi.project.system.item.domain.TestItem;
-import com.ruoyi.project.system.item.service.ITestItemService;
-import com.ruoyi.common.utils.text.Convert;
+
+import java.util.List;
 
 /**
  * 体测项目 Service业务层处理
@@ -19,6 +21,8 @@ public class TestItemServiceImpl implements ITestItemService
 {
     @Autowired
     private TestItemMapper testItemMapper;
+    @Autowired
+    private TestRecordItemMapper testRecordItemMapper;
 
     /**
      * 查询体测项目 
@@ -43,6 +47,44 @@ public class TestItemServiceImpl implements ITestItemService
     {
         return testItemMapper.selectTestItemList(testItem);
     }
+
+    /*
+    查询所有体测项目 列表
+     */
+    @Override
+    public List<TestItem> selectTestItemAll(){
+        return testItemMapper.selectTestItemAll();
+    }
+
+    /*
+    根据测试记录id查询测试项目 列表
+     */
+    @Override
+    public List<TestItem> selectTestItemByTestRecordId(Long testRecordId)
+    {
+        List<TestItem> testRecordItems = testItemMapper.selectTestItemByTestRecordId(testRecordId);
+        List<TestItem> testItems = testItemMapper.selectTestItemAll();
+        for (TestItem testItem : testItems)
+        {
+            for (TestItem testRecordItem : testRecordItems)
+            {
+                if (testItem.getTestItemId().longValue() == testRecordItem.getTestItemId().longValue())
+                {
+                    testItem.setFlag(true);
+                    break;
+                }
+            }
+        }
+        return testItems;
+    }
+
+    /*
+    通过项目id查询项目的使用数量
+     */
+    @Override
+    public int countTestRecordItemById(Long testItemId){return testRecordItemMapper.countTestRecordItemById(testItemId);}
+
+
 
     /**
      * 新增体测项目 
@@ -91,4 +133,5 @@ public class TestItemServiceImpl implements ITestItemService
     {
         return testItemMapper.deleteTestItemById(testItemId);
     }
+
 }

@@ -1,7 +1,8 @@
 package com.ruoyi.project.system.item.service;
 
-import java.util.List;
 import com.ruoyi.project.system.item.domain.TestItem;
+
+import java.util.List;
 
 /**
  * 体测项目 Service接口
@@ -26,6 +27,16 @@ public interface ITestItemService
      * @return 体测项目 集合
      */
     public List<TestItem> selectTestItemList(TestItem testItem);
+
+    /*
+    通过体测记录id查询体测项目 列表
+     */
+    public List<TestItem> selectTestItemByTestRecordId(Long testRecordId);
+
+    /*
+    查询所有体测项目 列表
+     */
+    public List<TestItem> selectTestItemAll();
 
     /**
      * 新增体测项目 
@@ -58,4 +69,9 @@ public interface ITestItemService
      * @return 结果
      */
     public int deleteTestItemById(Long testItemId);
+
+    /*
+    通过项目id查询项目使用数量
+     */
+    public int countTestRecordItemById(Long testItemId);
 }

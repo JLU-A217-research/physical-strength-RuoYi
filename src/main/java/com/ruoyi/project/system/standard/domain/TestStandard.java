@@ -15,7 +15,7 @@ public class TestStandard extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 测试指标项ID */
+    /** 测试指标项ID  */
     private Long testStandardId;
 
     /** 年级-性别-项目ID */
@@ -24,11 +24,13 @@ public class TestStandard extends BaseEntity
 
     /** 测试基准 */
     @Excel(name = "测试基准")
-    private String testBase;
+    private double testBase;
+
+
 
     /** 得分 */
     @Excel(name = "得分")
-    private String testPoint;
+    private long testPoint;
 
     /** 等级ID（字典） */
     @Excel(name = "等级ID", readConverterExp = "字=典")
@@ -71,21 +73,25 @@ public class TestStandard extends BaseEntity
     {
         return tgsId;
     }
-    public void setTestBase(String testBase)
+    public void setTestBase(double testBase)
     {
         this.testBase = testBase;
     }
 
-    public String getTestBase()
+    public Double getTestBase()
     {
         return testBase;
     }
-    public void setTestPoint(String testPoint)
+
+
+
+
+    public void setTestPoint(long testPoint)
     {
         this.testPoint = testPoint;
     }
 
-    public String getTestPoint()
+    public long getTestPoint()
     {
         return testPoint;
     }
@@ -142,6 +148,7 @@ public class TestStandard extends BaseEntity
             .append("testStandardId", getTestStandardId())
             .append("tgsId", getTgsId())
             .append("testBase", getTestBase())
+
             .append("testPoint", getTestPoint())
             .append("testGradeId", getTestGradeId())
                 .append("testItemId", getTestItemId())
@@ -150,5 +157,8 @@ public class TestStandard extends BaseEntity
                 .append("testItemName", getTestItemName())
 
                 .toString();
+    }
+    public class TestStandardALL{
+
     }
 }

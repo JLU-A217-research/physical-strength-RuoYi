@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      xmlns:system="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:include="include :: header('体测管理')" />
+</head>
+
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+                <form class="form-horizontal m" id="form-record-add">
+                   
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">体测名称：</label>
+                        <div class="col-sm-8">
+                            <input name="testName" class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">体测日期：</label>
+                        <div class="col-sm-8">
+                            <div class="input-group date">
+                                <input name="testTime" class="form-control" placeholder="yyyy-MM-dd" type="text"  >
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">体测项目：</label>
+                        <div class="col-sm-8">
+                            <select id="itemId" th:with="items=${@itemId.selectTestDataList()}" class="form-control select2-multiple select2-hidden-accessible valid" multiple="" data-select2-id="6" tabindex="-1" aria-hidden="true" aria-invalid="false" >
+                                <option value="">所有</option>
+                                <option  th:each="item : ${items}" th:text="${item.testItem}" th:value="${item.itemId}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">体测场所：</label>
+                        <div class="col-sm-8">
+                            <select id="testSiteId" th:with="type=${@dict.getType('test_site')}" class="form-control select2-multiple select2-hidden-accessible valid" multiple="" data-select2-id="8" tabindex="-1" aria-hidden="true" aria-invalid="false" >
+                                <option value="">所有</option>
+                                <option  th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">接收通知的老师：</label>
+                        <div class="col-sm-8">
+                            <select id="teacherId" th:with="teachers=${@teacherId.selectTeacherDataList()}" class="form-control select2-multiple"  multiple >
+                                <option value="">所有</option>
+                                <option  th:each="teacher : ${teachers}" th:text="${teacher.teacherName}" th:value="${teacher.teacherId}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label ">按年级班级选择：</label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input name="deptName" onclick="selectDeptTree()" id="treeName" type="text" placeholder="请选择年级班级" class="form-control" required>
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group draggable ui-draggable">
+                        <div class="col-sm-12 col-sm-offset-3">
+                            <button type="submit" class="btn btn-primary" onclick="submitHandler()">发布</button>
+                            <button onclick="$.operate.refresh()" class="btn btn-danger" type="button">取消</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:record:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:record:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+     <th:block th:include="include :: footer" />
+     <th:block th:include="include :: datetimepicker-js" />
+     <th:block th:include="include :: select2-css" />
+     <th:block th:include="include :: select2-js" />
+     <th:block th:include="include :: jquery-cxselect-js" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:record:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:record:remove')}]];
+        var saveListFlag = [[${@permission.hasPermi('system:record:saveList')}]];
+        var prefix = ctx + "system/record";
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                // createUrl: prefix + "/addList",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "体测管理",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'testRecordId',
+                    title: '测试记录ID',
+                    visible: false
+                },
+                {
+                    field: 'testName',
+                    title: '体测名称'
+                },
+                {
+                    field: 'testTime',
+                    title: '日期'
+                },
+                {
+                    field: 'testSite',
+                    title: '场所'
+                },
+                {
+                    field: 'testItemName',
+                    title: '体测项目'
+                },
+                {
+                    field: 'classNo',  //classGradeCopy
+                    title: '体测年级班级'
+                },
+                {
+                    field: 'testStatus',
+                    title: '完成状态'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.testRecordId + '\')"><i class="fa fa-edit"></i>查看详情</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.testRecordId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+
+        function submitHandler() {
+           var data=$("#form-record-add").serializeArray();
+           var testItemIds=$.form.selectSelects("itemId");
+           var prsnTeacherIds=$.form.selectSelects("teacherId");
+           var testSiteIds=$.form.selectSelects("testSiteId");
+           var testRecordIds=$("testRecordId");
+           localStorage.value=$("testRecordId");
+           var testOrSupId=0;
+            var str1=document.getElementById("treeName").value;
+            alert(str1);
+           // var str= $("#treeName").val(body.find('#CheckNodes').val());
+           data.push({"name":"testItemIds","value":testItemIds});
+           data.push({"name":"testOrSupId","value":testOrSupId});
+           data.push({"name":"prsnTeacherIds","value":prsnTeacherIds});
+           data.push({"name":"testSiteIds","value":testSiteIds});
+           data.push({"name":"testRecordIds","value":testRecordIds});
+            data.push({"name":"str1","value":str1});
+
+           $.operate.save(prefix+"/addTree",data);
+        }
+
+        $("input[name='testTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true,
+            trigger:"focus"
+        });
+
+
+        function selectDeptTree() {
+            var treeId = $("#treeId").val();
+            var deptId = $.common.isEmpty(treeId) ? "1" : $("#treeId").val();
+            var url = ctx + "system/CAG/selectCAGTree/" + deptId;
+            var options = {
+                title: '选择班级',
+                width: "380",
+                url: url,
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+        function doSubmit(index, layero){
+            var tree = layero.find("iframe")[0].contentWindow.$._tree;
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            // $("#treeName").val(body.find('#treeName').val());
+            $("#treeName").val(body.find('#CheckNodes').val());
+            layer.close(index);
+        }
+
+    </script>
+</body>
+</html>

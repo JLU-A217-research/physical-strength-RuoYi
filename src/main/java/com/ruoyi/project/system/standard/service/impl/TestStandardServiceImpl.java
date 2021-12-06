@@ -1,12 +1,14 @@
 package com.ruoyi.project.system.standard.service.impl;
 
-import java.util.List;
+import com.ruoyi.common.utils.text.Convert;
+import com.ruoyi.project.system.standard.domain.TestStandard;
+import com.ruoyi.project.system.standard.mapper.TestStandardMapper;
+import com.ruoyi.project.system.standard.service.ITestStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.project.system.standard.mapper.TestStandardMapper;
-import com.ruoyi.project.system.standard.domain.TestStandard;
-import com.ruoyi.project.system.standard.service.ITestStandardService;
-import com.ruoyi.common.utils.text.Convert;
+
+import java.util.List;
+
 
 /**
  * 测试指标 Service业务层处理
@@ -41,6 +43,7 @@ public class TestStandardServiceImpl implements ITestStandardService
     @Override
     public List<TestStandard> selectTestStandardList(TestStandard testStandard)
     {
+
         return testStandardMapper.selectTestStandardList(testStandard);
     }
 
@@ -53,6 +56,10 @@ public class TestStandardServiceImpl implements ITestStandardService
     @Override
     public int insertTestStandard(TestStandard testStandard)
     {
+
+        TestStandard testStandardk1=testStandardMapper.selectTgsId(testStandard);
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+testStandardk1.getTgsId());
+        testStandard.setTgsId(testStandardk1.getTgsId());
         return testStandardMapper.insertTestStandard(testStandard);
     }
 
@@ -91,4 +98,7 @@ public class TestStandardServiceImpl implements ITestStandardService
     {
         return testStandardMapper.deleteTestStandardById(testStandardId);
     }
+
+
+
 }

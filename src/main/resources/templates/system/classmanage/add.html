@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增年班信息')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-classmanage-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">入学年份：</label>
+                <div class="col-sm-8">
+                    <input name="enrollYear" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">年级：</label>
+                <div class="col-sm-8">
+                    <input name="classGrade" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">班级名ID：</label>
+                <div class="col-sm-8">
+                    <input name="classId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">班主任ID：</label>
+                <div class="col-sm-8">
+                    <input name="mainTeacherId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">体育老师ID：</label>
+                <div class="col-sm-8">
+                    <input name="phyTeacherId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">学生人数：</label>
+                <div class="col-sm-8">
+                    <input name="stuCount" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/classmanage"
+        $("#form-classmanage-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-classmanage-add').serialize());
+            }
+        }
+
+    </script>
+</body>
+</html>

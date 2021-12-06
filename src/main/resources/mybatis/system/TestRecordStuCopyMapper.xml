@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.recordCopy.mapper.TestRecordStuCopyMapper">
+
+    <resultMap type="TestRecordStuCopy" id="TestRecordStuCopyResult">
+        <result property="testRecordId"     column="test_record_id"      />
+        <result property="testItemId"     column="test_item_id"      />
+        <result property="stuId" column="stu_id"/>
+        <result property="score" column="score"/>
+    </resultMap>
+    <sql id="selectRecordStu">
+        SELECT
+            tr.test_record_id,
+            ps.stu_id,
+            tir.test_item_id
+        FROM
+            prsn_student ps,
+            test_class_relation tcr,
+            test_record tr,
+            test_item_relation tir
+        WHERE
+            tr.test_record_id = #{testRecordId}
+          AND tr.test_record_id = tcr.test_record_id
+          AND tcr.enroll_year = ps.stu_enroll_year
+          AND tcr.class_no = ps.grade_class_id
+          AND tir.test_record_id = #{testRecordId}
+
+    </sql>
+
+    <select id="selectRecordStuList" parameterType="TestRecordStuCopy" resultMap="TestRecordStuCopyResult">
+        SELECT
+        tr.test_record_id,
+        ps.stu_id,
+        tir.test_item_id
+        FROM
+        prsn_student ps,
+        test_class_relation tcr,
+        test_record tr,
+        test_item_relation tir
+        WHERE
+        tr.test_record_id = #{testRecordId}
+        AND tr.test_record_id = tcr.test_record_id
+        AND tcr.enroll_year = ps.stu_enroll_year
+        AND tcr.class_no = ps.grade_class_id
+        AND tir.test_record_id = #{testRecordId}
+        <if test="testRecordId != null ">and tr.test_record_id = #{testRecordId}</if>
+        <if test="stuId != null ">and ps.stu_id = #{stuId}</if>
+        <if test="testItemId != null ">and tir.test_item_id = #{testItemId}</if>
+    </select>
+
+    <insert id="insertTestRecordStu" parameterType="TestRecordStuCopy" >
+        insert into test_stu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="testRecordId != null">test_record_id,</if>
+            <if test=" testItemId!= null">test_item_id,</if>
+            <if test="stuId!= null">stu_id,</if>
+            <if test="score!=null">score,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="testRecordId != null">#{testRecordId},</if>
+            <if test="testItemId != null">#{testItemId},</if>
+            <if test="stuId != null">#{stuId},</if>
+            <if test="score != null">#{score},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTestRecordStu" parameterType="java.util.List">
+        UPDATE test_stu ts,
+            test_class_relation tcr,
+            prsn_student ps
+        SET ts.stu_id = ps.stu_id
+        WHERE
+            ts.test_record_id=#{testRecordId}
+          AND  ts.test_record_id = tcr.test_record_id
+          AND tcr.enroll_year = ps.stu_enroll_year
+          AND tcr.class_no = ps.grade_class_id
+    </update>
+
+<!--    <update id="updateTestRecordId" parameterType="TestRecordStuCopy">-->
+<!--        update test_stu-->
+<!--        <trim prefix="SET" suffixOverrides=",">-->
+<!--            <if test="stuId != null">stu_id = #{stuId},</if>-->
+<!--            <if test="testRecordId != null">test_record_id = #{testRecordId},</if>-->
+<!--            <if test="testItemId != null">test_item_id = #{testItemId},</if>-->
+<!--            <if test="passOrNot != null">pass_or_not = #{passOrNot},</if>-->
+<!--        </trim>-->
+<!--        where test__id = #{testStuId}-->
+<!--    </update>-->
+
+</mapper>

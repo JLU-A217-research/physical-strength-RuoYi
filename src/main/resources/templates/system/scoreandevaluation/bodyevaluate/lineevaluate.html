@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('成绩与体质评价列表Line')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId" name="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            年级：<input type="text" id="classGrade" name="classGrade"/>
+                        </li>
+                        <li>
+                            班级：<input type="text" id="classNo" name="classNo"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="evaluateSearch(document.formId.classGrade.value, document.formId.classNo.value)"><i class="fa fa-search"></i>搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12 search-collapse">
+            <div class="col-sm-12 select-table table-striped">
+                <div class="echarts" id="echarts-line-chart"></div>
+            </div>
+        </div>
+<!--        <div class="col-sm-12 select-table table-striped">-->
+<!--            <table id="bootstrap-table"></table>-->
+<!--        </div>-->
+    </div>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: echarts-js" />
+<th:block th:include="include :: sparkline-js" />
+<script th:inline="javascript">
+    var prefix = ctx + "system/scoreandevaluation/bodyevaluate";//这里需要改
+
+    function evaluateSearch(classGrade, classNo){//document.formId.classGrade.value
+        if(classNo=="")   classGradeNo = classGrade + "00"
+        else if(classNo < 10)classGradeNo = classGrade + 0 + classNo;
+        else    classGradeNo = classGrade + classNo;
+        window.location.href = prefix+ "/lineevaluate/" + classGradeNo;
+    }
+
+    $(function() {
+        var itemNameListLine = [[${itemNameListLine}]];
+        var aveListLine = [[${aveListLine}]];
+        var yearList = [[${yearList}]];
+
+        var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
+        var lineoption = {
+            title : {
+                text: '同比增长'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:itemNameListLine//各个项目的名称
+            },
+            grid:{
+                x:40,
+                x2:40,
+                y2:24
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : yearList//这里变成连续多届x年级
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    axisLabel : {
+                        formatter: '{value}'
+                    }
+                }
+            ],
+            series : [
+                {
+                    name:itemNameListLine[0],//某个项目
+                    type:'line',
+                    data:aveListLine[1],//各年级得分
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name: '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:itemNameListLine[1],
+                    type:'line',
+                    data:aveListLine[2],//各年级得分
+                    markPoint : {
+                        data : [
+                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:itemNameListLine[2],
+                    type:'line',
+                    data:aveListLine[3],//各年级得分
+                    markPoint : {
+                        data : [
+                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:itemNameListLine[3],
+                    type:'line',
+                    data:aveListLine[4],//各年级得分
+                    markPoint : {
+                        data : [
+                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:itemNameListLine[4],
+                    type:'line',
+                    data:aveListLine[5],//各年级得分
+                    markPoint : {
+                        data : [
+                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:itemNameListLine[5],
+                    type:'line',
+                    data:aveListLine[6],//各年级得分
+                    markPoint : {
+                        data : [
+                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:itemNameListLine[6],
+                    type:'line',
+                    data:aveListLine[7],//各年级得分
+                    markPoint : {
+                        data : [
+                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                }
+                ,
+                {
+                    name:itemNameListLine[7],
+                    type:'line',
+                    data:aveListLine[10],//各年级得分
+                    markPoint : {
+                        data : [
+                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                }
+            ]
+        };
+        lineChart.setOption(lineoption);
+        $(window).resize(lineChart.resize);
+    });
+</script>
+</body>
+</html>

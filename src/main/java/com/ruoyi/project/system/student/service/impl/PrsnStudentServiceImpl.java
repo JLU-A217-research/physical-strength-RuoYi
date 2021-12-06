@@ -1,12 +1,17 @@
 package com.ruoyi.project.system.student.service.impl;
 
-import java.util.List;
+import com.ruoyi.common.utils.text.Convert;
+import com.ruoyi.project.system.student.domain.PrsnStudent;
+import com.ruoyi.project.system.student.domain.StuInfo;
+import com.ruoyi.project.system.student.mapper.PrsnStudentMapper;
+import com.ruoyi.project.system.student.service.IPrsnStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.project.system.student.mapper.PrsnStudentMapper;
-import com.ruoyi.project.system.student.domain.PrsnStudent;
-import com.ruoyi.project.system.student.service.IPrsnStudentService;
-import com.ruoyi.common.utils.text.Convert;
+
+import java.util.Calendar;
+import java.util.List;
+
+import static com.ruoyi.project.system.dict.utils.DictUtils.getDictLabel;
 
 /**
  * 学生信息 Service业务层处理
@@ -66,6 +71,76 @@ public class PrsnStudentServiceImpl implements IPrsnStudentService
     public int updatePrsnStudent(PrsnStudent prsnStudent)
     {
         return prsnStudentMapper.updatePrsnStudent(prsnStudent);
+    }
+
+    /**
+     * 修改学生信息
+     *
+     * @param prsnStudent 学生信息
+     * @return 结果
+     */
+    @Override
+    public int updatepartPrsnStudent(PrsnStudent prsnStudent)
+    {
+        return prsnStudentMapper.updatepartPrsnStudent(prsnStudent);
+    }
+
+    /**
+     * 找到班级ID
+     *
+     * @param gradeClassId 根据年班ID
+     * @return 结果
+     */
+    @Override
+    public Long selectclassById(Long gradeClassId){
+        return prsnStudentMapper.selectclassById(gradeClassId);
+    }
+
+    /**章荣荣
+     *
+     *
+     * @param accountId 需要删除的数据ID
+     * @return 结果
+     */
+    @Override
+    public StuInfo selectstuIdByAccountId(Long accountId) {
+
+        PrsnStudent prsnStudentk = prsnStudentMapper.selectstuIdByAccountId(accountId);
+        Long stuNationId=prsnStudentk.getStuNationId();
+        String stuNationName=getDictLabel("sys_user_nation",stuNationId.toString());
+
+        prsnStudentk.setStuNationName(stuNationName);
+        StuInfo stuInfo=new StuInfo();
+        stuInfo.setAccountId(prsnStudentk.getAccountId());
+        stuInfo.setGradeClassId(prsnStudentk.getGradeClassId());
+        stuInfo.setPsw(prsnStudentk.getPsw());
+        stuInfo.setStuBirth(prsnStudentk.getStuBirth());
+        stuInfo.setStuEnrollYear(prsnStudentk.getStuEnrollYear());
+        stuInfo.setStuBirth(prsnStudentk.getStuBirth());
+        stuInfo.setstuNationName(prsnStudentk.getStuNationName());
+        stuInfo.setStuNid(prsnStudentk.getStuNid());
+        stuInfo.setStuNationId(prsnStudentk.getStuNationId());
+        stuInfo.setStuPhone(prsnStudentk.getStuPhone());
+        stuInfo.setStuSex(prsnStudentk.getStuSex());
+        stuInfo.setStuId(prsnStudentk.getStuId());
+        stuInfo.setStuSexId(prsnStudentk.getStuSexId());
+        stuInfo.setStuName(prsnStudentk.getStuName());
+        stuInfo.setStuNo(prsnStudentk.getStuNo());
+        stuInfo.setStuWechat(prsnStudentk.getStuWechat());
+        Calendar c= Calendar.getInstance();
+        long nowyear=c.get(Calendar.YEAR);
+        String dt=String.format("%tY",prsnStudentk.getStuBirth());
+        long birthyear=Long.parseLong(dt);
+        long year=nowyear-birthyear;
+        stuInfo.setStuYear(year);
+        long gradeClassId=stuInfo.getGradeClassId();
+        //long enrollyear=prsnStudentMapper.selectenrollYearById(gradeClassId);
+        Long classId=prsnStudentMapper.selectclassById(gradeClassId);
+//        stuInfo.setStuEnrollYear((int) enrollyear);
+        stuInfo.setClassId(classId);
+
+
+        return stuInfo;
     }
 
     /**

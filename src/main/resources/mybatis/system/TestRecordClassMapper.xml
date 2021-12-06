@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.record.mapper.TestRecordClassMapper">
+
+    <resultMap type="TestRecordClass" id="TestRecordClassResult">
+        <result property="testRecordId"     column="test_record_id"      />
+        <result property="enrollYear"     column="enroll_year"      />
+        <result property="classNo"     column="class_no"      />
+    </resultMap>
+    <insert id="insertTestRecordClass" parameterType="TestRecordClass" >
+        insert into test_class_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="testRecordId != null">test_record_id,</if>
+            <if test=" enrollYear!= null">enroll_year,</if>
+            <if test=" classNo!= null">class_no,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="testRecordId != null">#{testRecordId},</if>
+            <if test="enrollYear != null">#{enrollYear},</if>
+            <if test="classNo != null">#{classNo},</if>
+
+        </trim>
+    </insert>
+    <!--    <insert id="inserTestStuItem" parameterType="TestRecordItem" >-->
+    <!--        insert into test_stu(test_item_id) values-->
+    <!--        <foreach item="item" index="index" collection="list" separator=",">-->
+    <!--            (#{item.testItemId})-->
+    <!--        </foreach>-->
+    <!--        where test_stu.test_record_id=test_item_relation.test_record_id-->
+    <!--    </insert>-->
+    <delete id="deleteTestRecordClassByTestRecordId" parameterType="Long">
+        delete from test_class_relation where test_record_id=#{testRecordId}
+    </delete>
+
+<!--    <select id="countTestRecordItemById" resultType="Integer">-->
+<!--        select count(1) from test_item_relation where test_item_id=#{testItemId}-->
+<!--    </select>-->
+
+    <select id="selectCountTestRecordClassByTestRecordId" resultType="Integer">
+        select count(1) from test_class_relation where class_no=#{classNo}
+    </select>
+
+    <delete id="deleteTestRecordClass" parameterType="Long">
+        delete from test_class_relation where test_record_id in
+        <foreach collection="array" item="testRecordId" open="(" separator="," close=")">
+            #{testRecordId}
+        </foreach>
+    </delete>
+
+<!--    <insert id="batchTestRecordItem">-->
+<!--        insert into test_item_relation(test_record_id, test_item_id) values-->
+<!--        <foreach item="item" index="index" collection="list" separator=",">-->
+<!--            (#{item.testRecordId},#{item.testItemId})-->
+<!--        </foreach>-->
+<!--    </insert>-->
+
+</mapper>

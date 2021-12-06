@@ -6,11 +6,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<resultMap type="ClassGradeData" id="ClassGradeDataResult">
 		<result property="classGrade"   column="class_grade"   />
+		<result property="ClassNo" column="class_no"/>
 
 	</resultMap>
 	
 	<sql id="selectDictDataVo">
-        select distinct class_grade
+        select distinct class_grade,class_no
 		from class_grade_info
     </sql>
 

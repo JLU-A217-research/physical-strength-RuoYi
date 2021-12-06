@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+    <title>若依介绍</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link href="../static/css/main/animate.min.css" th:href="@{/css/main/animate.min.css}" rel="stylesheet"/>
+    <link href="../static/css/main/style.min862f.css" th:href="@{/css/main/style.min862f.css}" rel="stylesheet"/>
+</head>
+
+<body class="gray-bg">
+    <div class="row  border-bottom white-bg dashboard-header">
+        <div class="col-sm-12">
+            <blockquote class="text-warning" style="font-size:14px">
+
+                <h1>您好, [[${prsnStudent.stuName}]] 同学</h1>
+            </blockquote>
+			<hr>
+        </div>
+    </div>
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>基本信息</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table" th:height="160">
+                            <tr>
+                                <td>姓名</td>
+                                <td th:text="${prsnStudent.stuName}"></td>
+                                <td>性别</td>
+                                <td th:text="${prsnStudent.stuSex}==1?女:男"></td>
+                            </tr>
+                            <tr>
+                                <td>年龄</td>
+                                <td th:text="${stuAge}"></td>
+                                <td>民族</td>
+                                <td th:text="${stuNation}"></td>
+                            </tr>
+                            <tr>
+                                <td>班级</td>
+                                <td th:text="${prsnStudent.gradeClassId}"></td>
+                                <td>学号</td>
+                                <td th:text="${prsnStudent.stuNo}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <span class="label label-primary pull-right">NEW</span>
+                        <h5>信息中心</h5>
+                    </div>
+                    <div class="ibox-content" >
+                        <div class="row">
+                            <div class="col-sm-2 col-sm-offset-2" style="height:160px; padding-top:50px">
+                                <a class="menuItem" th:href="@{/system/information}">
+                                    <button class="btn btn-primary btn-circle btn-lg btn-block" type="button" th:text="${@GetUnReadInfoCnt.getUnReadInfoCnt()}"></button>
+                                </a>
+                            </div>
+                            <div class="col-sm-2 col-sm-offset-4" style="height:160px; padding-top:50px">
+                                <a th:href="@{/system/info}">
+                                    <button class="btn btn-info btn-circle btn-lg" type="button" th:text="${@GetAbsenceUnDealCnt.getAbsenceUnDealCnt()}"></button>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-sm-offset-2">未读消息</div>
+                            <div class="col-sm-2 col-sm-offset-4">请假申请</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+    <script type="text/javascript">
+
+        /** 刷新时访问路径页签 */
+        function applyPath(url) {
+            $('a[href$="' + decodeURI(url) + '"]').click();
+            if (!$('a[href$="' + url + '"]').hasClass("noactive")) {
+                $('a[href$="' + url + '"]').parent("li").addClass("selected").parents("li").addClass("active").end().parents("ul").addClass("in");
+            }
+        }
+
+        $(function() {
+            if($.common.equals("history", mode) && window.performance.navigation.type == 1) {
+                var url = storage.get('publicPath');
+                if ($.common.isNotEmpty(url)) {
+                    applyPath(url);
+                }
+            } else {
+                var hash = location.hash;
+                if ($.common.isNotEmpty(hash)) {
+                    var url = hash.substring(1, hash.length);
+                    applyPath(url);
+                } else {
+                    if($.common.equals("history", mode)) {
+                        storage.set('publicPath', "");
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

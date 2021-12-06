@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.record.mapper.TestRecordItemCopyMapper">
+
+    <resultMap type="TestRecordItem" id="TestRecordItemResult">
+        <result property="testRecordId"     column="test_record_id"      />
+        <result property="testItemId"     column="test_item_id"      />
+    </resultMap>
+    <insert id="insertTestRecordItem" parameterType="TestRecordItem" >
+        insert into test_item_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="testRecordId != null">test_record_id,</if>
+            <if test=" testItemId!= null">test_item_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="testRecordId != null">#{testRecordId},</if>
+            <if test="testItemId != null">#{testItemId},</if>
+
+        </trim>
+    </insert>
+<!--    <insert id="inserTestStuItem" parameterType="TestRecordItem" >-->
+<!--        insert into test_stu(test_item_id) values-->
+<!--        <foreach item="item" index="index" collection="list" separator=",">-->
+<!--            (#{item.testItemId})-->
+<!--        </foreach>-->
+<!--        where test_stu.test_record_id=test_item_relation.test_record_id-->
+<!--    </insert>-->
+    <delete id="deleteTestRecordItemByTestRecordId" parameterType="Long">
+        delete from test_item_relation where test_record_id=#{testRecordId}
+    </delete>
+
+    <select id="countTestRecordItemById" resultType="Integer">
+        select count(1) from test_item_relation where test_item_id=#{testItemId}
+    </select>
+
+    <select id="selectCountTestRecordItemByTestRecordId" resultType="Integer">
+        select count(1) from test_item_relation where test_item_id=#{testItemId}
+    </select>
+
+    <delete id="deleteTestRecordItem" parameterType="Long">
+        delete from test_item_relation where test_record_id in
+        <foreach collection="array" item="testRecordId" open="(" separator="," close=")">
+            #{testRecordId}
+        </foreach>
+    </delete>
+
+    <insert id="batchTestRecordItem">
+        insert into test_item_relation(test_record_id, test_item_id) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.testRecordId},#{item.testItemId})
+        </foreach>
+    </insert>
+
+</mapper>

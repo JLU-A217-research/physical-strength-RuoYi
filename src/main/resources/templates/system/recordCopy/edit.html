@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('查看补测记录')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-record-edit" th:object="${testRecordCopy}">
+            <input name="testRecordId" th:field="*{testRecordId}" type="hidden">
+<!--            <div class="form-group">    -->
+<!--                <label class="col-sm-3 control-label">补测ID：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="testOrSupId" th:field="*{testOrSupId}" class="form-control" type="text" readonly>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">补测名称：</label>
+                <div class="col-sm-8">
+                    <input name="testName" th:field="*{testName}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">补测日期：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="testTime" th:value="${#dates.format(testRecordCopy.testTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text" readonly>
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+
+
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">补测项目：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <select id="itemId" name="itemId" th:field="*{testItemName}" th:with="type=${@itemId.selectTestDataList()}" class="form-control select2-multiple select2-hidden-accessible valid" multiple="" data-select2-id="6" tabindex="-1" aria-hidden="true" aria-invalid="false" >-->
+<!--                        <option value="">所有</option>-->
+<!--                        <option  th:each="itemId : ${type}" th:text="${itemId.testItem}" th:value="${itemId.itemId}"></option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">补测项目：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <select id="itemId"  th:with="items=${@itemId.selectTestDataList()}" class="form-control select2-multiple " multiple >-->
+<!--                        <option value="">所有</option>-->
+<!--                        <option  th:each="item : ${items}" th:text="${item.testItem}" th:value="${item.itemId}" ></option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">补测场所：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <select id="testSiteId" th:field="*{testSite}" th:with="type=${@dict.getType('test_site')}" class="form-control select2-multiple select2-hidden-accessible valid" multiple="" data-select2-id="8" tabindex="-1" aria-hidden="true" aria-invalid="false" >-->
+<!--                        <option value="">所有</option>-->
+<!--                        <option  th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
+<!--                    </select>-->
+
+<!--                </div>-->
+<!--            </div>-->
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">体测项目：</label>
+                <div class="col-sm-8">
+                    <input name="testName" th:field="*{testItemName}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">体测场所：</label>
+                <div class="col-sm-8">
+                    <input name="testName" th:field="*{testSite}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+
+
+
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">补测年级班级：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="classGrade" th:field="*{classGrade}" class="form-control" type="text" readonly>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="form-group">
+                <label class="col-sm-3 control-label">通过人数：</label>
+                <div class="col-sm-8">
+                    <input name="testSiteId" th:field="*{testSiteId}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">未通过人数：</label>
+                <div class="col-sm-8">
+                    <input name="testSiteId" th:field="*{testSiteId}" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">完成状态：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box">
+                        <input type="radio" name="testStatus" value="1" readonly>
+                        <label th:for="testStatus" th:text="已完成"></label>
+                    </div>
+                    <div class="radio-box">
+                        <input type="radio" name="testStatus" value="0" readonly>
+                        <label th:for="testStatus" th:text="未完成"></label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: select2-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/recordCopy";
+        $("#form-record-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-record-edit').serialize());
+            }
+        }
+
+        $("input[name='testTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

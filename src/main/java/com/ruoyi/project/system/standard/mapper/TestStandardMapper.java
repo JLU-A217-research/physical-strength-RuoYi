@@ -1,7 +1,8 @@
 package com.ruoyi.project.system.standard.mapper;
 
-import java.util.List;
 import com.ruoyi.project.system.standard.domain.TestStandard;
+
+import java.util.List;
 
 /**
  * 测试指标 Mapper接口
@@ -13,7 +14,7 @@ public interface TestStandardMapper
 {
     /**
      * 查询测试指标 
-     * 
+     *
      * @param testStandardId 测试指标 ID
      * @return 测试指标 
      */
@@ -28,12 +29,21 @@ public interface TestStandardMapper
     public List<TestStandard> selectTestStandardList(TestStandard testStandard);
 
     /**
-     * 新增测试指标 
-     * 
+     * 查找TgsId /     *
      * @param testStandard 测试指标 
      * @return 结果
      */
+    public TestStandard selectTgsId(TestStandard testStandard);
+
+
+    /**
+     * 新增测试指标
+     *
+     * @param testStandard 测试指标
+     * @return 结果
+     */
     public int insertTestStandard(TestStandard testStandard);
+
 
     /**
      * 修改测试指标 
@@ -58,4 +68,6 @@ public interface TestStandardMapper
      * @return 结果
      */
     public int deleteTestStandardByIds(String[] testStandardIds);
+
+    public List<TestStandard> selectAllTestStandard();
 }

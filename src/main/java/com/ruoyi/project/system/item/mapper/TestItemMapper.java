@@ -1,7 +1,8 @@
 package com.ruoyi.project.system.item.mapper;
 
-import java.util.List;
 import com.ruoyi.project.system.item.domain.TestItem;
+
+import java.util.List;
 
 /**
  * 体测项目 Mapper接口
@@ -18,6 +19,18 @@ public interface TestItemMapper
      * @return 体测项目 
      */
     public TestItem selectTestItemById(Long testItemId);
+
+    /*
+    通过体测记录id查询体测项目 test_record_id
+    返回项目列表
+     */
+    public List<TestItem> selectTestItemByTestRecordId(Long testRecordId);
+
+    /*
+    查询所有项目列表
+     */
+    public List<TestItem> selectTestItemAll();
+
 
     /**
      * 查询体测项目 列表

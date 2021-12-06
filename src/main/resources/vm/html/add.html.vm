@@ -140,7 +140,7 @@
                 <label class="col-sm-3 control-label#if($column.required) is-required#end">${comment}：</label>
                 <div class="col-sm-8">
                     <div class="input-group date">
-                        <input name="${field}" class="form-control" placeholder="yyyy-MM-dd" type="text"#if($column.required) required#end>
+                        <input name="${field}" class="form-control" placeholder="yyyy-MM-dd" type="text"  #if($column.required) required#end>
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>
@@ -207,13 +207,15 @@
                 $.operate.save(prefix + "/add", $('#form-${businessName}-add').serialize());
             }
         }
+
 #foreach($column in $columns)
 #if($column.insert && !$column.superColumn && !$column.pk && $column.htmlType == "datetime")
 
         $("input[name='$column.javaField']").datetimepicker({
             format: "yyyy-mm-dd",
             minView: "month",
-            autoclose: true
+            autoclose: true,
+            trigger:"focus"
         });
 #end
 #end

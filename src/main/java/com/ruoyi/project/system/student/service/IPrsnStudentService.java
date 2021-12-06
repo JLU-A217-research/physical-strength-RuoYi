@@ -1,7 +1,9 @@
 package com.ruoyi.project.system.student.service;
 
-import java.util.List;
 import com.ruoyi.project.system.student.domain.PrsnStudent;
+import com.ruoyi.project.system.student.domain.StuInfo;
+
+import java.util.List;
 
 /**
  * 学生信息 Service接口
@@ -18,6 +20,14 @@ public interface IPrsnStudentService
      * @return 学生信息 
      */
     public PrsnStudent selectPrsnStudentById(Long stuId);
+
+    /**
+     * 根据accountId找到stuId
+     *
+     * @param accountId 学生信息 ID
+     * @return 学生信息
+     */
+    public StuInfo selectstuIdByAccountId(Long accountId);
 
     /**
      * 查询学生信息 列表
@@ -44,6 +54,14 @@ public interface IPrsnStudentService
     public int updatePrsnStudent(PrsnStudent prsnStudent);
 
     /**
+     * 修改学生信息
+     *
+     * @param prsnStudent 学生信息
+     * @return 结果
+     */
+    public int updatepartPrsnStudent(PrsnStudent prsnStudent);
+
+    /**
      * 批量删除学生信息 
      * 
      * @param ids 需要删除的数据ID
@@ -58,4 +76,6 @@ public interface IPrsnStudentService
      * @return 结果
      */
     public int deletePrsnStudentById(Long stuId);
+
+    public Long selectclassById(Long gradeClassId);
 }

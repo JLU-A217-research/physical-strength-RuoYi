@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('成绩与体质评价列表Bar')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId" name="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            年级：<input type="text" id="classGrade" name="classGrade"/>
+                        </li>
+                        <li>
+                            班级：<input type="text" id="classNo" name="classNo"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="evaluateSearch(document.formId.classGrade.value, document.formId.classNo.value)"><i class="fa fa-search"></i>搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12 search-collapse">
+            <div class="col-sm-12 select-table table-striped">
+                <div class="echarts" id="echarts-bar-chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: echarts-js" />
+<th:block th:include="include :: sparkline-js" />
+<script th:inline="javascript">
+    var prefix = ctx + "system/scoreandevaluation/bodyevaluate";
+
+    function evaluateSearch(classGrade, classNo){//document.formId.classGrade.value
+        if(classNo=="")   classGradeNo = classGrade + "00"
+        else if(classNo < 10)classGradeNo = classGrade + 0 + classNo;
+        else    classGradeNo = classGrade + classNo;
+        window.location.href = prefix+ "/barevaluate/" + classGradeNo;
+    }
+
+    $(function() {
+        var itemNameList = [[${itemNameList}]];
+        var aveNowList = [[${aveNowList}]];
+        var aveLastList = [[${aveLastList}]];
+
+        var barChart = echarts.init(document.getElementById("echarts-bar-chart"));
+        var baroptions = {
+            // url: prefix + "/list",
+            // modalName: "成绩与体质评价Bar",
+            title : {
+                text: '年级各项目环比增长'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['今年','往年']
+            },
+            grid:{
+                x:30,
+                x2:40,
+                y2:24
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    data : itemNameList
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'往年',
+                    type:'bar',
+                    data:aveLastList
+                },
+                {
+                    name:'今年',
+                    type:'bar',
+                    data:aveNowList
+                }
+            ]
+        };
+        barChart.setOption(baroptions);
+        window.onresize = barChart.resize;
+    });
+</script>
+</body>
+</html>

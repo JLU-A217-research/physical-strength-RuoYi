@@ -1,10 +1,11 @@
 package com.ruoyi.project.system.student.domain;
 
-import java.util.Date;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.Date;
 
 /**
  * 学生信息 对象 prsn_student
@@ -15,6 +16,41 @@ import com.ruoyi.framework.web.domain.BaseEntity;
 public class PrsnStudent extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getStuSexId() {
+        return stuSexId;
+    }
+
+    public void setStuSexId(String stuSexId) {
+        this.stuSexId = stuSexId;
+    }
+
+    public String getStuNationName() {
+        return stuNationName;
+    }
+
+    public void setStuNationName(String stuNationName) {
+        this.stuNationName = stuNationName;
+    }
+
+    /** 民族名称 */
+    @Excel(name = "民族名称")
+    private String stuNationName;
+
+    /** 学生性别ID */
+    @Excel(name = "学生性别ID")
+    private String stuSexId;
+
+    /** account_ID */
+    private Long accountId;
 
     /** 学生ID */
     private Long stuId;
@@ -63,6 +99,7 @@ public class PrsnStudent extends BaseEntity
     /** 学生微信 */
     @Excel(name = "学生微信")
     private String stuWechat;
+
 
 
     public void setStuId(Long stuId)
@@ -186,6 +223,9 @@ public class PrsnStudent extends BaseEntity
             .append("gradeClassId", getGradeClassId())
             .append("stuPhone", getStuPhone())
             .append("stuWechat", getStuWechat())
+                .append("accountId",getAccountId())
+                .append("stuSexId",getStuSexId())
+                .append("stuNationName",getStuNationName())
             .toString();
     }
 }

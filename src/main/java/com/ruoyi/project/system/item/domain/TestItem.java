@@ -15,6 +15,8 @@ public class TestItem extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
+    private boolean flag=false;
+
     /** 体测项目ID */
     private Long testItemId;
 
@@ -65,6 +67,10 @@ public class TestItem extends BaseEntity
     public Integer getTestScoreRelation()
     {
         return testScoreRelation;
+    }
+
+    public void setFlag(boolean flag){
+        this.flag=flag;
     }
 
     @Override

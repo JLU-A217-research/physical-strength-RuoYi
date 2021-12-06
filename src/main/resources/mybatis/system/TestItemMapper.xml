@@ -28,6 +28,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectTestItemVo"/>
         where test_item_id = #{testItemId}
     </select>
+
+    <select id="selectTestItemByTestRecordId" parameterType="Long" resultMap="TestItemResult">
+        select ti.test_item_id,ti.test_item_name
+        from test_record tr
+            left join test_item_relation tir on tr.test_record_id=tir.test_record_id
+            left join test_item ti on tir.test_item_id=ti.test_item_id
+        where tir.test_record_id=#{testRecordId}
+    </select>
+
+    <select id="selectTestItemAll"  parameterType="Long" resultMap="TestItemResult">
+        <include refid="selectTestItemVo"/>
+    </select>
         
     <insert id="insertTestItem" parameterType="TestItem" useGeneratedKeys="true" keyProperty="testItemId">
         insert into test_item

@@ -14,18 +14,22 @@
                                 <label>年级：</label>
                                 <input type="text" name="grade"/>
                             </li>
-<!--                            <li>-->
-<!--                                <label>体测项目ID：</label>-->
-<!--                                <input type="text" name="testItemId"/>-->
-<!--                            </li>-->
                             <li>
-                                <!--<label>性别ID(字典)：</label>
-                                <input type="text" name="stuSexId"/> -->
+
+                                <label>体测项目名称：</label>
+                                <select id="testItemId" onchange="getClass()" name="testItemId" th:with="type=${@testItemId.selectTestItemDataList()}">
+                                    <option value="">所有</option>
+                                    <option  th:each="testItemId1 : ${type}" th:text="${testItemId1.testItemName}" th:value="${testItemId1.testItemId}"></option>
+                                </select>
+                            </li>
+                            <li>
+
                                 性别：<select name="stuSexId" th:with="type=${@dict.getType('sys_user_sex')}">
                                 <option value="">所有</option>
-                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>-->
                             </select>
                             </li>
+
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
@@ -61,7 +65,6 @@
         var prefix = ctx + "system/relation";
         var datas = [[${@dict.getType('sys_user_sex')}]];
 
-
         $(function() {
             var options = {
                 url: prefix + "/list",
@@ -75,21 +78,18 @@
                 },
                 {
                     field: 'tgsId',
-                    title: '项目编号',
-                    // visible: false
+                    title: '年级-性别-项目ID',
+                    visible: false
                 },
                 {
                     field: 'grade',
-                    title: '年级',
-                    formatter: function(value, row, index) {
-                        return (value+'年级体测');
-                    }
+                    title: '年级'
+                },
+                {
+                    field: 'testItemName',
+                    title: '体测项目名称'
 
                 },
-                // {
-                //     field: 'testItemId',
-                //     title: '体测项目ID'
-                // },
                 {
                     field: 'stuSexId',
                     title: '性别',

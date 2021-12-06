@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('体测管理')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-record-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">体测/补测ID：</label>
+                <div class="col-sm-8">
+                    <input name="testOrSupId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">测试名称：</label>
+                <div class="col-sm-8">
+                    <input name="testName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">测试时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="testTime" class="form-control" placeholder="yyyy-MM-dd" type="text"  >
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+<!--            <div class="form-group">    -->
+<!--                <label class="col-sm-3 control-label">测试场所ID：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input name="testSiteId" class="form-control" type="text">-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">体测场所：</label>
+                <div class="col-sm-8">
+                    <select name="testSiteId" class="form-control m-b">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">体测项目：</label>
+                <div class="col-sm-8">
+                    <select name="test_item" class="form-control m-b">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">接收通知的老师：</label>
+                <div class="col-sm-8">
+                    <select name="teacher_name" class="form-control m-b">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                    </select>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/recordCopy"
+        $("#form-record-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-record-add').serialize());
+            }
+        }
+
+
+        $("input[name='testTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true,
+            trigger:"focus"
+        });
+    </script>
+</body>
+</html>

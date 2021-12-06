@@ -14,6 +14,7 @@
                     <input name="stuName" class="form-control" type="text">
                 </div>
             </div>
+
             <div class="form-group">
                 <label class="col-sm-3 control-label">性别：</label>
                 <div class="col-sm-8">
@@ -21,9 +22,9 @@
                         <option value="0">男</option>
                         <option value="1">女</option>
                     </select>
-<!--                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>-->
                 </div>
             </div>
+
             <div class="form-group">    
                 <label class="col-sm-3 control-label">学号：</label>
                 <div class="col-sm-8">
@@ -42,12 +43,12 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">年龄：</label>
-                <div class="col-sm-8">
-                    <input  name="stuEnrollYear" class="form-control" type="text" id="t2"  >
-                </div>
-            </div>
+<!--            <div class="form-group">-->
+<!--                <label class="col-sm-3 control-label">年龄：</label>-->
+<!--                <div class="col-sm-8">-->
+<!--                    <input  name="stuEnrollYear" class="form-control" type="text" id="t2"  >-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="form-group">
                 <label class="col-sm-3 control-label">民族：</label>
                 <div class="col-sm-8">
@@ -111,7 +112,6 @@
 
 
                     </select>
-<!--                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>-->
                 </div>
             </div>
             <div class="form-group">    
@@ -120,48 +120,23 @@
                     <input name="stuNid" class="form-control" type="text">
                 </div>
             </div>
-<!--            <div class="form-group">    -->
-<!--                <label class="col-sm-3 control-label">年级：</label>-->
-<!--                <div class="col-sm-8">-->
-<!--                    <input name="stuEnrollYear" class="form-control" type="text">-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="form-group">    -->
-<!--                <label class="col-sm-3 control-label">班级：</label>-->
-<!--                <div class="col-sm-8">-->
-<!--                    <input name="gradeClassId" class="form-control" type="text">-->
-<!--                </div>-->
-<!--            </div>-->
 
-
-            <style>
-                /*body{background:#ddd;font:14px/1.7 tahoma,'\5fae\8f6f\96c5\9ed1',sans-serif;}*/
-                h1,h2{font-size:36px;line-height:1;}
-                h2{font-size:24px;}
-                /*h3{font-size:18px;}*/
-                fieldset{margin:2em 0;}
-                fieldset legend{font-weight:bold;font-size:16px;line-height:2;}
-                select,button{padding:0.5em;}
-                a{color: #0066ff;text-decoration:none;}
-                a:hover{color: #0000ff;}
-                /*.wrap{width:900px;margin:0 auto;padding:20px 50px;border-radius:8px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,0.2);}*/
-            </style>
-
-            <div id="class_garde_select" data-url="cityData.min.js" data-selects="stuEnrollYear,gradeClassId" data-required="true">
-                <div class="wrap">
-                   <fieldset id="class_garde">
-                        <p>年级：<select class="stuEnrollYear">
-                            <option value="2020" selected>2020</option>
-
-                        </select></p>
-                        <p>班级：<select class="gradeClassId">
-                            <option value="1" selected>1</option>
-                        </select></p>
-                    </fieldset>
-
+            <div class="form-group">
+                <label class="col-sm-3 control-label">年级：</label>
+                <div class="col-sm-8">
+                    <input name="stuEnrollYear" class="form-control" type="text">
                 </div>
+            </div>
 
-                <div class="form-group">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">班级：</label>
+                <div class="col-sm-8">
+                    <input name="gradeClassId" class="form-control" type="text">
+                </div>
+            </div>
+
+
+            <div class="form-group">
                 <label class="col-sm-3 control-label">联系电话：</label>
                 <div class="col-sm-8">
                     <input name="stuPhone" class="form-control" type="text">
@@ -178,11 +153,10 @@
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: datetimepicker-js" />
     <th:block th:include="include :: jquery-cxselect-js" />
-    <script src="jquery.js"></script>
-    <script src="jquery.cxselect.js"></script>
+<!--    <script src="jquery.js"></script>-->
+<!--    <script src="jquery.cxselect.js"></script>-->
     <script th:inline="javascript">
         var prefix = ctx + "system/student"
-        // var stunation = [[${@dict.getType('sys_user_nation')}]];    处理民族
         $("#form-student-add").validate({
             focusCleanup: true
         });
@@ -202,19 +176,19 @@
             var nowyear = date.getFullYear()
             document.getElementById("t2").value=nowyear-times[0];
         });
-        $.cxSelect.defaults.url = 'cityData.min.js';
-        $.cxSelect.defaults.emptyStyle = 'none';
-        $('#class_garde_select').cxSelect({
-            url: 'cityData.min.js',               // 提示：如果服务器不支持 .json 类型文件，请将文件改为 .js 文件
-            selects: ['stuEnrollYear', 'gradeClassId'],  // selects 为数组形式，请注意顺序
-            emptyStyle: 'none'
-        });
-        var cxSelectApi;
-
-        // 方法一：
-        cxSelectApi = $.cxSelect($('#class_garde_select'), {
-            selects: ['stuEnrollYear', 'gradeClassId']
-        });
+        // $.cxSelect.defaults.url = 'cityData.min.js';
+        // $.cxSelect.defaults.emptyStyle = 'none';
+        // $('#class_garde_select').cxSelect({
+        //     url: 'cityData.min.js',               // 提示：如果服务器不支持 .json 类型文件，请将文件改为 .js 文件
+        //     selects: ['stuEnrollYear', 'gradeClassId'],  // selects 为数组形式，请注意顺序
+        //     emptyStyle: 'none'
+        // });
+        // var cxSelectApi;
+        //
+        // // 方法一：
+        // cxSelectApi = $.cxSelect($('#class_garde_select'), {
+        //     selects: ['stuEnrollYear', 'gradeClassId']
+        // });
     </script>
 
 

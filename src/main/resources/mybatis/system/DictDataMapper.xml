@@ -25,8 +25,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from sys_dict_data
     </sql>
 
+    <sql id="selectDictDataCopy">
+		select dict_label from sys_dict_data where dict_type='test_site'
+	</sql>
+
 	<select id="selectDictDataList" parameterType="DictData" resultMap="DictDataResult">
-	    <include refid="selectDictDataVo"/>
+	    <include refid="selectDictDataCopy"/>
 		<where>
 		    <if test="dictType != null and dictType != ''">
 				AND dict_type = #{dictType}
