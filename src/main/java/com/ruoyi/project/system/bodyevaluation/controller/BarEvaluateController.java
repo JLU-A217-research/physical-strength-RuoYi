@@ -28,38 +28,6 @@ public class BarEvaluateController extends BaseController {
 
     @RequiresPermissions("system:scoreandevaluation:barevaluate:list")
     @PostMapping("/list")
-//    @ResponseBody
-//    public TableDataInfo list(BodyScore score, ModelMap mmap){
-//        //barchart 数据
-//        BodyEvaluationBar bodyEvaluationBar = new BodyEvaluationBar();
-//        Calendar calendar = Calendar.getInstance();
-//        long nowYear = calendar.get(Calendar.YEAR);
-//        bodyEvaluationBar.setYear(nowYear);
-//        if(score.getClassGrade()==null||score.getClassGrade()>9)    score.setClassGrade(9L);//年级最高等于9
-//        bodyEvaluationBar.setClassGrade(score.getClassGrade());
-//        if(score.getClassNo()!=null);
-//        List<BodyEvaluationBar> barlist = new ArrayList<>();
-//        //获得指定年级当前年份的成绩均值
-//        if(bodyEvaluationBar.getClassGrade() != null && bodyEvaluationBar.getYear() != null){
-//            barlist = bodyEvaluationService.generateDataForBar(bodyEvaluationBar);
-//            int i,len = barlist.size();
-//            for(i=0;i<len;i++){
-//                barlist.get(i).setAveNow(barlist.get(i).getAve());
-//            }
-//
-//            //获取指定年级往年的成绩均值
-//            if(bodyEvaluationBar.getClassGrade()>7){
-//                bodyEvaluationBar.setClassGrade(bodyEvaluationBar.getClassGrade()-1);
-//                bodyEvaluationBar.setYear(bodyEvaluationBar.getYear()-1);
-//                List<BodyEvaluationBar> barlistLast = bodyEvaluationService.generateDataForBar(bodyEvaluationBar);
-//                for(i=0;i<barlistLast.size();i++){
-//                    barlist.get(i).setAveLast(barlistLast.get(i).getAve());
-//                }
-//            }
-//        }
-//
-//        return getDataTable(barlist);
-//    }
     public String list(BodyScore score, ModelMap mmap){
         List<String> itemNameList = new ArrayList<>();
         List<Double> aveNowList = new ArrayList<>();
@@ -97,7 +65,6 @@ public class BarEvaluateController extends BaseController {
             }
         }
         return "system/scoreandevaluation"+"/bodyevaluate/bodyevaluate";
-//        return "system/user/add";
     }
 
 }

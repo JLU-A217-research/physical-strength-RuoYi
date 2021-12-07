@@ -139,23 +139,12 @@ public class ScoreAndEvaluationServiceImpl implements IScoreAndEvaluationService
         {
             try
             {
-                // 验证是否存在这个用户
-//                ScoreAndEvaluation s = scoreAndEvaluationMapper.selectScoreByStuId(score.getStuId());
                 if (true)
                 {
-//                    score.setPassword(password);
-//                    score.setCreateBy(operName);
                     this.insertScore(score);
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、学生 " + score.getStuId() + " 导入成功");
                 }
-//                else if (isUpdateSupport)
-//                {
-//                    user.setUpdateBy(operName);
-//                    this.updateUser(user);
-//                    successNum++;
-//                    successMsg.append("<br/>" + successNum + "、账号 " + score.getStuId() + " 更新成功");
-//                }
                 else
                 {
                     failureNum++;

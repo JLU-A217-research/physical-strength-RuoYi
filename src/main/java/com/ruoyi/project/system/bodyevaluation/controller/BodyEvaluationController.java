@@ -32,7 +32,6 @@ public class BodyEvaluationController extends BaseController {
     @ResponseBody
     public TableDataInfo list(BodyScore score)
     {
-//        startPage();
         List<BodyScore> scoreList = bodyEvaluationService.selectScoreList(score);
         List<BodyEvaluation> list = bodyEvaluationService.selectItemList();//list的下标代表的意义的项目Id-1
 
@@ -55,7 +54,6 @@ public class BodyEvaluationController extends BaseController {
             list.get(itemId-1).setTotal(list.get(itemId-1).getTotal()+1);
         }
         for(i=0;i<list.size();i++){
-//            System.out.println("itemId="+list.get(i).getItemId()+"total"+list.get(i).getTotal());
             if(list.get(i).getTotal()!=0){
                 list.get(i).setPassRate(1.0*list.get(i).getPassNum()/list.get(i).getTotal());
                 list.get(i).setGoodRate(1.0*list.get(i).getGoodNum()/list.get(i).getTotal());
