@@ -6,12 +6,12 @@
 </head>
 
 
-<div class="center">
+
     <div class="text-center">
         <p class="user-info-head" onclick="avatar()"><img class="img-circle img-lg" th:src="(${#strings.isEmpty(user.avatar)}) ? @{/img/profile.jpg} : @{${user.avatar}}"></p>
         <p><a href="javascript:avatar()">修改头像</a></p>
     </div>
-</div>
+
 
 
 <form class="form-horizontal m" id="form-teacher-editsave" th:object="${prsnTeacher}">
