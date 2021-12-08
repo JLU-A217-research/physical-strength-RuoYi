@@ -47,16 +47,11 @@ public class ScoreController extends BaseController
     /**
      * 查询学生成绩管理列表
      */
-//    @Autowired
-//    private IBodyEvaluationService bodyEvaluationService;
     @RequiresPermissions("system:scoreandevaluation:studentscoremanage:list")
     @PostMapping("/list")
     @ResponseBody
     public TableDataInfo list(Score score)
     {
-//        startPage();
-//        scoreService.updateBMI();
-//        bodyEvaluationService.updateStatistical();
         List<Score> list = scoreService.selectScoreListByStu(score);
         return getDataTable(list);
     }
