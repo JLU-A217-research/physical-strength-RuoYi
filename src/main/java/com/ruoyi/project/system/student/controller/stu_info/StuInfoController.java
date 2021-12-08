@@ -1,4 +1,4 @@
-package com.ruoyi.project.system.student.controller.Stu_Info;
+package com.ruoyi.project.system.student.controller.stu_info;
 
 import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
