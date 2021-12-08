@@ -39,7 +39,7 @@ public class TeaInfoController extends BaseController
         Long accountId= user.getUserId();
         Long account= Long.valueOf(2);
         TeaInfo teaInfo = prsnsTeacherService.selectteaIdByAccountId(account);
-
+        mmap.put("user", user);
         mmap.put("prsnTeacher", teaInfo);
         return prefix + "/tea_info";
     }

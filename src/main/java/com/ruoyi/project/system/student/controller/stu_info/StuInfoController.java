@@ -59,7 +59,7 @@ public class StuInfoController extends BaseController
         User user = ShiroUtils.getSysUser();
         Long accountId= user.getUserId();
         StuInfo stuInfo=prsnsStudentService.selectstuIdByAccountId(accountId);
-
+        mmap.put("user", user);
         mmap.put("prsnStudent", stuInfo);
         return prefix + "/stu_info";
     }

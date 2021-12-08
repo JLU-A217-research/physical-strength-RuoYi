@@ -7,8 +7,10 @@
 
 
 <div class="center">
-    <p class="user-info-center" onclick="avatar()"><img class="img-circle img-lg" src="/profile/avatar/2021/04/14/deefc580-c011-4b3d-bb1b-4604df9647b3.png"></p>
-
+    <div class="text-center">
+        <p class="user-info-head" onclick="avatar()"><img class="img-circle img-lg" th:src="(${#strings.isEmpty(user.avatar)}) ? @{/img/profile.jpg} : @{${user.avatar}}"></p>
+        <p><a href="javascript:avatar()">修改头像</a></p>
+    </div>
 </div>
 
 
@@ -162,6 +164,30 @@
         if ($.validate.form()) {
             $.operate.saveModal(prefix + "/update", $('#form-teacher-editsave').serialize());
         }
+    }
+    /*用户管理-头像*/
+    function avatar() {
+        var url = ctx + 'system/user/profile/avatar';
+        top.layer.open({
+            type: 2,
+            area: [$(window).width() + 'px', $(window).height() + 'px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: "修改头像",
+            content: url,
+            btn: ['确定', '关闭'],
+            // 弹层外区域关闭
+            shadeClose: true,
+            yes: function(index, layero) {
+                var iframeWin = layero.find('iframe')[0];
+                iframeWin.contentWindow.submitHandler(index, layero);
+            },
+            cancel: function(index) {
+                return true;
+            }
+        });
     }
 
 
