@@ -109,31 +109,34 @@ public class IndexController extends BaseController
         mmap.put("version", ruoYiConfig.getVersion());
         User user = getSysUser();
         mmap.put("user", user);
+        Long userId = user.getUserId();
+        if(user.getUserType().equals("0")){
+            //学生信息
+            //if(user.account_type == 0)
+            //Long stu_id = user.getStu_id();
+//        Long stu_id = 1L;
 
-        //学生信息
-        //if(user.account_type == 0)
-        //Long stu_id = user.getStu_id();
-        Long stu_id = 1L;
-        StuInfo stuInfo = prsnStudentService.selectstuIdByAccountId(stu_id);
-        String stuNation = getDictLabel("sys_user_nation",String.valueOf(stuInfo.getStuNationId()));
-        int stuAge = getAge(stuInfo.getStuBirth());
-        mmap.put("prsnStudent", stuInfo);
-        mmap.put("stuNation", stuNation); //等荣荣的学生domain改完之后改这里
-        mmap.put("stuAge", stuAge);
-
-        //return "main_student"
-
-        //教师信息
-        //if(user.account_type == 0)
-        //Long teacher_id = user.getTeacher_id();
-        Long teacher_id = 2L;
-        TeaInfo teaInfo = prsnTeacherService.selectteaIdByAccountId(teacher_id);
-        String teacherJob = getDictLabel("teacher_job_id",String.valueOf(teaInfo.getTeacherJobId()));
+            StuInfo stuInfo = prsnStudentService.selectstuIdByAccountId(userId);
+            String stuNation = getDictLabel("sys_user_nation",String.valueOf(stuInfo.getStuNationId()));
+            int stuAge = getAge(stuInfo.getStuBirth());
+            mmap.put("prsnStudent", stuInfo);
+            mmap.put("stuNation", stuNation); //等荣荣的学生domain改完之后改这里
+            mmap.put("stuAge", stuAge);
+            return "main_student";
+        }else{
+            //教师信息
+            //Long teacher_id = user.getTeacher_id();
+//        Long teacher_id = 2L;
+            TeaInfo teaInfo = prsnTeacherService.selectteaIdByAccountId(userId);
+            String teacherJob = getDictLabel("teacher_job_id",String.valueOf(teaInfo.getTeacherJobId()));
 //        String teacherJob = getDictLabel("teacher_job_id", "2");
-        mmap.put("prsnTeacher", teaInfo);
-        mmap.put("teacherJob", teacherJob);
+            mmap.put("prsnTeacher", teaInfo);
+            mmap.put("teacherJob", teacherJob);
+            return "main";
+        }
 
-        return "main";
+
+
     }
 
     //年龄计算
